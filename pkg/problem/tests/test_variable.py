@@ -50,3 +50,10 @@ class VariableTest(unittest.TestCase):
         var = self.default_variable()
         var.set_value(7)
         self.assertIsNone(var.get_value())
+
+    def test_reset_value(self):
+        var = self.default_variable()
+        var.set_value(3)
+        self.assertEqual(var.get_value(), 3)
+        var.reset_value()
+        self.assertIsNone(var.get_value())

@@ -26,3 +26,6 @@ class Variable:
 
     def get_value(self):
         return self.value
+
+    def reset_value(self):
+        self.value = None

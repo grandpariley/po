@@ -20,6 +20,20 @@ class Problem:
                 return False
         return True
 
+    def all_assigned(self):
+        for variable in self.variables:
+            if variable.get_value() is None:
+                return False
+        return True
+
+    def set_value(self, variable_index, value):
+        if 0 <= variable_index < len(self.variables):
+            self.variables[variable_index].set_value(value)
+    
+    def reset_value(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            self.variables[variable_index].reset_value()
+
     def objective_values(self):
         if self.objectiveFuncs is None:
             return None

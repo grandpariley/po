@@ -78,6 +78,43 @@ class ProblemTest(unittest.TestCase):
         problem = self.defaultConsistentProblem()
         self.assertIsNone(problem.objective_values())
 
+    def test_all_assigned_true(self):
+        """
+        test the check where all variables have values
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertTrue(problem.all_assigned())
+
+    def test_all_assigned_false(self):
+        """
+        test the check where all variables have values when not all variables have values
+        """
+        problem = self.defaultConsistentProblem()
+        problem.reset_value(1)
+        self.assertFalse(problem.all_assigned())
+
+    def test_set_value(self):
+        """
+        test set value
+        """
+        problem = self.defaultConsistentProblem()
+        problem.set_value(1, 2)
+        self.assertEqual(problem.variables[1].get_value(), 2)
+
+    def test_set_value_out_of_scope(self):
+        """
+        test set value out of scope
+        """
+        problem = self.defaultConsistentProblem()
+        orig_variables = problem.variables
+        problem.set_value(5, 3)
+        self.assertEqual(problem.variables, orig_variables)
+
+    def test_reset_value(self):
+        problem = self.defaultConsistentProblem()
+        problem.reset_value(1)
+        self.assertIsNone(problem.variables[1].get_value())
+
 
 
 

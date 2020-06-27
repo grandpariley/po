@@ -1,3 +1,5 @@
+import copy
+
 class Problem:
     """
     define a problem as 
@@ -20,6 +22,14 @@ class Problem:
                 return False
         return True
 
+    def will_be_consistent(self, variable_index, variable_value):
+        if variable_index < 0 or variable_index >= len(self.variables):
+            return False
+        problem = copy.deepcopy(self)
+        problem.set_value(variable_index, variable_value)
+        return problem.consistent()
+
+
     def all_assigned(self):
         for variable in self.variables:
             if variable.get_value() is None:
@@ -38,3 +48,11 @@ class Problem:
         if self.objectiveFuncs is None:
             return None
         return tuple([objFunc(self.variables) for objFunc in self.objectiveFuncs])
+    
+    def get_domain(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            return self.variables[variable_index].get_domain()
+        return []
+
+    def num_variables(self):
+        return len(self.variables)

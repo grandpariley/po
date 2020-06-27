@@ -20,8 +20,8 @@ class ProblemTest(unittest.TestCase):
         return Problem(
             variables,
             [
-                Constraint((0, 2),
-                           lambda variables: variables[0] == variables[1]),
+                Constraint((0, 1),
+                           lambda variables: variables[0] != variables[1]),
                 Constraint(tuple([1]), lambda variables: variables[0] == 1),
                 Constraint(tuple([2]), lambda variables: variables[0] > 0)
             ], None)
@@ -111,10 +111,40 @@ class ProblemTest(unittest.TestCase):
         self.assertEqual(problem.variables, orig_variables)
 
     def test_reset_value(self):
+        """
+        test resetting a variable
+        """
         problem = self.defaultConsistentProblem()
         problem.reset_value(1)
         self.assertIsNone(problem.variables[1].get_value())
 
+    def test_get_domain(self):
+        """
+        test getting the domain of a variable
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertEqual(problem.get_domain(1), [0, 1, 2])
 
+    def test_num_variables(self):
+        """
+        test number of variables
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertEqual(problem.num_variables(), 3)
 
+    def test_will_be_consistent(self):
+        """
+        test whether a potential assignment will be consistent
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertTrue(problem.will_be_consistent(2, 1))
+        self.assertEqual(problem.variables[2].get_value(), 2)
+    
+    def test_will_be_consistent_false(self):
+        """
+        test whether a potential assignment will be consistent when it won't be 
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertFalse(problem.will_be_consistent(2, 0))
+        self.assertEqual(problem.variables[2].get_value(), 2)
 

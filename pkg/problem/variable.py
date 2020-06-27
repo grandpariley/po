@@ -29,3 +29,6 @@ class Variable:
 
     def reset_value(self):
         self.value = None
+
+    def get_domain(self):
+        return self.domain

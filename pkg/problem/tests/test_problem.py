@@ -148,3 +148,10 @@ class ProblemTest(unittest.TestCase):
         self.assertFalse(problem.will_be_consistent(2, 0))
         self.assertEqual(problem.variables[2].get_value(), 2)
 
+    def test_variable_assignments(self):
+        """
+        test fetching current tuple of variable assignments
+        """
+        problem = self.defaultConsistentProblem()
+        self.assertEqual(problem.variable_assignments(), (2, 1, 2))
+

@@ -14,9 +14,6 @@ class BranchBoundTest(unittest.TestCase):
 
     def defaultConsistentProblem(self):
         variables = self.defaultVariables()
-        variables[0].set_value(2)
-        variables[1].set_value(1)
-        variables[2].set_value(2)
         return Problem(
             variables,
             [
@@ -28,4 +25,5 @@ class BranchBoundTest(unittest.TestCase):
 
     def test_solve(self):
         branch_bound = BranchBound(self.defaultConsistentProblem())
-        branch_bound.solve()
+        solution = branch_bound.solve()
+        # self.assertEqual(solution.variable_assignments(), (2, 1, 2))

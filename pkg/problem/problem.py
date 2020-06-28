@@ -56,3 +56,6 @@ class Problem:
 
     def num_variables(self):
         return len(self.variables)
+
+    def variable_assignments(self):
+        return tuple([v.get_value() for v in self.variables])

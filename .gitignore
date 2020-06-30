@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# written compendiums don't need to be versioned
+report/
+proposal/

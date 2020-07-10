@@ -44,6 +44,9 @@ class Problem:
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()
 
+    def get_variables(self):
+        return self.variables
+
     def objective_values(self):
         if self.objectiveFuncs is None:
             return None

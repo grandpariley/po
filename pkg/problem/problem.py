@@ -29,7 +29,6 @@ class Problem:
         problem.set_value(variable_index, variable_value)
         return problem.consistent()
 
-
     def all_assigned(self):
         for variable in self.variables:
             if variable.get_value() is None:

@@ -8,7 +8,7 @@ class Variable:
         self.value = None
 
     def __str__(self):
-        return str(self.domain)
+        return str(self.domain) + " {" + str(self.value) + "}"
     
     def pop(self):
         if not self.domain:

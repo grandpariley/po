@@ -4,11 +4,11 @@ class Particle:
     def __init__(self, problem):
         self.problem = problem
         self.best_values = self.problem.objective_values()
-        self.velocity = [0 for _ in problem.num_variables()]
+        self.velocity = [0 for _ in range(problem.num_variables())]
     
     def move(self):
         for i in range(self.problem.num_variables()):
-            self.problem.set_value(i, self.problem.closet_in_domain(i, self.velocity[i] + self.problem.get_domain(i)))
+            self.problem.set_value(i, self.problem.closest_in_domain(i, self.velocity[i] + self.problem.get_value(i)))
     
     def accelerate(self):
         pass

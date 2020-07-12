@@ -39,6 +39,11 @@ class Problem:
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].set_value(value)
     
+    def get_value(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            return self.variables[variable_index].get_value()
+        return None
+    
     def reset_value(self, variable_index):
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()

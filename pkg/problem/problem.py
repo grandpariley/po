@@ -61,3 +61,7 @@ class Problem:
 
     def variable_assignments(self):
         return tuple([v.get_value() for v in self.variables])
+
+    def closest_in_domain(self, variable_index, value):
+        if 0 <= variable_index < len(self.variables):
+            return self.variables[variable_index].closest_in_domain(value)

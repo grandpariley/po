@@ -66,3 +66,23 @@ class VariableTest(unittest.TestCase):
         test get domain
         """
         self.assertEqual(self.default_variable().get_domain(), [1, 2, 3, 4, 5])
+
+    def test_closest_in_domain_in_domain(self):
+        """
+        test getting closest in domain for a value in the domain
+        """
+        self.assertEqual(self.default_variable().closest_in_domain(3), 3)
+    
+    def test_closest_in_domain_not_in_domain(self):
+        """
+        test getting closest in domain for a value in the domain
+        """
+        self.assertEqual(self.default_variable().closest_in_domain(3.7), 4)
+        self.assertEqual(self.default_variable().closest_in_domain(3.5), 4)
+        self.assertEqual(self.default_variable().closest_in_domain(3.2), 3)
+    
+    def test_closest_in_domain_empty_domain(self):
+        """
+        test getting closest in domain for a value in the domain
+        """
+        self.assertIsNone(Variable([]).closest_in_domain(3))

@@ -31,7 +31,7 @@ class Swarm:
     def update_best(self):
         self.best = self.top()
         for particle in self.particles:
-            if dominates(particle.problem.objective_values(), self.best.problem.objective_values()):
+            if dominates(particle.get_objective_values(), self.best.get_objective_values()):
                 self.best = copy.deepcopy(particle)
 
     def get_best(self):

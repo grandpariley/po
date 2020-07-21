@@ -39,9 +39,17 @@ class Problem:
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].set_value(value)
     
+    def get_value(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            return self.variables[variable_index].get_value()
+        return None
+    
     def reset_value(self, variable_index):
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()
+
+    def get_variables(self):
+        return self.variables
 
     def objective_values(self):
         if self.objectiveFuncs is None:
@@ -58,3 +66,7 @@ class Problem:
 
     def variable_assignments(self):
         return tuple([v.get_value() for v in self.variables])
+
+    def closest_in_domain(self, variable_index, value):
+        if 0 <= variable_index < len(self.variables):
+            return self.variables[variable_index].closest_in_domain(value)

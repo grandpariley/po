@@ -33,6 +33,5 @@ class BuilderTest(unittest.TestCase):
     def test_generate_many_random_solutions(self):
         problem = self.defaultConsistentProblem()
         individuals = generateManyRandomSolutions(problem, 2)
-        print([str(i) for i in individuals])
         self.assertIsNotNone(individuals)
         self.assertEqual(len(individuals), 2)

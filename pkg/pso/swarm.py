@@ -5,10 +5,7 @@ from pkg.problem.compare import dominates
 class Swarm:
     def __init__(self, particles):
         self.particles = particles
-        if self.particles:
-            self.best = self.particles[-1]
-        else:
-            self.best = None
+        self.best = []
 
     def get_particles(self):
         return self.particles
@@ -29,10 +26,12 @@ class Swarm:
         return self.particles[particle_index].get_best()
     
     def update_best(self):
-        self.best = self.top()
+        self.best = [self.top()]
         for particle in self.particles:
-            if dominates(particle.get_objective_values(), self.best.get_objective_values()):
-                self.best = copy.deepcopy(particle)
+            for b in self.best:
+                if dominates(particle.get_objective_values(), b.get_objective_values()):
+                    self.best.remove(b)
+                    self.best.append(copy.deepcopy(b))
 
     def get_best(self):
         return self.best

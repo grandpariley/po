@@ -14,6 +14,9 @@ class Particle:
         self.velocity = [random.uniform(0.0, 1.0)
                          for _ in range(problem.num_variables())]
 
+    def __str__(self):
+        return str(self.best)
+
     def move(self):
         for i in range(self.problem.num_variables()):
             self.problem.set_value(i, self.problem.closest_in_domain(

@@ -17,6 +17,18 @@ class Particle:
     def __str__(self):
         return str(self.best)
 
+    def __repr__(self):
+        return str(self)
+
+    def __eq__(self, other):
+        return str(self) == str(other)
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return hash(str(self))
+
     def move(self):
         for i in range(self.problem.num_variables()):
             self.problem.set_value(i, self.problem.closest_in_domain(

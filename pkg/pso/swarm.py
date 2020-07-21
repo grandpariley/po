@@ -1,37 +1,29 @@
 import copy
 from pkg.pso.particle import Particle
-from pkg.problem.compare import dominates
+from pkg.problem.compare import non_dominated, dominates
+
+def get_dominated(particle, best):
+    dominated = []
+    for b in best:
+        if dominates(particle.get_objective_values(), b.get_objective_values()):
+            dominated.append(b)
+    return dominated
 
 class Swarm:
     def __init__(self, particles):
         self.particles = particles
-        self.best = []
+        self.best = set()
 
     def get_particles(self):
         return self.particles
 
-    def top(self):
-        if not self.particles:
-            return None
-        return self.particles[-1]
-
-    def pop(self):
-        if not self.particles:
-            return
-        self.particles.pop()
-
-    def get_local_best(self, particle_index):
-        if 0 <= particle_index < len(self.particles):
-            return None
-        return self.particles[particle_index].get_best()
-    
     def update_best(self):
-        self.best = [self.top()]
-        for particle in self.particles:
-            for b in self.best:
-                if dominates(particle.get_objective_values(), b.get_objective_values()):
-                    self.best.remove(b)
-                    self.best.append(copy.deepcopy(b))
+        for p in self.particles:
+            if non_dominated(p.get_objective_values(), [b.get_objective_values() for b in self.best]):
+                self.best.add(copy.deepcopy(p))
+            for d in get_dominated(p, self.best):
+                self.best.remove(d)
+                
 
     def get_best(self):
         return self.best

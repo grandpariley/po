@@ -5,6 +5,7 @@ class Individual:
         self.problem = problem
         self.dominates = set()
         self.domination_count = 0
+        self.crowding_distance = 0
         self.rank = None
 
     def __str__(self):
@@ -40,3 +41,9 @@ class Individual:
     def decrement_dominated(self):
         if self.domination_count > 0:
             self.domination_count -= 1
+
+    def set_crowding_distance(self, crowding_distance):
+        self.crowding_distance = crowding_distance
+
+    def get_crowding_distance(self):
+        return self.crowding_distance

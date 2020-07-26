@@ -1,17 +1,17 @@
 import unittest
-from pkg.problem.tests.default_problems import defaultConsistentProblem
+from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.nsga2.individual import Individual
 
 class IndividualTest(unittest.TestCase):
     def defaultIndividual(self):
-        problem = defaultConsistentProblem()
+        problem = default_consistent_problem()
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
         return Individual(problem)
 
     def defaultDominatingIndividual(self):
-        other_problem = defaultConsistentProblem()
+        other_problem = default_consistent_problem()
         other_problem.set_value(0, 1)
         other_problem.set_value(1, 2)
         other_problem.set_value(2, 1)

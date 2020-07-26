@@ -1,11 +1,11 @@
 import unittest
-from pkg.problem.tests.default_problems import defaultConsistentProblem
+from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_individuals, sort_by_crowding_distance
 
 class SortTest(unittest.TestCase):
     def defaultIndividual(self):
-        problem = defaultConsistentProblem()
+        problem = default_consistent_problem()
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
@@ -14,7 +14,7 @@ class SortTest(unittest.TestCase):
         return individual
     
     def defaultDominatedIndividual(self):
-        problem = defaultConsistentProblem()
+        problem = default_consistent_problem()
         problem.set_value(0, 1)
         problem.set_value(1, 0)
         problem.set_value(2, 1)
@@ -22,7 +22,7 @@ class SortTest(unittest.TestCase):
         individual.set_crowding_distance(0)
         return individual
     def defaultDominatingIndividual(self):
-        problem = defaultConsistentProblem()
+        problem = default_consistent_problem()
         problem.set_value(0, 1)
         problem.set_value(1, 2)
         problem.set_value(2, 1)
@@ -30,7 +30,7 @@ class SortTest(unittest.TestCase):
         individual.set_crowding_distance(2)
         return individual
     def defaultOtherDominatingIndividual(self):
-        problem = defaultConsistentProblem()
+        problem = default_consistent_problem()
         problem.set_value(0, 1)
         problem.set_value(1, 3)
         problem.set_value(2, 1)

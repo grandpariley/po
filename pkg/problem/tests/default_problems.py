@@ -2,18 +2,15 @@ from pkg.problem.variable import Variable
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
 
-def defaultVariables():
+def default_variables():
     return [
         Variable([0, 1, 2, 3, 4, 5]),
         Variable([0, 1, 2, 3, 4, 5]),
         Variable([0, 1, 2, 3, 4, 5]),
     ]
 
-def defaultConsistentProblem():
-    variables = defaultVariables()
-    variables[0].set_value(2)
-    variables[1].set_value(1)
-    variables[2].set_value(2)
+def default_consistent_problem():
+    variables = default_variables()
     return Problem(
         variables,
         [
@@ -23,20 +20,31 @@ def defaultConsistentProblem():
             Constraint(tuple([2]), lambda variables: variables[0] > 0)
         ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
 
-def defaultInconsistentProblem():
-    variables = defaultVariables()
+def default_consistent_problem_set_values():
+    problem = default_consistent_problem()
+    problem.set_value(0, 2)
+    problem.set_value(1, 1)
+    problem.set_value(2, 2)
+    return problem
+
+def default_inconsistent_problem():
+    variables = default_variables()
     return Problem(
         variables,
         [
             Constraint((0, 2),
                         lambda variables: False),
-        ], None)
+        ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
 
-def defaultMultiObjectiveProblem():
-    variables = defaultVariables()
-    variables[0].set_value(2)
-    variables[1].set_value(1)
-    variables[2].set_value(2)
+def default_inconsistent_problem_set_values():
+    problem = default_inconsistent_problem()
+    problem.set_value(0, 2)
+    problem.set_value(1, 1)
+    problem.set_value(2, 2)
+    return problem
+
+def default_multi_objective_problem():
+    variables = default_variables()
     return Problem(
         variables,
         [
@@ -45,3 +53,10 @@ def defaultMultiObjectiveProblem():
             Constraint(tuple([1]), lambda variables: variables[0] == 1),
             Constraint(tuple([2]), lambda variables: variables[0] > 0)
         ], [lambda variables: sum([var.get_value() for var in variables]), lambda variables: -sum(var.get_value() for var in variables)])
+
+def default_multi_objective_problem_set_values():
+    problem = default_multi_objective_problem()
+    problem.set_value(0, 2)
+    problem.set_value(1, 1)
+    problem.set_value(2, 2)
+    return problem

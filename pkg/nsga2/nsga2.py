@@ -2,7 +2,7 @@ import copy
 from pkg.problem.solver import Solver
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
-from pkg.problem.builder import generateManyRandomSolutions
+from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
 
 class Nsga2(Solver):
@@ -46,9 +46,9 @@ class Nsga2(Solver):
         return []
 
     def solve_helper(self):
-        parent_population = [Individual(p) for p in generateManyRandomSolutions(
+        parent_population = [Individual(p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
-        child_population = [Individual(p) for p in generateManyRandomSolutions(
+        child_population = [Individual(p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
         for _ in range(Constants.NSGA2_NUM_GENERATIONS):
             front = self.fast_non_dominated_sort(

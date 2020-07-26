@@ -2,7 +2,7 @@ import random
 from pkg.problem.solver import Solver
 from pkg.flowerpollination.flower import Flower
 from pkg.flowerpollination.bouquet import Bouquet
-from pkg.problem.builder import generateManyRandomSolutions
+from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
 
 class FlowerPollination(Solver):
@@ -14,4 +14,4 @@ class FlowerPollination(Solver):
         return bouquet.get_best()
 
     def solve(self):
-        return self.solve_helper(Bouquet([Flower(p) for p in generateManyRandomSolutions(self.problem, Constants.FP_NUMBER_OF_FLOWERS)]))
+        return self.solve_helper(Bouquet([Flower(p) for p in generate_many_random_solutions(self.problem, Constants.FP_NUMBER_OF_FLOWERS)]))

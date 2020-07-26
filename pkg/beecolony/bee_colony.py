@@ -2,7 +2,7 @@ from pkg.problem.solver import Solver
 from pkg.consts import Constants
 from pkg.beecolony.colony import Colony
 from pkg.beecolony.bee import Bee
-from pkg.problem.builder import generateManyRandomSolutions
+from pkg.problem.builder import generate_many_random_solutions
 
 class BeeColony(Solver):
     def solve_helper(self, colony):
@@ -13,4 +13,4 @@ class BeeColony(Solver):
         return colony.get_solutions()
 
     def solve(self):
-        return self.solve_helper(Colony([Bee(p) for p in generateManyRandomSolutions(self.problem, Constants.BC_POPULATION_SIZE)]))
+        return self.solve_helper(Colony([Bee(p) for p in generate_many_random_solutions(self.problem, Constants.BC_POPULATION_SIZE)]))

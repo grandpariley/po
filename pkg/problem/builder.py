@@ -2,10 +2,10 @@ import copy
 import random
 from pkg.problem.problem import Problem
 
-def defaultPortfolioOptimizationProblem():
+def default_portfolio_optimization_problem():
     return Problem([], [], None)
 
-def generateManyRandomSolutions(problem, populationSize):
+def generate_many_random_solutions(problem, populationSize):
     individuals = set()
     while len(individuals) < populationSize:
         p = copy.deepcopy(problem)

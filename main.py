@@ -12,7 +12,8 @@ def main():
     timer = Timer()
 
     branch_bound = BranchBound(default_portfolio_optimization_problem())
-    branch_bound_soln = timer.time(branch_bogenerate_many_random_solutions    bee_colony = BeeColony(default_portfolio_optimization_problem())
+    branch_bound_soln = timer.time(branch_bound.solve, "branch_bound")
+    bee_colony = BeeColony(default_portfolio_optimization_problem())
     bee_colony_soln = timer.time(bee_colony.solve, "bee_colony")
     flower_pollination = FlowerPollination(default_portfolio_optimization_problem())
     flower_pollination_soln = timer.time(flower_pollination.solve, "flower_pollination")
@@ -27,4 +28,3 @@ def main():
     print(timer.getTimesAsFormattedString())
 
 main()
-generate_many_random_solutionsgenerate_many_random_solutions

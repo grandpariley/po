@@ -1,7 +1,4 @@
 class Constraint:
-    """
-    define a constraint as a lambda function of the form (x...) => return boolean
-    """
     def __init__(self, variable_indicies, func):
         self.func = func
         self.variable_indicies = variable_indicies

@@ -1,13 +1,6 @@
 import copy
 
 class Problem:
-    """
-    define a problem as 
-        a set of variables, 
-        a set of constraints on those variables, and 
-        an optional objective lambda function of the form ([x, y, z] => return a) where a is to be maximized
-    """
-
     def __init__(self, variables, constraints, objectiveFuncs):
         self.variables = variables
         self.constraints = constraints

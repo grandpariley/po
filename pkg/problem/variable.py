@@ -1,10 +1,6 @@
 import copy
 
 class Variable:
-    """
-    define a variable as a domain of possible values
-    """
-    
     def __init__(self, domain):
         self.domain = domain
         self.value = None

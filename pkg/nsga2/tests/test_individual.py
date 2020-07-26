@@ -1,36 +1,17 @@
 import unittest
-from pkg.problem.problem import Problem 
-from pkg.problem.constraint import Constraint
-from pkg.problem.variable import Variable
+from pkg.problem.tests.default_problems import defaultConsistentProblem
 from pkg.nsga2.individual import Individual
 
 class IndividualTest(unittest.TestCase):
-    def defaultVariables(self):
-        return [
-            Variable([0, 1, 2]),
-            Variable([0, 1, 2]),
-            Variable([0, 1, 2]),
-        ]
-
-    def defaultConsistentProblem(self):
-        variables = self.defaultVariables()
-        return Problem(
-            variables,
-            [
-                Constraint((0, 2),
-                           lambda variables: variables[0] == variables[1]),
-                Constraint(tuple([2]), lambda variables: variables[0] > 0)
-            ], [lambda v: tuple(u.get_value() for u in v)])
-
     def defaultIndividual(self):
-        problem = self.defaultConsistentProblem()
+        problem = defaultConsistentProblem()
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
         return Individual(problem)
 
     def defaultDominatingIndividual(self):
-        other_problem = self.defaultConsistentProblem()
+        other_problem = defaultConsistentProblem()
         other_problem.set_value(0, 1)
         other_problem.set_value(1, 2)
         other_problem.set_value(2, 1)

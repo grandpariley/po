@@ -1,30 +1,11 @@
 import unittest
-from pkg.problem.constraint import Constraint
-from pkg.problem.problem import Problem 
-from pkg.problem.variable import Variable
+from pkg.problem.tests.default_problems import defaultConsistentProblem
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_individuals, sort_by_crowding_distance
 
 class SortTest(unittest.TestCase):
-    def defaultVariables(self):
-        return [
-            Variable([0, 1, 2, 3]),
-            Variable([0, 1, 2, 3]),
-            Variable([0, 1, 2, 3]),
-        ]
-
-    def defaultConsistentProblem(self):
-        variables = self.defaultVariables()
-        return Problem(
-            variables,
-            [
-                Constraint((0, 2),
-                           lambda variables: variables[0] == variables[1]),
-                Constraint(tuple([2]), lambda variables: variables[0] > 0)
-            ], [lambda v: tuple(u.get_value() for u in v)])
-
     def defaultIndividual(self):
-        problem = self.defaultConsistentProblem()
+        problem = defaultConsistentProblem()
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
@@ -33,7 +14,7 @@ class SortTest(unittest.TestCase):
         return individual
     
     def defaultDominatedIndividual(self):
-        problem = self.defaultConsistentProblem()
+        problem = defaultConsistentProblem()
         problem.set_value(0, 1)
         problem.set_value(1, 0)
         problem.set_value(2, 1)
@@ -41,7 +22,7 @@ class SortTest(unittest.TestCase):
         individual.set_crowding_distance(0)
         return individual
     def defaultDominatingIndividual(self):
-        problem = self.defaultConsistentProblem()
+        problem = defaultConsistentProblem()
         problem.set_value(0, 1)
         problem.set_value(1, 2)
         problem.set_value(2, 1)
@@ -49,7 +30,7 @@ class SortTest(unittest.TestCase):
         individual.set_crowding_distance(2)
         return individual
     def defaultOtherDominatingIndividual(self):
-        problem = self.defaultConsistentProblem()
+        problem = defaultConsistentProblem()
         problem.set_value(0, 1)
         problem.set_value(1, 3)
         problem.set_value(2, 1)

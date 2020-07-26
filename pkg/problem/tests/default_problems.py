@@ -4,9 +4,9 @@ from pkg.problem.problem import Problem
 
 def defaultVariables():
     return [
-        Variable([0, 1, 2]),
-        Variable([0, 1, 2]),
-        Variable([0, 1, 2]),
+        Variable([0, 1, 2, 3, 4, 5]),
+        Variable([0, 1, 2, 3, 4, 5]),
+        Variable([0, 1, 2, 3, 4, 5]),
     ]
 
 def defaultConsistentProblem():

@@ -7,8 +7,6 @@ def sort(individuals, low, high, partition):
 def sort_individuals(individuals, obj_index):
     def partition(individuals, low, high):
         i = low - 1
-        print(obj_index)
-        print(individuals[high].get_objective_values())
         pivot = individuals[high].get_objective_values()[obj_index]
         for j in range(low, high):
             if individuals[j].get_objective_values()[obj_index] <= pivot:

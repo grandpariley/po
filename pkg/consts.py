@@ -5,4 +5,7 @@ class Constants():
     #define NSGA2 constants
     NSGA2_NUM_INDIVIDUALS = 30
     NSGA2_NUM_GENERATIONS = 100
-    
+    #define SPEA2 Constants
+    SPEA2_INITIAL_POPULATION = 30
+    SPEA2_MAX_ARCHIVE_SIZE = 30
+    SPEA2_MAX_GENERATIONS = 100

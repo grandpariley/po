@@ -41,6 +41,7 @@ class Nsga2(Solver):
                 individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + ((individuals[i + 1].get_objective_values(
                 )[o] - individuals[i - 1].get_objective_values()[o])/(individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o])))
 
+    # TODO 
     def generate_children(self, parent_population):
         return []
 

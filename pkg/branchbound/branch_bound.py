@@ -1,9 +1,6 @@
 from pkg.problem.solver import Solver
 
 class BranchBound(Solver):
-    """
-    implementation of the branch and bound algorithm for the generic Problem
-    """
     def solve_helper(self, i):
         if self.problem.all_assigned() and self.problem.consistent():
             self.solutions.append(self.problem)

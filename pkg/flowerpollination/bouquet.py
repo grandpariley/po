@@ -6,6 +6,7 @@ class Bouquet:
         self.flowers = flowers
         self.best = None
 
+    # TODO 
     def find_best(self):
         self.best = self.flowers[0]
 
@@ -20,12 +21,15 @@ class Bouquet:
                 self.local_pollination(flower)
             self.update_population()
 
+    # TODO 
     def global_pollination(self, flower):
         pass
-
+    
+    # TODO
     def local_pollination(self, flower):
         pass
 
+    # TODO
     def update_population(self):
         pass
         

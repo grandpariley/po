@@ -47,3 +47,6 @@ class Individual:
 
     def get_crowding_distance(self):
         return self.crowding_distance
+
+    def get_objective_values(self):
+        return self.problem.objective_values()

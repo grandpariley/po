@@ -1,7 +1,7 @@
 import copy
 from pkg.problem.solver import Solver
 from pkg.nsga2.individual import Individual
-from pkg.nsga2.sort import sort_by_distance, sort_individuals
+from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generateManyRandomSolutions
 from pkg.consts import Constants
 
@@ -58,7 +58,7 @@ class Nsga2(Solver):
                 parent_population += front[i]
                 i += 1
             self.crowding_distance_assignment(list(front[i]))
-            parent_population += sort_by_distance(
+            parent_population += sort_by_crowding_distance(
                 front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
             child_population = self.generate_children(parent_population)
 

@@ -7,6 +7,8 @@ def sort(individuals, low, high, partition):
 def sort_individuals(individuals, obj_index):
     def partition(individuals, low, high):
         i = low - 1
+        print(obj_index)
+        print(individuals[high].get_objective_values())
         pivot = individuals[high].get_objective_values()[obj_index]
         for j in range(low, high):
             if individuals[j].get_objective_values()[obj_index] <= pivot:
@@ -18,7 +20,7 @@ def sort_individuals(individuals, obj_index):
     sort(individuals, 0, len(individuals) - 1, partition)
     return individuals
 
-def sort_by_distance(individuals):
+def sort_by_crowding_distance(individuals):
     def partition(individuals, low, high):
         i = low - 1
         pivot = individuals[high].get_crowding_distance()

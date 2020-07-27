@@ -66,6 +66,10 @@ class Nsga2(Solver):
         daughter.swap_half_genes(dad)
         return son, daughter
 
+    # TODO
+    def tournament(self, population):
+        pass
+
     def solve_helper(self):
         parent_population = [Individual(p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]

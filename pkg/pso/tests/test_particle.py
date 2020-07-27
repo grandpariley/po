@@ -5,7 +5,7 @@ import unittest.mock as mock
 from pkg.random.random import Random
 from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem_set_values
-from pkg.pso.particle import Particle, DRAG, SOCIAL_SCALE, COGNITIVE_SCALE
+from pkg.pso.particle import Particle
 
 
 class ParticleTest(unittest.TestCase):

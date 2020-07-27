@@ -1,6 +1,8 @@
 import unittest
 from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.nsga2.individual import Individual
+from pkg.random.random import Random
+from pkg.consts import Constants
 
 
 class IndividualTest(unittest.TestCase):
@@ -14,8 +16,15 @@ class IndividualTest(unittest.TestCase):
     def default_dominating_individual(self):
         other_problem = default_consistent_problem()
         other_problem.set_value(0, 1)
-        other_problem.set_value(1, 2)
-        other_problem.set_value(2, 1)
+        other_problem.set_value(1, 1)
+        other_problem.set_value(2, 2)
+        return Individual(other_problem)
+    
+    def default_other_dominating_individual(self):
+        other_problem = default_consistent_problem()
+        other_problem.set_value(0, 2)
+        other_problem.set_value(1, 1)
+        other_problem.set_value(2, 3)
         return Individual(other_problem)
 
     def test_does_dominate(self):
@@ -63,6 +72,26 @@ class IndividualTest(unittest.TestCase):
         self.assertEqual(individual.get_crowding_distance(), 3.14)
 
     def test_swap_half_genes(self):
+        Random.begin_test()
+        Random.set_test_value_for("random_int_between_a_and_b", 2)
         parent = self.default_dominating_individual()
+        child = self.default_other_dominating_individual()
+        child.swap_half_genes(parent)
+        Random.end_test()
+
+    # TODO
+    def test_emo_phase(self):
+        Random.begin_test()
+        Constants.NSGA2_NUM_GENES_MUTATING = 3
+        Random.set_test_value_for("random_int_between_a_and_b", 2)
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
+        Random.set_test_value_for("random_int_between_a_and_b", 0)
+        Random.set_test_value_for("random_float_between_a_and_b", 1)
+        Random.set_test_value_for("random_float_between_a_and_b", 1)
+        Random.set_test_value_for("random_float_between_a_and_b", 1)
         child = self.default_dominating_individual()
-        # child.swap_half_genes(parent)
+        child.emo_phase()
+        self.assertEqual(child.problem.get_value(0), 2)
+        self.assertEqual(child.problem.get_value(1), 1)
+        self.assertEqual(child.problem.get_value(2), 3)
+        Random.end_test()

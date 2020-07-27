@@ -1,6 +1,4 @@
-import random
-
-    # TODO
+# TODO
 class FoodSourceMemory:
     def __init__(self):
         self.matrix = [[]];

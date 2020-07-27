@@ -44,6 +44,7 @@ class ParticleTest(unittest.TestCase):
         self.assertEqual(old_position[1] + v[1], new_position[1])
         self.assertEqual(old_position[2] + v[2], new_position[2])
 
+    # TODO
     def test_accelerate(self):
         with mock.patch('random.uniform', lambda dont, care : 0.5):
             particle = self.defaultParticle()
@@ -58,5 +59,6 @@ class ParticleTest(unittest.TestCase):
             self.assertEqual(calculated_velocity[1], new_velocity[1])
             self.assertEqual(calculated_velocity[2], new_velocity[2])
 
+    # TODO
     def test_update_best(self):
         pass

@@ -1,4 +1,3 @@
-import random
 from pkg.problem.solver import Solver
 from pkg.flowerpollination.flower import Flower
 from pkg.flowerpollination.bouquet import Bouquet

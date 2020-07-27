@@ -1,4 +1,4 @@
-import random
+from pkg.random.random import Random
 from pkg.consts import Constants
 
 class Bouquet:
@@ -15,7 +15,7 @@ class Bouquet:
 
     def pollinate(self):
         for flower in self.flowers:
-            if random.uniform(0.0, 1.0) < Constants.FP_SWITCH_PROBABILITY:
+            if Random.random_float_between_0_and_1() < Constants.FP_SWITCH_PROBABILITY:
                 self.global_pollination(flower)
             else:
                 self.local_pollination(flower)

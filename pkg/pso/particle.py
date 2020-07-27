@@ -1,5 +1,5 @@
-import random
 import copy
+from pkg.random.random import Random
 from pkg.problem.compare import dominates
 
 DRAG = 0.5
@@ -11,7 +11,7 @@ class Particle:
     def __init__(self, problem):
         self.problem = problem
         self.best = copy.deepcopy(problem)
-        self.velocity = [random.uniform(0.0, 1.0)
+        self.velocity = [Random.random_float_between_0_and_1()
                          for _ in range(problem.num_variables())]
 
     def __str__(self):
@@ -37,9 +37,9 @@ class Particle:
     def accelerate(self):
         for i in range(self.problem.num_variables()):
             self.velocity[i] = (DRAG * self.velocity[i])
-            + (SOCIAL_SCALE * random.uniform(0.0, 1.0) *
+            + (SOCIAL_SCALE * Random.random_float_between_0_and_1() *
                (self.best.get_value(i) - self.problem.get_value(i)))
-            + (COGNITIVE_SCALE * random.uniform(0.0, 1.0) *
+            + (COGNITIVE_SCALE * Random.random_float_between_0_and_1() *
                (self.best.get_value(i) - self.problem.get_value(i)))
 
     def update_best(self):

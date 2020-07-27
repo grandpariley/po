@@ -41,9 +41,29 @@ class Nsga2(Solver):
                 individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + ((individuals[i + 1].get_objective_values(
                 )[o] - individuals[i - 1].get_objective_values()[o])/(individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o])))
 
-    # TODO 
     def generate_children(self, parent_population):
-        return []
+        children = []
+        while len(children) < len(parent_population):
+            mum, dad = self.get_parents()
+            son, daughter = self.get_children(mum, dad)
+            son.emo_phase()
+            daughter.emo_phase()
+            children = children + [son, daughter]            
+        return children
+
+    def get_parents(self, population):
+        mum = self.tournament(parent_population)
+        dad = self.tournament(parent_population)
+        while mum.get_objective_values() == dad.get_objective_values():
+            dad = self.tournament(parent_population)
+        return mum, dad
+
+    def get_children(self, mum, dad):
+        daughter = copy.deepcopy(mum)
+        son = copy.deepcopy(dad)
+        son.swap_half_genes(mum)
+        daughter.swap_half_genes(dad)
+        return son, daughter
 
     def solve_helper(self):
         parent_population = [Individual(p) for p in generate_many_random_solutions(

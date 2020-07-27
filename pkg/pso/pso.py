@@ -18,5 +18,6 @@ class Pso(Solver):
         return tuple(b.get_problem() for b in self.swarm.get_best())
 
     def solve(self):
-        self.swarm = Swarm([Particle(p) for p in generate_many_random_solutions(self.problem, Constants.PSO_SWARM_SIZE)])
+        self.swarm = Swarm([Particle(p) for p in generate_many_random_solutions(
+            self.problem, Constants.PSO_SWARM_SIZE)])
         return self.solve_helper()

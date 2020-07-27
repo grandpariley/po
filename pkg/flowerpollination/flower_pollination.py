@@ -4,6 +4,7 @@ from pkg.flowerpollination.bouquet import Bouquet
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
 
+
 class FlowerPollination(Solver):
     def solve_helper(self, bouquet):
         bouquet.set_best()

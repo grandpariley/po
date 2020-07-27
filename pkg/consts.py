@@ -2,6 +2,9 @@ class Constants():
     #define PSO constants
     PSO_SWARM_SIZE = 30
     PSO_MAX_ITERATIONS = 100
+    PSO_DRAG = 0.5
+    PSO_SOCIAL_SCALE = 1.5
+    PSO_COGNITIVE_SCALE = 1.5
     #define NSGA2 constants
     NSGA2_NUM_INDIVIDUALS = 30
     NSGA2_NUM_GENERATIONS = 100
@@ -19,4 +22,3 @@ class Constants():
     BC_POPULATION_SIZE = 30
     BC_MAX_CYCLE_NUMBER = 100
     BC_LIMIT = 50
-    

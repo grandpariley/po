@@ -5,6 +5,7 @@ from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
 
+
 class Nsga2(Solver):
     def fast_non_dominated_sort(self, population):
         front = [set()]
@@ -48,7 +49,7 @@ class Nsga2(Solver):
             son, daughter = self.get_children(mum, dad)
             son.emo_phase()
             daughter.emo_phase()
-            children = children + [son, daughter]            
+            children = children + [son, daughter]
         return children
 
     def get_parents(self, population):

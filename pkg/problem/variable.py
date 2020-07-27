@@ -1,5 +1,6 @@
 import copy
 
+
 class Variable:
     def __init__(self, domain):
         self.domain = domain
@@ -7,7 +8,7 @@ class Variable:
 
     def __str__(self):
         return str(self.domain) + " {" + str(self.value) + "}"
-    
+
     def pop(self):
         if not self.domain:
             return None

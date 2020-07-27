@@ -4,6 +4,7 @@ def sort(individuals, low, high, partition):
         sort(individuals, low, i, partition)
         sort(individuals, i + 1, high, partition)
 
+
 def sort_individuals(individuals, obj_index):
     def partition(individuals, low, high):
         i = low - 1
@@ -18,6 +19,7 @@ def sort_individuals(individuals, obj_index):
     sort(individuals, 0, len(individuals) - 1, partition)
     return individuals
 
+
 def sort_by_crowding_distance(individuals):
     def partition(individuals, low, high):
         i = low - 1
@@ -31,4 +33,3 @@ def sort_by_crowding_distance(individuals):
         return i
     sort(individuals, 0, len(individuals) - 1, partition)
     return individuals
-

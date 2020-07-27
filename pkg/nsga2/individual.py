@@ -3,6 +3,7 @@ from pkg.problem.compare import dominates
 from pkg.consts import Constants
 from math import floor
 
+
 class Individual:
     def __init__(self, problem):
         self.problem = problem
@@ -57,13 +58,17 @@ class Individual:
     def swap_half_genes(self, other):
         while True:
             for _ in range(floor(self.problem.num_variables() / 2)):
-                random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
-                self.problem.set_value(random_index, other.problem.get_value(random_index))
+                random_index = Random.random_int_between_a_and_b(
+                    0, self.problem.num_variables() - 1)
+                self.problem.set_value(
+                    random_index, other.problem.get_value(random_index))
             if self.problem.consistent():
                 break
 
     def emo_phase(self):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
-            random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
-            new_value = self.problem.closest_in_domain(random_index, self.problem.get_value(random_index) + random.uniform(-Constants.NSGA2_MUTATION_STRENGTH, Constants.NSGA2_MUTATION_STRENGTH))
+            random_index = Random.random_int_between_a_and_b(
+                0, self.problem.num_variables() - 1)
+            new_value = self.problem.closest_in_domain(random_index, self.problem.get_value(
+                random_index) + random.uniform(-Constants.NSGA2_MUTATION_STRENGTH, Constants.NSGA2_MUTATION_STRENGTH))
             self.problem.set_value(random_index, new_value)

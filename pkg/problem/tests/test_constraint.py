@@ -2,11 +2,12 @@ import unittest
 from pkg.problem.constraint import Constraint
 from pkg.problem.variable import Variable
 
+
 class ConstraintTest(unittest.TestCase):
 
     def default_variables(self):
         return [
-            Variable([0, 1]), 
+            Variable([0, 1]),
             Variable([0, 1])
         ]
 

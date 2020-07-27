@@ -3,6 +3,7 @@ from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.problem.builder import default_portfolio_optimization_problem
 from pkg.problem.builder import generate_many_random_solutions
 
+
 class BuilderTest(unittest.TestCase):
     def test_build(self):
         default_portfolio_optimization_problem()

@@ -1,10 +1,7 @@
 import copy
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
-
-DRAG = 0.5
-SOCIAL_SCALE = 1.5
-COGNITIVE_SCALE = 1.5
+from pkg.consts import Constants
 
 
 class Particle:
@@ -22,7 +19,7 @@ class Particle:
 
     def __eq__(self, other):
         return str(self) == str(other)
-    
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
@@ -36,10 +33,10 @@ class Particle:
 
     def accelerate(self):
         for i in range(self.problem.num_variables()):
-            self.velocity[i] = (DRAG * self.velocity[i])
-            + (SOCIAL_SCALE * Random.random_float_between_0_and_1() *
+            self.velocity[i] = (Constants.PSO_DRAG * self.velocity[i])
+            + (Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() *
                (self.best.get_value(i) - self.problem.get_value(i)))
-            + (COGNITIVE_SCALE * Random.random_float_between_0_and_1() *
+            + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() *
                (self.best.get_value(i) - self.problem.get_value(i)))
 
     def update_best(self):

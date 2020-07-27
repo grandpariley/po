@@ -1,9 +1,11 @@
-import unittest, random, copy
+import unittest
+import random
+import copy
 import unittest.mock as mock
 from pkg.random.random import Random
+from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem_set_values
 from pkg.pso.particle import Particle, DRAG, SOCIAL_SCALE, COGNITIVE_SCALE
-
 
 
 class ParticleTest(unittest.TestCase):
@@ -30,7 +32,8 @@ class ParticleTest(unittest.TestCase):
         particle.accelerate()
         new_velocity = particle.velocity
         calculated_velocity = [
-            (DRAG * old_particle.velocity[i]) + (SOCIAL_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(i))) + (COGNITIVE_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(i)))
+            (Constants.PSO_DRAG * old_particle.velocity[i]) + (Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(
+                i))) + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(i)))
             for i in range(3)
         ]
         self.assertEqual(calculated_velocity[0], new_velocity[0])

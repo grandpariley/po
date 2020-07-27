@@ -2,6 +2,7 @@ import copy
 from pkg.pso.particle import Particle
 from pkg.problem.compare import non_dominated, dominates
 
+
 def get_dominated(particle, best):
     dominated = []
     for b in best:
@@ -23,8 +24,6 @@ class Swarm:
                 self.best.add(copy.deepcopy(p))
             for d in get_dominated(p, self.best):
                 self.best.remove(d)
-                
 
     def get_best(self):
         return self.best
-

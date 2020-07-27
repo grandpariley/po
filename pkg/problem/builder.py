@@ -2,8 +2,10 @@ import copy
 from pkg.random.random import Random
 from pkg.problem.problem import Problem
 
+
 def default_portfolio_optimization_problem():
     return Problem([], [], None)
+
 
 def generate_many_random_solutions(problem, populationSize):
     individuals = set()

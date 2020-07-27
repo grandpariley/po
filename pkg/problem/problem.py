@@ -1,5 +1,6 @@
 import copy
 
+
 class Problem:
     def __init__(self, variables, constraints, objectiveFuncs):
         self.variables = variables
@@ -31,12 +32,12 @@ class Problem:
     def set_value(self, variable_index, value):
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].set_value(value)
-    
+
     def get_value(self, variable_index):
         if 0 <= variable_index < len(self.variables):
             return self.variables[variable_index].get_value()
         return None
-    
+
     def reset_value(self, variable_index):
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()
@@ -48,7 +49,7 @@ class Problem:
         if self.objectiveFuncs is None:
             return None
         return tuple([objFunc(self.variables) for objFunc in self.objectiveFuncs])
-    
+
     def get_domain(self, variable_index):
         if 0 <= variable_index < len(self.variables):
             return self.variables[variable_index].get_domain()

@@ -1,6 +1,7 @@
 import unittest
 from pkg.problem.variable import Variable
 
+
 class VariableTest(unittest.TestCase):
     def default_variable(self):
         return Variable([1, 2, 3, 4, 5])
@@ -13,12 +14,12 @@ class VariableTest(unittest.TestCase):
     def test_pop_empty(self):
         var = Variable([])
         self.assertIsNone(var.pop())
-    
+
     def test_top(self):
         var = self.default_variable()
         self.assertEqual(var.top(), 5)
         self.assertEqual(len(var.domain), 5)
-    
+
     def test_top_empty(self):
         var = Variable([])
         self.assertIsNone(var.top())
@@ -45,11 +46,11 @@ class VariableTest(unittest.TestCase):
 
     def test_closest_in_domain_in_domain(self):
         self.assertEqual(self.default_variable().closest_in_domain(3), 3)
-    
+
     def test_closest_in_domain_not_in_domain(self):
         self.assertEqual(self.default_variable().closest_in_domain(3.7), 4)
         self.assertEqual(self.default_variable().closest_in_domain(3.5), 4)
         self.assertEqual(self.default_variable().closest_in_domain(3.2), 3)
-    
+
     def test_closest_in_domain_empty_domain(self):
         self.assertIsNone(Variable([]).closest_in_domain(3))

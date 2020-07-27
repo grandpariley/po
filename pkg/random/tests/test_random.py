@@ -1,6 +1,7 @@
 import unittest
 from pkg.random.random import Random
 
+
 class RandomTest(unittest.TestCase):
 
     def test_begin_test(self):
@@ -17,9 +18,12 @@ class RandomTest(unittest.TestCase):
 
     def test_set_test_value_for(self):
         Random.begin_test()
-        self.assertEqual(Random.non_random_values["random_float_between_0_and_1"], [])
-        self.assertEqual(Random.non_random_values["random_int_between_a_and_b"], [])
-        self.assertEqual(Random.non_random_values["random_float_between_a_and_b"], [])
+        self.assertEqual(
+            Random.non_random_values["random_float_between_0_and_1"], [])
+        self.assertEqual(
+            Random.non_random_values["random_int_between_a_and_b"], [])
+        self.assertEqual(
+            Random.non_random_values["random_float_between_a_and_b"], [])
         self.assertEqual(Random.non_random_values["random_choice"], [])
         Random.set_test_value_for("random_float_between_0_and_1", 0.123)
         Random.set_test_value_for("random_float_between_0_and_1", 0.456)
@@ -32,9 +36,12 @@ class RandomTest(unittest.TestCase):
         Random.set_test_value_for("random_choice", 3)
         Random.set_test_value_for("random_choice", 5)
         Random.set_test_value_for("random_choice", 2)
-        self.assertEqual(Random.non_random_values["random_float_between_0_and_1"], [0.123, 0.456])
-        self.assertEqual(Random.non_random_values["random_int_between_a_and_b"], [0, 1, 2])
-        self.assertEqual(Random.non_random_values["random_float_between_a_and_b"], [0.000, 4.123, 5.432])
+        self.assertEqual(
+            Random.non_random_values["random_float_between_0_and_1"], [0.123, 0.456])
+        self.assertEqual(
+            Random.non_random_values["random_int_between_a_and_b"], [0, 1, 2])
+        self.assertEqual(Random.non_random_values["random_float_between_a_and_b"], [
+                         0.000, 4.123, 5.432])
         self.assertEqual(Random.non_random_values["random_choice"], [3, 5, 2])
         Random.end_test()
 
@@ -64,7 +71,7 @@ class RandomTest(unittest.TestCase):
         self.assertEqual(Random.random_float_between_0_and_1(), 0.2)
         self.assertEqual(Random.random_float_between_0_and_1(), 0.1)
         Random.end_test()
-   
+
     def test_random_float_between_a_and_b(self):
         true_rando = Random.random_float_between_a_and_b(2.4142, 3.1416)
         self.assertLessEqual(true_rando, 3.1416)
@@ -90,6 +97,3 @@ class RandomTest(unittest.TestCase):
         self.assertEqual(Random.random_int_between_a_and_b(1, 5), 2)
         self.assertEqual(Random.random_int_between_a_and_b(1, 5), 1)
         Random.end_test()
-
-    
-

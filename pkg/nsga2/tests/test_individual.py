@@ -2,6 +2,7 @@ import unittest
 from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.nsga2.individual import Individual
 
+
 class IndividualTest(unittest.TestCase):
     def default_individual(self):
         problem = default_consistent_problem()
@@ -18,7 +19,8 @@ class IndividualTest(unittest.TestCase):
         return Individual(other_problem)
 
     def test_does_dominate(self):
-        self.assertTrue(self.default_dominating_individual().does_dominate(self.default_individual()))
+        self.assertTrue(self.default_dominating_individual(
+        ).does_dominate(self.default_individual()))
 
     def test_add_dominated(self):
         individual = self.default_dominating_individual()
@@ -60,9 +62,7 @@ class IndividualTest(unittest.TestCase):
         individual.set_crowding_distance(3.14)
         self.assertEqual(individual.get_crowding_distance(), 3.14)
 
-
     def test_swap_half_genes(self):
         parent = self.default_dominating_individual()
         child = self.default_dominating_individual()
         # child.swap_half_genes(parent)
-        

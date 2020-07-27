@@ -5,6 +5,7 @@ from pkg.problem.problem import Problem
 from pkg.problem.variable import Variable
 from pkg.problem.constraint import Constraint
 
+
 class SwarmTest(unittest.TestCase):
     def defaultVariables(self):
         return [
@@ -45,4 +46,5 @@ class SwarmTest(unittest.TestCase):
     def test_update_best(self):
         swarm = self.default_swarm()
         swarm.update_best()
-        self.assertEqual(swarm.get_best(), set([swarm.get_particles()[1], swarm.get_particles()[2]]))
+        self.assertEqual(swarm.get_best(), set(
+            [swarm.get_particles()[1], swarm.get_particles()[2]]))

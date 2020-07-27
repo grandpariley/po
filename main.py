@@ -25,6 +25,6 @@ def main():
     spea2_soln = timer.time(spea2.solve, "spea2")
 
     print(compareSolutions(branch_bound_soln, bee_colony_soln, flower_pollination_soln, nsga2_soln, pso_soln, spea2_soln))
-    print(timer.getTimesAsFormattedString())
+    print(timer.get_times_as_formatted_str())
 
 main()

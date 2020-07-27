@@ -4,6 +4,7 @@ from pkg.beecolony.colony import Colony
 from pkg.beecolony.bee import Bee
 from pkg.problem.builder import generate_many_random_solutions
 
+
 class BeeColony(Solver):
     def solve_helper(self, colony):
         for _ in range(Constants.BC_MAX_CYCLE_NUMBER):

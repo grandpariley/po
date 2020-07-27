@@ -1,12 +1,13 @@
 from pkg.random.random import Random
 from pkg.consts import Constants
 
+
 class Bouquet:
     def __init__(self, flowers):
         self.flowers = flowers
         self.best = None
 
-    # TODO 
+    # TODO
     def find_best(self):
         self.best = self.flowers[0]
 
@@ -21,10 +22,10 @@ class Bouquet:
                 self.local_pollination(flower)
             self.update_population()
 
-    # TODO 
+    # TODO
     def global_pollination(self, flower):
         pass
-    
+
     # TODO
     def local_pollination(self, flower):
         pass
@@ -32,4 +33,3 @@ class Bouquet:
     # TODO
     def update_population(self):
         pass
-        

@@ -1,6 +1,7 @@
 import unittest
 from pkg.problem.compare import dominates
 
+
 class CompareTest(unittest.TestCase):
     def test_dominates(self):
         objs = [(3, 2, 1), (3, 2, 2), (3, 2, 2), (1, 2, 3)]

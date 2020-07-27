@@ -1,7 +1,8 @@
 import unittest
-from pkg.pso.pso import Pso 
+from pkg.pso.pso import Pso
 from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.consts import Constants
+
 
 class PsoTest(unittest.TestCase):
     def test_solve(self):

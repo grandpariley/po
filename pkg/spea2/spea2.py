@@ -2,16 +2,21 @@ import copy
 from pkg.problem.solver import Solver
 from pkg.consts import Constants
 
+
 class Spea2(Solver):
+    # TODO
     def calculate_fitness(self, population):
         pass
 
+    # TODO
     def get_non_dominated(self, population):
         return [], []
 
+    # TODO
     def truncate(self, population):
         return []
 
+    # TODO
     def binary_tournament_selection(self, population):
         return []
 

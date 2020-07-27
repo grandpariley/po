@@ -1,5 +1,6 @@
 from pkg.beecolony.food_source_memory import FoodSourceMemory
 
+
 class Colony:
     def __init__(self, bees):
         self.bees = bees
@@ -15,7 +16,7 @@ class Colony:
 
     # TODO
     def get_collection_probability(self):
-        return 0;
+        return 0
 
     # TODO
     def send_scout(self):

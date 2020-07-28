@@ -18,7 +18,6 @@ def default_consistent_problem():
         [
             Constraint((0, 1),
                        lambda variables: variables[0] != variables[1]),
-            Constraint(tuple([1]), lambda variables: variables[0] == 1),
             Constraint(tuple([2]), lambda variables: variables[0] > 0)
         ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
 

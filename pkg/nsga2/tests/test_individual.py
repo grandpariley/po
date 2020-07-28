@@ -79,7 +79,6 @@ class IndividualTest(unittest.TestCase):
         child.swap_half_genes(parent)
         Random.end_test()
 
-    # TODO
     def test_emo_phase(self):
         Random.begin_test()
         Constants.NSGA2_NUM_GENES_MUTATING = 3

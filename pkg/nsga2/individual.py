@@ -10,6 +10,7 @@ class Individual:
         self.dominates = set()
         self.domination_count = 0
         self.crowding_distance = 0
+        self.inverse_tournament_rank = 0
         self.rank = None
 
     def __str__(self):
@@ -54,6 +55,12 @@ class Individual:
 
     def get_objective_values(self):
         return self.problem.objective_values()
+
+    def set_inverse_tournament_rank(self, inverse_tournament_rank):
+        self.inverse_tournament_rank = inverse_tournament_rank
+
+    def get_inverse_tournament_rank(self):
+        return self.inverse_tournament_rank
 
     def swap_half_genes(self, other):
         while True:

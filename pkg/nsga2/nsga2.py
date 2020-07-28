@@ -4,13 +4,14 @@ from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
+from pkg.random.random import Random
 
 
 class Nsga2(Solver):
-    def fast_non_dominated_sort(self, population):
+    def fast_non_dominated_sort(self, individuals):
         front = [set()]
-        for p in population:
-            for q in population:
+        for p in individuals:
+            for q in individuals:
                 if p.does_dominate(q):
                     p.add_dominated(q)
                 elif q.does_dominate(p):
@@ -38,21 +39,24 @@ class Nsga2(Solver):
             individuals = sort_individuals(copy.deepcopy(individuals), o)
             individuals[0].set_crowding_distance(float('inf'))
             individuals[-1].set_crowding_distance(float('inf'))
-            for i in range(1, len(individuals - 1)):
-                individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + ((individuals[i + 1].get_objective_values(
-                )[o] - individuals[i - 1].get_objective_values()[o])/(individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o])))
+            denominator = individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o]
+            if denominator != 0.0:
+                for i in range(1, len(individuals) - 1):
+                    numerator = individuals[i + 1].get_objective_values()[o] - individuals[i - 1].get_objective_values()[o]
+                    individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + (numerator / denominator))
+        return individuals
 
     def generate_children(self, parent_population):
         children = []
         while len(children) < len(parent_population):
-            mum, dad = self.get_parents()
+            mum, dad = self.get_parents(parent_population)
             son, daughter = self.get_children(mum, dad)
             son.emo_phase()
             daughter.emo_phase()
             children = children + [son, daughter]
         return children
 
-    def get_parents(self, population):
+    def get_parents(self, individuals):
         mum = self.tournament(parent_population)
         dad = self.tournament(parent_population)
         while mum.get_objective_values() == dad.get_objective_values():
@@ -66,9 +70,19 @@ class Nsga2(Solver):
         daughter.swap_half_genes(dad)
         return son, daughter
 
-    # TODO
-    def tournament(self, population):
-        pass
+    def tournament(self, individuals):
+        individuals = self.assign_tournament_probabilities(individuals)
+        population_pool = []
+        for i in range(len(individuals)):
+            for _ in range(individuals[i].get_inverse_tournament_rank()):
+                population_pool.append(individuals[i])
+        return andom.random_choice(population_pool)
+
+    def assign_tournament_probabilities(self, individuals):
+        individuals = sort_by_crowding_distance(individuals)
+        for i in range(len(individuals)):
+            individuals[i].set_inverse_tournament_rank(len(individuals) - i)
+        return individuals
 
     def solve_helper(self):
         parent_population = [Individual(p) for p in generate_many_random_solutions(
@@ -83,7 +97,7 @@ class Nsga2(Solver):
             while len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
                 parent_population += front[i]
                 i += 1
-            self.crowding_distance_assignment(list(front[i]))
+            front[i] = self.crowding_distance_assignment(list(front[i]))
             parent_population += sort_by_crowding_distance(
                 front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
             child_population = self.generate_children(parent_population)

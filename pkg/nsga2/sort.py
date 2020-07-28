@@ -10,7 +10,7 @@ def sort_individuals(individuals, obj_index):
         i = low - 1
         pivot = individuals[high].get_objective_values()[obj_index]
         for j in range(low, high):
-            if individuals[j].get_objective_values()[obj_index] <= pivot:
+            if individuals[j].get_objective_values()[obj_index] < pivot:
                 i += 1
                 individuals[high], individuals[j] = individuals[j], individuals[high]
         i += 1
@@ -25,7 +25,7 @@ def sort_by_crowding_distance(individuals):
         i = low - 1
         pivot = individuals[high].get_crowding_distance()
         for j in range(low, high):
-            if individuals[j].get_crowding_distance() <= pivot:
+            if individuals[j].get_crowding_distance() < pivot:
                 i += 1
                 individuals[high], individuals[j] = individuals[j], individuals[high]
         i += 1

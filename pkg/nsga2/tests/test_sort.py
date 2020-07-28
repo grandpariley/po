@@ -42,15 +42,11 @@ class SortTest(unittest.TestCase):
         return individual
 
     def test_sort_individuals(self):
-        individuals = [self.default_individual(), self.default_other_dominating_individual(
-        ), self.default_dominating_individual(), self.default_dominated_individual()]
+        individuals = [self.default_individual(), self.default_individual(), self.default_other_dominating_individual(), self.default_dominating_individual(), self.default_dominated_individual()]
         result = sort_individuals(individuals, 1)
-        self.assertEqual([self.default_dominated_individual(), self.default_individual(
-        ), self.default_dominating_individual(), self.default_other_dominating_individual()], result)
+        self.assertEqual([self.default_dominated_individual(), self.default_individual(), self.default_individual(), self.default_dominating_individual(), self.default_other_dominating_individual()], result)
 
     def test_sort_by_crowding_distance(self):
-        individuals = [self.default_individual(), self.default_other_dominating_individual(
-        ), self.default_dominating_individual(), self.default_dominated_individual()]
+        individuals = [self.default_individual(), self.default_individual(), self.default_other_dominating_individual(), self.default_dominating_individual(), self.default_dominated_individual()]
         result = sort_by_crowding_distance(individuals)
-        self.assertEqual([self.default_dominated_individual(), self.default_individual(
-        ), self.default_dominating_individual(), self.default_other_dominating_individual()], result)
+        self.assertEqual([self.default_dominated_individual(), self.default_individual(), self.default_individual(), self.default_dominating_individual(), self.default_other_dominating_individual()], result)

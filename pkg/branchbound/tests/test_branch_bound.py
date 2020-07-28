@@ -4,7 +4,6 @@ from pkg.problem.tests.default_problems import default_consistent_problem
 
 
 class BranchBoundTest(unittest.TestCase):
-    # TODO make this work
     def test_solve(self):
         branch_bound = BranchBound(default_consistent_problem())
         solution = branch_bound.solve()

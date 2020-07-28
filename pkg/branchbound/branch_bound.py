@@ -20,6 +20,5 @@ class BranchBound(Solver):
                         collection.append(copy.deepcopy(node))
         return self.solve_helper(collection, solutions)
 
-
     def solve(self):
         return self.solve_helper([Node(self.problem)], [])

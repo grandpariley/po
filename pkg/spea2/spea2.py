@@ -3,13 +3,22 @@ from pkg.random.random import Random
 from pkg.problem.solver import Solver
 from pkg.consts import Constants
 from pkg.spea2.sort import sort_population_by_domination
-from pkg.problem.compare import get_non_dominated
 
 
 class Spea2(Solver):
     # TODO
     def calculate_fitness(self, population):
         pass
+
+    def get_non_dominated(self, population):
+        dominated = []
+        for i in population:
+            for j in population:
+                if j not in dominated and dominates(i, j):
+                    dominated.append(j)
+                elif i not in dominated and dominates(j, i):
+                    dominated.append(i)
+        return population - dominated, dominated
 
     def truncate_archive(self, population):
         population = sort_population_by_domination(population)
@@ -35,10 +44,10 @@ class Spea2(Solver):
 
     def solve_helper(self, population, archive, generation):
         if generation == Constants.SPEA2_MAX_GENERATIONS:
-            return get_non_dominated([individual.get_objective_values() for individual in archive])[0]
+            return self.get_non_dominated(archive)[0]
         self.calculate_fitness(population)
         self.calculate_fitness(archive)
-        non_dominated, dominated = get_non_dominated([individual.get_objective_values() for individual in population + archive])
+        non_dominated, dominated = self.get_non_dominated(new_archive)
         new_archive = copy.deepcopy(non_dominated)
         while len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
             if len(new_archive) > Constants.SPEA2_MAX_ARCHIVE_SIZE:

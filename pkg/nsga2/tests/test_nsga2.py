@@ -30,9 +30,16 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(crowding_distance_individuals[3].get_crowding_distance(), float('inf'))
 
 
-    # TODO
     def test_generate_children(self):
-        pass
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(4):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        children = nsga2.generate_children(individuals)
+        self.assertEqual(len(children), 4)
 
     def test_get_parents(self):
         Random.begin_test()

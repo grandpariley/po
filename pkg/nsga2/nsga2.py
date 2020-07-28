@@ -57,7 +57,7 @@ class Nsga2(Solver):
         return children
 
     def get_parents(self, parent_population):
-        tournament_pool = self.tournament_pool(parent_population)
+        tournament_pool = self.get_tournament_pool(parent_population)
         mum = Random.random_choice(tournament_pool)
         dad = Random.random_choice(tournament_pool)
         while mum.get_objective_values() == dad.get_objective_values():
@@ -71,7 +71,7 @@ class Nsga2(Solver):
         daughter.swap_half_genes(dad)
         return son, daughter
 
-    def tournament_pool(self, individuals):
+    def get_tournament_pool(self, individuals):
         individuals = self.assign_tournament_probabilities(individuals)
         population_pool = []
         for i in range(len(individuals)):

@@ -34,9 +34,22 @@ class Nsga2Test(unittest.TestCase):
     def test_generate_children(self):
         pass
 
-    # TODO
     def test_get_parents(self):
-        pass
+        Random.begin_test()
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(4):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        tournament_pool = nsga2.get_tournament_pool(individuals)
+        Random.set_test_value_for("random_choice", tournament_pool[0])
+        Random.set_test_value_for("random_choice", tournament_pool[-1])
+        Random.set_test_value_for("random_choice", tournament_pool[-1])
+        mum, dad = nsga2.get_parents(individuals)
+        self.assertEqual(mum, tournament_pool[-1])
+        self.assertEqual(dad, tournament_pool[0])
 
     def test_get_children(self):
         Random.begin_test()
@@ -64,7 +77,7 @@ class Nsga2Test(unittest.TestCase):
             individuals[i].problem.set_value(0, i)
             individuals[i].problem.set_value(1, i + 1)
             individuals[i].problem.set_value(2, i + 1)
-        tournament_pool = nsga2.tournament_pool(individuals)
+        tournament_pool = nsga2.get_tournament_pool(individuals)
         self.assertEqual([individuals[0] for i in range(4)], tournament_pool[0:4])
         self.assertEqual([individuals[1] for i in range(3)], tournament_pool[4:7])
         self.assertEqual([individuals[2] for i in range(2)], tournament_pool[7:9])

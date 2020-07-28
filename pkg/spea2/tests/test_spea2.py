@@ -14,7 +14,6 @@ class Spea2Test(unittest.TestCase):
     def test_calculate_fitness(self):
         pass
 
-    # TODO
     def test_truncate(self):
         Constants.SPEA2_MAX_ARCHIVE_SIZE = 3
         spea2 = Spea2(default_consistent_problem())
@@ -27,7 +26,7 @@ class Spea2Test(unittest.TestCase):
         archive = spea2.truncate_archive(population)
         formatted_population = [[i.problem.get_value(j) for j in range(i.problem.num_variables())] for i in population]
         formatted_archive = [[i.problem.get_value(j) for j in range(i.problem.num_variables())] for i in archive]
-        self.assertEqual([formatted_population[5], formatted_population[4], formatted_population[3]], formatted_archive)
+        self.assertEqual(formatted_population[:3], formatted_archive)
 
     def test_binary_tournament_selection(self):
         Random.begin_test()

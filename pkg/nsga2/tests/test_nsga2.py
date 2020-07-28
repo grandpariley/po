@@ -48,7 +48,20 @@ class Nsga2Test(unittest.TestCase):
 
     # TODO
     def test_assign_tournament_probabilities(self):
-        pass
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(4):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        for individual in individuals:
+            self.assertEqual(individual.get_inverse_tournament_rank(), 0)
+        crowding_distance_individuals = nsga2.assign_tournament_probabilities(individuals)
+        self.assertEqual(crowding_distance_individuals[0].get_inverse_tournament_rank(), 0)
+        self.assertEqual(crowding_distance_individuals[1].get_inverse_tournament_rank(), 0)
+        self.assertEqual(crowding_distance_individuals[2].get_inverse_tournament_rank(), 0)
+        self.assertEqual(crowding_distance_individuals[3].get_inverse_tournament_rank(), 0)
 
     def test_solve(self):
         nsga2 = Nsga2(default_consistent_problem())

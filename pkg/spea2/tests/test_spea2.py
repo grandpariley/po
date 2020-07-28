@@ -2,6 +2,7 @@ import unittest
 from pkg.spea2.spea2 import Spea2
 from pkg.spea2.individual import Individual
 from pkg.random.random import Random
+from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 
@@ -20,6 +21,7 @@ class Spea2Test(unittest.TestCase):
     # TODO
     def test_binary_tournament_selection(self):
         Random.begin_test()
+        Constants.SPEA2_INITIAL_POPULATION = 4
         spea2 = Spea2(default_consistent_problem())
         population = [None for _ in range(5)]
         for i in range(5):

@@ -1,16 +1,25 @@
+import copy
 from pkg.problem.solver import Solver
+from pkg.branchbound.node import Node
+from pkg.problem.compare import non_dominated
 
 
 class BranchBound(Solver):
-    def solve_helper(self, i):
-        if self.problem.all_assigned() and self.problem.consistent():
-            self.solutions.append(self.problem)
-        for d in self.problem.get_domain(i):
-            if self.problem.will_be_consistent(i, d):
-                self.problem.set_value(i, d)
-                return self.solve_helper((i + 1) % self.problem.num_variables())
-        return self.problem
+    def solve_helper(self, collection, solutions):
+        if not collection:
+            return solutions
+        node = collection.pop()
+        if node.is_leaf() and node.is_consistent() and non_dominated(node.get_objective_values(), [s.objective_values() for s in solutions]):
+            solutions.append(node.get_problem())
+            return solutions
+        if not node.is_leaf():
+            for i in range(node.num_variables()):
+                if node.get_value(i) is None:
+                    for d in node.get_domain(i):
+                        node.set_value(i, d)
+                        collection.append(copy.deepcopy(node))
+        return self.solve_helper(collection, solutions)
+
 
     def solve(self):
-        self.solutions = []
-        return self.solve_helper(0)
+        return self.solve_helper([Node(self.problem)], [])

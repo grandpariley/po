@@ -1,6 +1,7 @@
 import unittest
 from pkg.nsga2.nsga2 import Nsga2
 from pkg.nsga2.individual import Individual
+from pkg.random.random import Random
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 
@@ -12,7 +13,6 @@ class Nsga2Test(unittest.TestCase):
     def test_fast_non_dominating_sort(self):
         pass
 
-    # TODO
     def test_crowding_distance_assignment(self):
         nsga2 = Nsga2(default_consistent_problem())
         individuals = [None for _ in range(4)]
@@ -42,11 +42,20 @@ class Nsga2Test(unittest.TestCase):
     def test_get_children(self):
         pass
 
-    # TODO
-    def test_tournament(self):
-        pass
+    def test_tournament_pool(self):
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(4):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        tournament_pool = nsga2.tournament_pool(individuals)
+        self.assertEqual([individuals[0] for i in range(4)], tournament_pool[0:4])
+        self.assertEqual([individuals[1] for i in range(3)], tournament_pool[4:7])
+        self.assertEqual([individuals[2] for i in range(2)], tournament_pool[7:9])
+        self.assertEqual([individuals[3] for i in range(1)], tournament_pool[9:10])
 
-    # TODO
     def test_assign_tournament_probabilities(self):
         nsga2 = Nsga2(default_consistent_problem())
         individuals = [None for _ in range(4)]
@@ -57,11 +66,11 @@ class Nsga2Test(unittest.TestCase):
             individuals[i].problem.set_value(2, i + 1)
         for individual in individuals:
             self.assertEqual(individual.get_inverse_tournament_rank(), 0)
-        crowding_distance_individuals = nsga2.assign_tournament_probabilities(individuals)
-        self.assertEqual(crowding_distance_individuals[0].get_inverse_tournament_rank(), 0)
-        self.assertEqual(crowding_distance_individuals[1].get_inverse_tournament_rank(), 0)
-        self.assertEqual(crowding_distance_individuals[2].get_inverse_tournament_rank(), 0)
-        self.assertEqual(crowding_distance_individuals[3].get_inverse_tournament_rank(), 0)
+        tournament_individuals = nsga2.assign_tournament_probabilities(individuals)
+        self.assertEqual(tournament_individuals[0].get_inverse_tournament_rank(), 4)
+        self.assertEqual(tournament_individuals[1].get_inverse_tournament_rank(), 3)
+        self.assertEqual(tournament_individuals[2].get_inverse_tournament_rank(), 2)
+        self.assertEqual(tournament_individuals[3].get_inverse_tournament_rank(), 1)
 
     def test_solve(self):
         nsga2 = Nsga2(default_consistent_problem())

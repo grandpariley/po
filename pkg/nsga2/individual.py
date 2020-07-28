@@ -65,10 +65,8 @@ class Individual:
     def swap_half_genes(self, other):
         while True:
             for _ in range(floor(self.problem.num_variables() / 2)):
-                random_index = Random.random_int_between_a_and_b(
-                    0, self.problem.num_variables() - 1)
-                self.problem.set_value(
-                    random_index, other.problem.get_value(random_index))
+                random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
+                self.problem.set_value(random_index, other.problem.get_value(random_index))
             if self.problem.consistent():
                 break
 

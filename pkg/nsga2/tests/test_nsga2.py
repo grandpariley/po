@@ -38,9 +38,23 @@ class Nsga2Test(unittest.TestCase):
     def test_get_parents(self):
         pass
 
-    # TODO
     def test_get_children(self):
-        pass
+        Random.begin_test()
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
+        Random.set_test_value_for("random_int_between_a_and_b", 2)
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(2):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        son, daughter = nsga2.get_children(individuals[0], individuals[1])
+        son_values = [son.problem.get_value(i) for i in range(son.problem.num_variables())]
+        daughter_values = [daughter.problem.get_value(i) for i in range(daughter.problem.num_variables())]
+        self.assertEqual(son_values, [1, 2, 1])
+        self.assertEqual(daughter_values, [0, 2, 1])
+        Random.end_test()
 
     def test_tournament_pool(self):
         nsga2 = Nsga2(default_consistent_problem())

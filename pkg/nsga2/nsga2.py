@@ -56,7 +56,7 @@ class Nsga2(Solver):
             children = children + [son, daughter]
         return children
 
-    def get_parents(self, individuals):
+    def get_parents(self, parent_population):
         tournament_pool = self.tournament_pool(parent_population)
         mum = Random.random_choice(tournament_pool)
         dad = Random.random_choice(tournament_pool)

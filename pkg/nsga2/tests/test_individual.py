@@ -77,6 +77,8 @@ class IndividualTest(unittest.TestCase):
         parent = self.default_dominating_individual()
         child = self.default_other_dominating_individual()
         child.swap_half_genes(parent)
+        values = [child.problem.get_value(i) for i in range(child.problem.num_variables())]
+        self.assertEqual(values, [2, 1, 2])
         Random.end_test()
 
     def test_emo_phase(self):

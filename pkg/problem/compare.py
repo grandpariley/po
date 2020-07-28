@@ -9,3 +9,6 @@ def non_dominated(obj, objs):
         if dominates(o, obj):
             return False
     return True
+
+def get_non_dominated(objs):
+    return [], []

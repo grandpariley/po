@@ -9,15 +9,19 @@ class Spea2Test(unittest.TestCase):
         pass
 
     # TODO
-    def test_get_non_dominated(self):
-        pass
-
-    # TODO
     def test_truncate(self):
         pass
 
     # TODO
-    def binary_tournament_selection(self):
+    def test_binary_tournament_selection(self):
+        pass
+
+    # TODO
+    def test_get_tournament_pool(self):
+        pass
+
+    # TODO
+    def test_assign_tournament_probabilities(self):
         pass
 
     def test_solve(self):

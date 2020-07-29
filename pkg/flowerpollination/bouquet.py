@@ -28,13 +28,26 @@ class Bouquet:
         else:
             self.local_pollination(flower_index)
 
-    # TODO
     def global_pollination(self, flower_index):
-        pass
+        for o in range(self.flowers[flower_index].num_variables()):
+            best_wrt_objective = self.get_best_wrt_objective(self.best, objective_index)
+            new_value = self.flowers[flower_index].get_value(o) + Constants.FP_GAMMA_CONSTANT * Constants.FP_LEVY_CONSTANT * (best_wrt_objective.get_value(o) - self.flowers[flower_index].get_value(o))
+            self.flowers[flower_index].safe_set_value(o, new_value)
 
-    # TODO
     def local_pollination(self, flower_index):
-        pass
+        for o in range(self.flowers[flower_index].num_variables()):
+            best_wrt_objective = self.get_best_wrt_objective(self.best, objective_index)
+            new_value = self.flowers[flower_index].get_value(o) + Random.random_float_between_0_and_1() * (best_wrt_objective.get_value(o) - self.flowers[flower_index].get_value(o))
+            self.flowers[flower_index].safe_set_value(o, new_value)
 
     def num_flowers(self):
         return len(self.flowers)
+
+    def get_best_wrt_objective(self, flowers, objective_index):
+        if not flowers:
+            return None
+        best = flowers[0]
+        for f in flowers:
+            if best.get_objective_values()[objective_index] < f.get_objective_values()[objective_index]:
+                best = f
+        return best

@@ -18,7 +18,22 @@ class Constants():
     FP_MAX_GENERATIONS = 100
     FP_NUMBER_OF_FLOWERS = 100
     FP_SWITCH_PROBABILITY = 0.5
+    FP_LEVY_CONSTANT = get_fp_levy_constant()
+    FP_GAMMA_CONSTANT = 0.1
+    _fp_levy_constant = None
     #define Bee Colony constraints
     BC_POPULATION_SIZE = 30
     BC_MAX_CYCLE_NUMBER = 100
     BC_LIMIT = 50
+
+    @classmethod
+    def get_fp_levy_constant(cls):
+        if cls._fp_levy_constant is not None:
+            return cls._fp_levy_constant
+        sheepda = 1.5
+        s = 0.5
+        goatda = sheepda * gamma(sheepda)
+        senpai = sin(pi * sheepda / 2.00000000)
+        horatio = 1.00000000 / (s ** (1 + sheepda))
+        cls._fp_levy_constant = ((sheepda  * senpai) / pi) * horatio
+        return cls._fp_levy_constant

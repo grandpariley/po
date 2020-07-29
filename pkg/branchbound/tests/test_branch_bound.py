@@ -7,5 +7,5 @@ class BranchBoundTest(unittest.TestCase):
     def test_solve(self):
         branch_bound = BranchBound(default_consistent_problem())
         solution = branch_bound.solve()
-        print(str(solution[0]))
+        # print(str(solution[0]))
         # self.assertEqual(solution.variable_assignments(), (2, 1, 2))

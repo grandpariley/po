@@ -7,10 +7,11 @@ from pkg.consts import Constants
 
 class FlowerPollination(Solver):
     def solve_helper(self, bouquet):
-        bouquet.set_best()
+        bouquet.calculate_best()
         for _ in range(Constants.FP_MAX_GENERATIONS):
-            bouquet.pollinate()
-            bouquet.set_best()
+            for f in range(bouquet.num_flowers()):
+                bouquet.pollinate(f)
+            bouquet.calculate_best()
         return bouquet.get_best()
 
     def solve(self):

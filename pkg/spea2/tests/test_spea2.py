@@ -1,4 +1,4 @@
-import unittest
+import unittest, copy
 from pkg.spea2.spea2 import Spea2
 from pkg.spea2.individual import Individual
 from pkg.random.random import Random
@@ -13,6 +13,19 @@ class Spea2Test(unittest.TestCase):
     # TODO
     def test_calculate_fitness(self):
         pass
+
+    def test_get_non_dominated(self):
+        spea2 = Spea2(default_consistent_problem())
+        population = [None for _ in range(6)]
+        for i in range(5):
+            population[i] = self.default_individual()
+            population[i].problem.set_value(0, i)
+            population[i].problem.set_value(1, i + 1)
+            population[i].problem.set_value(2, i + 1)
+        population[5] = copy.deepcopy(population[4])
+        non_dominated, dominated = spea2.get_non_dominated(population)
+        self.assertEqual(population[4:5], non_dominated)
+        self.assertEqual(population[:4], dominated)
 
     def test_truncate(self):
         Constants.SPEA2_MAX_ARCHIVE_SIZE = 3

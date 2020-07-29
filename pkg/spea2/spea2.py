@@ -3,6 +3,7 @@ from pkg.random.random import Random
 from pkg.problem.solver import Solver
 from pkg.consts import Constants
 from pkg.spea2.sort import sort_population_by_domination
+from pkg.problem.compare import dominates
 
 
 class Spea2(Solver):
@@ -14,11 +15,11 @@ class Spea2(Solver):
         dominated = []
         for i in population:
             for j in population:
-                if j not in dominated and dominates(i, j):
+                if j not in dominated and dominates(i.get_objective_values(), j.get_objective_values()):
                     dominated.append(j)
-                elif i not in dominated and dominates(j, i):
+                elif i not in dominated and dominates(j.get_objective_values(), i.get_objective_values()):
                     dominated.append(i)
-        return population - dominated, dominated
+        return list(set(population) - set(dominated)), dominated
 
     def truncate_archive(self, population):
         population = sort_population_by_domination(population)

@@ -23,22 +23,26 @@ class Bouquet:
         return self.best
 
     def pollinate(self, flower_index):
+        if not self.best:
+            self.calculate_best()
         if Random.random_float_between_0_and_1() < Constants.FP_SWITCH_PROBABILITY:
             self.global_pollination(flower_index)
         else:
             self.local_pollination(flower_index)
 
     def global_pollination(self, flower_index):
-        for o in range(self.flowers[flower_index].num_variables()):
-            best_wrt_objective = self.get_best_wrt_objective(self.best, objective_index)
-            new_value = self.flowers[flower_index].get_value(o) + Constants.FP_GAMMA_CONSTANT * Constants.FP_LEVY_CONSTANT * (best_wrt_objective.get_value(o) - self.flowers[flower_index].get_value(o))
-            self.flowers[flower_index].safe_set_value(o, new_value)
+        for o in range(len(self.flowers[flower_index].get_objective_values())):
+            best_wrt_objective = self.get_best_wrt_objective(self.best, o)
+            for v in range(self.flowers[flower_index].num_variables()):
+                new_value = self.flowers[flower_index].get_value(v) + Constants.FP_GAMMA_CONSTANT * Constants.FP_LEVY_CONSTANT() * (best_wrt_objective.get_value(v) - self.flowers[flower_index].get_value(v))
+                self.flowers[flower_index].safe_set_value(v, new_value)
 
     def local_pollination(self, flower_index):
-        for o in range(self.flowers[flower_index].num_variables()):
-            best_wrt_objective = self.get_best_wrt_objective(self.best, objective_index)
-            new_value = self.flowers[flower_index].get_value(o) + Random.random_float_between_0_and_1() * (best_wrt_objective.get_value(o) - self.flowers[flower_index].get_value(o))
-            self.flowers[flower_index].safe_set_value(o, new_value)
+        for o in range(len(self.flowers[flower_index].get_objective_values())):
+            best_wrt_objective = self.get_best_wrt_objective(self.best, o)
+            for v in range(self.flowers[flower_index].num_variables()):
+                new_value = self.flowers[flower_index].get_value(v) + Random.random_float_between_0_and_1() * (best_wrt_objective.get_value(v) - self.flowers[flower_index].get_value(v))
+                self.flowers[flower_index].safe_set_value(v, new_value)
 
     def num_flowers(self):
         return len(self.flowers)

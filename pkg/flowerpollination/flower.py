@@ -16,3 +16,12 @@ class Flower:
 
     def get_objective_values(self):
         return self.problem.objective_values()
+    
+    def get_value(self, index):
+        return self.problem.get_value(index)
+
+    def safe_set_value(self, index, value):
+        self.problem.set_value(index, self.problem.closest_in_domain(index, value))
+
+    def num_variables(self):
+        return self.problem.num_variables()

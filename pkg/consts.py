@@ -1,3 +1,5 @@
+from math import gamma, pi, sin
+
 class Constants():
     #define PSO constants
     PSO_SWARM_SIZE = 30
@@ -18,7 +20,6 @@ class Constants():
     FP_MAX_GENERATIONS = 100
     FP_NUMBER_OF_FLOWERS = 100
     FP_SWITCH_PROBABILITY = 0.5
-    FP_LEVY_CONSTANT = get_fp_levy_constant()
     FP_GAMMA_CONSTANT = 0.1
     _fp_levy_constant = None
     #define Bee Colony constraints
@@ -27,7 +28,7 @@ class Constants():
     BC_LIMIT = 50
 
     @classmethod
-    def get_fp_levy_constant(cls):
+    def FP_LEVY_CONSTANT(cls):
         if cls._fp_levy_constant is not None:
             return cls._fp_levy_constant
         sheepda = 1.5

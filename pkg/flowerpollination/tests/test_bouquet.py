@@ -24,8 +24,6 @@ class BouquetTest(unittest.TestCase):
 
     def test_pollinate(self):
         Random.begin_test()
-        Random.set_test_value_for("random_float_between_0_and_1", 0.7)
-        Random.set_test_value_for("random_float_between_0_and_1", 0.2)
         flowers = [None for _ in range(6)]
         for i in range(5):
             flowers[i] = self.default_flower()
@@ -33,6 +31,10 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
         flowers[5] = copy.deepcopy(flowers[4])
+        for _ in range(9):
+            Random.set_test_value_for("random_float_between_0_and_1", 0.5)
+        Random.set_test_value_for("random_float_between_0_and_1", 0.7)
+        Random.set_test_value_for("random_float_between_0_and_1", 0.2)
         bouquet = Bouquet(flowers)
         bouquet.pollinate(0)
         local_pollination_result = bouquet.flowers[0]
@@ -43,10 +45,6 @@ class BouquetTest(unittest.TestCase):
 
     def test_local_pollination(self):
         Random.begin_test()
-        Random.set_test_value_for("random_float_between_0_and_1", 0.5)
-        Random.set_test_value_for("random_float_between_0_and_1", 0.5)
-        Random.set_test_value_for("random_float_between_0_and_1", 0.5)
-        Random.set_test_value_for("random_float_between_0_and_1", 0.5)
         flowers = [None for _ in range(6)]
         for i in range(5):
             flowers[i] = self.default_flower()
@@ -54,6 +52,8 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
         flowers[5] = copy.deepcopy(flowers[4])
+        for _ in range(len(flowers[0].get_objective_values()) * flowers[0].num_variables()):
+            Random.set_test_value_for("random_float_between_0_and_1", 0.5)
         bouquet = Bouquet(flowers)
         bouquet.calculate_best()
         bouquet.local_pollination(0)

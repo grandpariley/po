@@ -10,10 +10,6 @@ class Spea2Test(unittest.TestCase):
     def default_individual(self):
         return Individual(default_consistent_problem_set_values())
 
-    # TODO
-    def test_calculate_fitness(self):
-        pass
-
     def test_get_non_dominated(self):
         spea2 = Spea2(default_consistent_problem())
         population = [None for _ in range(6)]

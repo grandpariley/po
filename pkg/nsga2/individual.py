@@ -31,6 +31,9 @@ class Individual:
     def add_dominated(self, q):
         self.dominates.add(q)
 
+    def get_dominates(self):
+        return self.dominates
+
     def increment_dominated(self):
         self.domination_count += 1
 

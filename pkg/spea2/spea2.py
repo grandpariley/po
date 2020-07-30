@@ -7,10 +7,6 @@ from pkg.problem.compare import dominates
 
 
 class Spea2(Solver):
-    # TODO
-    def calculate_fitness(self, population):
-        pass
-
     def get_non_dominated(self, population):
         dominated = []
         for i in population:
@@ -46,8 +42,6 @@ class Spea2(Solver):
     def solve_helper(self, population, archive, generation):
         if generation == Constants.SPEA2_MAX_GENERATIONS:
             return self.get_non_dominated(archive)[0]
-        self.calculate_fitness(population)
-        self.calculate_fitness(archive)
         non_dominated, dominated = self.get_non_dominated(new_archive)
         new_archive = copy.deepcopy(non_dominated)
         while len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:

@@ -9,9 +9,16 @@ class Nsga2Test(unittest.TestCase):
     def default_individual(self):
         return Individual(default_consistent_problem_set_values())
 
-    # TODO
     def test_fast_non_dominating_sort(self):
-        pass
+        nsga2 = Nsga2(default_consistent_problem())
+        individuals = [None for _ in range(4)]
+        for i in range(4):
+            individuals[i] = self.default_individual()
+            individuals[i].problem.set_value(0, i)
+            individuals[i].problem.set_value(1, i + 1)
+            individuals[i].problem.set_value(2, i + 1)
+        front = nsga2.fast_non_dominated_sort(individuals)
+        self.assertEqual(front, [set([individuals[i]]) for i in range(3, -1, -1)] + [set()])
 
     def test_crowding_distance_assignment(self):
         nsga2 = Nsga2(default_consistent_problem())

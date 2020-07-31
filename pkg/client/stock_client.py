@@ -15,6 +15,3 @@ class StockClient:
             prices.append(self.finnhub_client.price_target(stock))
         self.stocks = self.format(prices)
         return self.stocks
-
-    def format(self, data):
-        return data

@@ -3,6 +3,8 @@ from pkg.random.random import Random
 from pkg.problem.solver import Solver
 from pkg.consts import Constants
 from pkg.spea2.sort import sort_population_by_domination
+from pkg.spea2.individual import Individual
+from pkg.problem.builder import generate_many_random_solutions
 from pkg.problem.compare import dominates
 
 
@@ -52,4 +54,4 @@ class Spea2(Solver):
         return self.solve_helper(self.binary_tournament_selection(population), new_archive, generation + 1)
 
     def solve(self):
-        return self.problem
+        return self.solve_helper([Individual(p) for p in generate_many_random_solutions(self.problem, Constants.SPEA2_INITIAL_POPULATION)], [], 0)

@@ -10,6 +10,7 @@ from pkg.consts import Constants
 
 def default_portfolio_optimization_problem():
     def convert_stock_data_to_variable(vsd):
+        print(vsd)
         return Variable([i for i in range(floor(float(Constants.BUDGET) / vsd['price']))], vsd)
     
     def get_budget_constraint():

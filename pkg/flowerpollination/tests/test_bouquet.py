@@ -1,4 +1,5 @@
-import unittest, copy
+import unittest
+from copy import deepcopy
 from pkg.flowerpollination.bouquet import Bouquet
 from pkg.flowerpollination.flower import Flower
 from pkg.problem.tests.default_problems import default_consistent_problem
@@ -17,7 +18,7 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(0, i)
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
-        flowers[5] = copy.deepcopy(flowers[4])
+        flowers[5] = deepcopy(flowers[4])
         bouquet = Bouquet(flowers)
         bouquet.calculate_best()
         self.assertEqual(flowers[4:5], bouquet.get_best())
@@ -30,7 +31,7 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(0, i)
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
-        flowers[5] = copy.deepcopy(flowers[4])
+        flowers[5] = deepcopy(flowers[4])
         for _ in range(9):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
         Random.set_test_value_for("random_float_between_0_and_1", 0.7)
@@ -51,7 +52,7 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(0, i)
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
-        flowers[5] = copy.deepcopy(flowers[4])
+        flowers[5] = deepcopy(flowers[4])
         for _ in range(len(flowers[0].get_objective_values()) * flowers[0].num_variables()):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
         bouquet = Bouquet(flowers)
@@ -70,7 +71,7 @@ class BouquetTest(unittest.TestCase):
             flowers[i].problem.set_value(0, i)
             flowers[i].problem.set_value(1, i + 1)
             flowers[i].problem.set_value(2, i + 1)
-        flowers[5] = copy.deepcopy(flowers[4])
+        flowers[5] = deepcopy(flowers[4])
         bouquet = Bouquet(flowers)
         bouquet.calculate_best()
         bouquet.global_pollination(0)

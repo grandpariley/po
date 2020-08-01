@@ -5,9 +5,9 @@ from pkg.problem.problem import Problem
 
 def default_variables():
     return [
-        Variable([0, 1, 2, 3, 4, 5]),
-        Variable([0, 1, 2, 3, 4, 5]),
-        Variable([0, 1, 2, 3, 4, 5]),
+        Variable([0, 1, 2, 3, 4, 5], []),
+        Variable([0, 1, 2, 3, 4, 5], []),
+        Variable([0, 1, 2, 3, 4, 5], []),
     ]
 
 
@@ -17,8 +17,8 @@ def default_consistent_problem():
         variables,
         [
             Constraint((0, 1),
-                       lambda variables: variables[0] != variables[1]),
-            Constraint(tuple([2]), lambda variables: variables[0] > 0)
+                       lambda variables: variables[0].get_value() != variables[1].get_value()),
+            Constraint(tuple([2]), lambda variables: variables[0].get_value() > 0),
         ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
 
 

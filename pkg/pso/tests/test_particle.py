@@ -1,6 +1,6 @@
 import unittest
 import random
-import copy
+from copy import deepcopy
 import unittest.mock as mock
 from pkg.random.random import Random
 from pkg.consts import Constants
@@ -28,7 +28,7 @@ class ParticleTest(unittest.TestCase):
         for _ in range(6):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
         particle = self.default_particle()
-        old_particle = copy.deepcopy(particle)
+        old_particle = deepcopy(particle)
         particle.accelerate()
         new_velocity = particle.velocity
         calculated_velocity = [

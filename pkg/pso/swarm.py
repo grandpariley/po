@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 from pkg.pso.particle import Particle
 from pkg.problem.compare import non_dominated, dominates
 
@@ -21,7 +21,7 @@ class Swarm:
     def update_best(self):
         for p in self.particles:
             if non_dominated(p.get_objective_values(), [b.get_objective_values() for b in self.best]):
-                self.best.add(copy.deepcopy(p))
+                self.best.add(deepcopy(p))
             for d in get_dominated(p, self.best):
                 self.best.remove(d)
 

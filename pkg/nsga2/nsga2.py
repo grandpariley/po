@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 from pkg.problem.solver import Solver
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
@@ -36,7 +36,7 @@ class Nsga2(Solver):
         if not individuals:
             return
         for o in range(len(individuals[0].get_objective_values())):
-            individuals = sort_individuals(copy.deepcopy(individuals), o)
+            individuals = sort_individuals(deepcopy(individuals), o)
             individuals[0].set_crowding_distance(float('inf'))
             individuals[-1].set_crowding_distance(float('inf'))
             denominator = individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o]
@@ -65,8 +65,8 @@ class Nsga2(Solver):
         return mum, dad
 
     def get_children(self, mum, dad):
-        daughter = copy.deepcopy(mum)
-        son = copy.deepcopy(dad)
+        daughter = deepcopy(mum)
+        son = deepcopy(dad)
         son.swap_half_genes(mum)
         daughter.swap_half_genes(dad)
         return son, daughter

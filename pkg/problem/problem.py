@@ -1,6 +1,3 @@
-import copy
-
-
 class Problem:
     def __init__(self, variables, constraints, objectiveFuncs):
         self.variables = variables
@@ -19,9 +16,11 @@ class Problem:
     def will_be_consistent(self, variable_index, variable_value):
         if variable_index < 0 or variable_index >= len(self.variables):
             return False
-        problem = copy.deepcopy(self)
-        problem.set_value(variable_index, variable_value)
-        return problem.consistent()
+        old_value = self.get_value(variable_index)
+        self.set_value(variable_index, variable_value)
+        consistent = self.consistent()
+        self.set_value(variable_index, old_value)
+        return consistent
 
     def all_assigned(self):
         for variable in self.variables:

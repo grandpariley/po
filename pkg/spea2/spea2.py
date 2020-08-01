@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 from pkg.random.random import Random
 from pkg.problem.solver import Solver
 from pkg.consts import Constants
@@ -43,7 +43,7 @@ class Spea2(Solver):
         if generation == Constants.SPEA2_MAX_GENERATIONS:
             return self.get_non_dominated(archive)[0]
         non_dominated, dominated = self.get_non_dominated(new_archive)
-        new_archive = copy.deepcopy(non_dominated)
+        new_archive = deepcopy(non_dominated)
         while len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
             if len(new_archive) > Constants.SPEA2_MAX_ARCHIVE_SIZE:
                 new_archive = self.truncate_archive(new_archive)

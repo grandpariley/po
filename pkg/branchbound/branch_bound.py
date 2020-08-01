@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 from pkg.problem.solver import Solver
 from pkg.branchbound.node import Node
 from pkg.problem.compare import non_dominated
@@ -17,7 +17,7 @@ class BranchBound(Solver):
                 if node.get_value(i) is None:
                     for d in node.get_domain(i):
                         node.set_value(i, d)
-                        collection.append(copy.deepcopy(node))
+                        collection.append(deepcopy(node))
         return self.solve_helper(collection, solutions)
 
     def solve(self):

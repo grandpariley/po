@@ -1,4 +1,5 @@
-import unittest, copy
+import unittest
+from copy import deepcopy
 from pkg.spea2.spea2 import Spea2
 from pkg.spea2.individual import Individual
 from pkg.random.random import Random
@@ -18,7 +19,7 @@ class Spea2Test(unittest.TestCase):
             population[i].problem.set_value(0, i)
             population[i].problem.set_value(1, i + 1)
             population[i].problem.set_value(2, i + 1)
-        population[5] = copy.deepcopy(population[4])
+        population[5] = deepcopy(population[4])
         non_dominated, dominated = spea2.get_non_dominated(population)
         self.assertEqual(population[4:5], non_dominated)
         self.assertEqual(population[:4], dominated)

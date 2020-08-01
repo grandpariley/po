@@ -7,9 +7,9 @@ class Constraint:
         return str(self.variable_indicies)
 
     def holds(self, curr_variables):
-        var_vals = tuple(curr_variables[i].get_value()
+        vrs = tuple(curr_variables[i]
                          for i in self.variable_indicies)
-        for var_val in var_vals:
-            if var_val == None:
+        for vr in vrs:
+            if vr.get_value() == None:
                 return False
-        return bool(self.func(var_vals))
+        return bool(self.func(vrs))

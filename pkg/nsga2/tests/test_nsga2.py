@@ -2,6 +2,7 @@ import unittest
 from pkg.nsga2.nsga2 import Nsga2
 from pkg.nsga2.individual import Individual
 from pkg.random.random import Random
+from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 
@@ -38,6 +39,7 @@ class Nsga2Test(unittest.TestCase):
 
 
     def test_generate_children(self):
+        Random.begin_test()
         nsga2 = Nsga2(default_consistent_problem())
         individuals = [None for _ in range(4)]
         for i in range(4):
@@ -45,8 +47,21 @@ class Nsga2Test(unittest.TestCase):
             individuals[i].problem.set_value(0, i)
             individuals[i].problem.set_value(1, i + 1)
             individuals[i].problem.set_value(2, i + 1)
+        tournament_pool = nsga2.get_tournament_pool(individuals)
+        Constants.NSGA2_NUM_GENES_MUTATING = 3
+        for _ in range(2):
+            for _ in range(2):
+                Random.set_test_value_for("random_int_between_a_and_b", 2)
+                Random.set_test_value_for("random_int_between_a_and_b", 1)
+                Random.set_test_value_for("random_int_between_a_and_b", 0)
+                Random.set_test_value_for("random_float_between_a_and_b", 1)
+                Random.set_test_value_for("random_float_between_a_and_b", 1)
+                Random.set_test_value_for("random_float_between_a_and_b", 1)
+            Random.set_test_value_for("random_choice", tournament_pool[1])
+            Random.set_test_value_for("random_choice", tournament_pool[0])
         children = nsga2.generate_children(individuals)
         self.assertEqual(len(children), 4)
+        Random.end_test()
 
     def test_get_parents(self):
         Random.begin_test()
@@ -67,8 +82,9 @@ class Nsga2Test(unittest.TestCase):
 
     def test_get_children(self):
         Random.begin_test()
-        Random.set_test_value_for("random_int_between_a_and_b", 1)
-        Random.set_test_value_for("random_int_between_a_and_b", 2)
+        for _ in range(4):
+            Random.set_test_value_for("random_int_between_a_and_b", 1)
+            Random.set_test_value_for("random_int_between_a_and_b", 2)
         nsga2 = Nsga2(default_consistent_problem())
         individuals = [None for _ in range(4)]
         for i in range(2):

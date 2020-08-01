@@ -1,4 +1,4 @@
-import copy
+from copy import deepcopy
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
@@ -7,7 +7,7 @@ from pkg.consts import Constants
 class Particle:
     def __init__(self, problem):
         self.problem = problem
-        self.best = copy.deepcopy(problem)
+        self.best = deepcopy(problem)
         self.velocity = [Random.random_float_between_0_and_1()
                          for _ in range(problem.num_variables())]
 
@@ -41,7 +41,7 @@ class Particle:
 
     def update_best(self):
         if dominates(self.problem.objective_values(), self.best.objective_values()):
-            self.best = copy.deepcopy(self.problem)
+            self.best = deepcopy(self.problem)
 
     def get_best(self):
         return self.best

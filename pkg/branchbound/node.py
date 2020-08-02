@@ -2,6 +2,9 @@ class Node:
     def __init__(self, problem):
         self.problem = problem
 
+    def __str__(self):
+        return str(self.problem)
+
     def is_leaf(self):
         return self.problem.all_assigned()
 

@@ -21,3 +21,4 @@ class Pso(Solver):
         self.swarm = Swarm([Particle(p) for p in generate_many_random_solutions(
             self.problem, Constants.PSO_SWARM_SIZE)])
         return self.solve_helper()
+        

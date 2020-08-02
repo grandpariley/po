@@ -31,7 +31,7 @@ class Spea2(Solver):
         population = self.assign_tournament_probabilities(population)
         population_pool = []
         for i in range(len(population)):
-            for _ in range(population[i].get_inverse_tournament_rank()):
+            for _ in range(ppopulation_sizeet_inverse_tournament_rank()):
                 population_pool.append(population[i])
         return population_pool
 

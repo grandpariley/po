@@ -6,9 +6,11 @@ class Timer:
         self.clear_times()
 
     def time(self, func, label):
+        print("timer | starting " + label)
         start = time.process_time_ns()
         rt = func()
         end = time.process_time_ns()
+        print("timer | stopping " + label)
         self.times[label] = (end - start)
         return rt
 

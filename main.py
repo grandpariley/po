@@ -30,7 +30,7 @@ def main():
     # print(compareSolutions(branch_bound_soln, bee_colony_soln, flower_pollination_soln, nsga2_soln, pso_soln, spea2_soln))
     print(compareSolutions({
         'branch_bound': branch_bound_soln,
-        'flower_pollination': flower_pollination_soln,
+        'population_sizetion': flower_pollination_soln,
         'nsga2': nsga2_soln,
         'pso': pso_soln,
         'spea2': spea2_soln

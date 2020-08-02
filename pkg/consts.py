@@ -1,7 +1,7 @@
 from math import gamma, pi, sin
 
 class Constants():
-    BUDGET = 1000000.00
+    BUDGET = 100.00
     #define PSO constants
     PSO_SWARM_SIZE = 10
     PSO_MAX_ITERATIONS = 100

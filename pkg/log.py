@@ -1,6 +1,6 @@
 import datetime
 
-class log:
+class Log:
     debug_mode = False
     context = ""
     

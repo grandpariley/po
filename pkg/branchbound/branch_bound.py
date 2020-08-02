@@ -7,23 +7,23 @@ from copy import deepcopy
 
 class BranchBound(Solver):
     def solve_helper(self, collection, solutions):
-        Log.log(collection)
-        Log.log(solutions)
+        Log.log([str(node) for node in collection])
+        Log.log([str(s) for s in solutions])
         if not collection:
             Log.log("end of the road")
             return solutions
         node = collection.pop()
-        if node.is_leaf() and node.is_consistent() and non_dominated(node.get_objective_values(), [s.objective_values() for s in solutions]):
-            Log.log("found a solution!")
-            solutions.append(node.get_problem())
+        if node.is_leaf():
+            if node.is_consistent() and non_dominated(node.get_objective_values(), [s.objective_values() for s in solutions]):
+                Log.log("found a solution!")
+                solutions.append(node.get_problem())
             return self.solve_helper(collection, solutions)
-        if not node.is_leaf():
-            for i in range(node.num_variables()):
-                if node.get_value(i) is None:
-                    for d in node.get_domain(i):
-                        node.set_value(i, d)
-                        collection.append(deepcopy(node))
-                        Log.log("new node: " + str(node))
+        for i in range(node.num_variables()):
+            if node.get_value(i) is None:
+                for d in node.get_domain(i):
+                    node.set_value(i, d)
+                    collection.append(deepcopy(node))
+                    Log.log("new node: " + str(node))
         return self.solve_helper(collection, solutions)
 
     def solve(self):

@@ -130,5 +130,10 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(tournament_individuals[3].get_inverse_tournament_rank(), 1)
 
     def test_solve(self):
+        Constants.NSGA2_NUM_INDIVIDUALS = 4
+        Constants.NSGA2_NUM_GENERATIONS = 20
+        Constants.NSGA2_NUM_GENES_MUTATING = 2
         nsga2 = Nsga2(default_consistent_problem())
-        # nsga2.solve()
+        solutions = nsga2.solve()
+        print()
+        print(str(solutions))

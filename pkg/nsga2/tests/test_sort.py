@@ -10,7 +10,7 @@ class SortTest(unittest.TestCase):
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
-        individual = Individual(problem)
+        individual = Individual(problem=problem)
         individual.set_crowding_distance(1)
         return individual
 
@@ -19,7 +19,7 @@ class SortTest(unittest.TestCase):
         problem.set_value(0, 1)
         problem.set_value(1, 0)
         problem.set_value(2, 1)
-        individual = Individual(problem)
+        individual = Individual(problem=problem)
         individual.set_crowding_distance(0)
         return individual
 
@@ -28,7 +28,7 @@ class SortTest(unittest.TestCase):
         problem.set_value(0, 1)
         problem.set_value(1, 2)
         problem.set_value(2, 1)
-        individual = Individual(problem)
+        individual = Individual(problem=problem)
         individual.set_crowding_distance(2)
         return individual
 
@@ -37,7 +37,7 @@ class SortTest(unittest.TestCase):
         problem.set_value(0, 1)
         problem.set_value(1, 3)
         problem.set_value(2, 1)
-        individual = Individual(problem)
+        individual = Individual(problem=problem)
         individual.set_crowding_distance(3)
         return individual
 

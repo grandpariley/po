@@ -31,7 +31,7 @@ class Spea2(Solver):
         population = self.assign_tournament_probabilities(population)
         population_pool = []
         for i in range(len(population)):
-            for _ in range(ppopulation_sizeet_inverse_tournament_rank()):
+            for _ in range(population[i].get_inverse_tournament_rank()):
                 population_pool.append(population[i])
         return population_pool
 
@@ -44,13 +44,10 @@ class Spea2(Solver):
     def solve_helper(self, population, archive, generation):
         if generation == Constants.SPEA2_MAX_GENERATIONS:
             return self.get_non_dominated(archive)[0]
-        non_dominated, dominated = self.get_non_dominated(new_archive)
-        new_archive = deepcopy(non_dominated)
-        while len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
-            if len(new_archive) > Constants.SPEA2_MAX_ARCHIVE_SIZE:
-                new_archive = self.truncate_archive(new_archive)
-            elif len(new_archive) < Constants.SPEA2_MAX_ARCHIVE_SIZE:
-                new_archive = new_archive + dominated
+        non_dominated, dominated = self.get_non_dominated(archive)
+        new_archive = non_dominated
+        if len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
+                new_archive = self.truncate_archive(new_archive + dominated)
         return self.solve_helper(self.binary_tournament_selection(population), new_archive, generation + 1)
 
     def solve(self):

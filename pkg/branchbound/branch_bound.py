@@ -16,7 +16,7 @@ class BranchBound(Solver):
         if node.is_leaf():
             if node.is_consistent() and non_dominated(node.get_objective_values(), [s.objective_values() for s in solutions]):
                 Log.log("found a solution!")
-                solutions.append(node.get_problem())
+                solutions.add(node.get_problem())
             return self.solve_helper(collection, solutions)
         for i in range(node.num_variables()):
             if node.get_value(i) is None:
@@ -28,6 +28,6 @@ class BranchBound(Solver):
 
     def solve(self):
         Log.begin_debug("branch-bound")
-        solns = self.solve_helper([Node(self.problem)], [])
+        solns = self.solve_helper([Node(self.problem)], set())
         Log.end_debug()
         return solns

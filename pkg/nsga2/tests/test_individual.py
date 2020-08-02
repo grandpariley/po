@@ -11,21 +11,21 @@ class IndividualTest(unittest.TestCase):
         problem.set_value(0, 1)
         problem.set_value(1, 1)
         problem.set_value(2, 1)
-        return Individual(problem)
+        return Individual(problem=problem)
 
     def default_dominating_individual(self):
         other_problem = default_consistent_problem()
         other_problem.set_value(0, 1)
         other_problem.set_value(1, 1)
         other_problem.set_value(2, 2)
-        return Individual(other_problem)
+        return Individual(problem=other_problem)
     
     def default_other_dominating_individual(self):
         other_problem = default_consistent_problem()
         other_problem.set_value(0, 2)
         other_problem.set_value(1, 1)
         other_problem.set_value(2, 3)
-        return Individual(other_problem)
+        return Individual(problem=other_problem)
 
     def test_does_dominate(self):
         self.assertTrue(self.default_dominating_individual(

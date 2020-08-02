@@ -12,7 +12,7 @@ class FlowerPollination(Solver):
             for f in range(bouquet.num_flowers()):
                 bouquet.pollinate(f)
             bouquet.calculate_best()
-        return bouquet.get_best()
+        return [flower.get_problem() for flower in bouquet.get_best()]
 
     def solve(self):
         return self.solve_helper(Bouquet([Flower(p) for p in generate_many_random_solutions(self.problem, Constants.FP_NUMBER_OF_FLOWERS)]))

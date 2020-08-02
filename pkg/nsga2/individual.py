@@ -5,13 +5,25 @@ from math import floor
 
 
 class Individual:
-    def __init__(self, problem):
-        self.problem = problem
-        self.dominates = set()
-        self.domination_count = 0
-        self.crowding_distance = 0
-        self.inverse_tournament_rank = 0
-        self.rank = None
+    def __init__(self, problem=None, individual=None):
+        if problem is None and individual is None:
+            raise ValueError("must have a problem or an individual")
+        elif problem is not None and individual is not None:
+            raise ValueError("must have one of a problem or an individual")
+        if problem is not None:
+            self.problem = problem
+            self.dominates = set()
+            self.domination_count = 0
+            self.crowding_distance = 0
+            self.inverse_tournament_rank = 0
+            self.rank = None
+        elif individual is not None:
+            self.problem = individual.problem
+            self.dominates = individual.dominates
+            self.domination_count = individual.domination_count
+            self.crowding_distance = individual.crowding_distance
+            self.inverse_tournament_rank = individual.inverse_tournament_rank
+            self.rank = individual.rank
 
     def __str__(self):
         return str(self.problem) + "\n" + str(self.dominates) + "\n" + str(self.domination_count)

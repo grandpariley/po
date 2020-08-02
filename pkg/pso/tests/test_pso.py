@@ -2,6 +2,7 @@ import unittest
 from pkg.pso.pso import Pso
 from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.consts import Constants
+from pkg.log import Log
 
 
 class PsoTest(unittest.TestCase):
@@ -10,5 +11,5 @@ class PsoTest(unittest.TestCase):
         Constants.PSO_MAX_ITERATIONS = 20
         pso = Pso(default_consistent_problem())
         solutions = pso.solve()
-        print()
-        print(str(solutions))
+        Log.newline()
+        Log.log([str(s) for s in solutions], context="test-pso")

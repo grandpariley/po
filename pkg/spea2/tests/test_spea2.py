@@ -4,6 +4,7 @@ from pkg.spea2.spea2 import Spea2
 from pkg.spea2.individual import Individual
 from pkg.random.random import Random
 from pkg.consts import Constants
+from pkg.log import Log
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 
@@ -92,9 +93,10 @@ class Spea2Test(unittest.TestCase):
         self.assertEqual(tournament_individuals[4].get_inverse_tournament_rank(), 1)
 
     def test_solve(self):
-        Constants.SPEA2_INITIAL_POPULATION = 5
-        Constants.SPEA2_MAX_ARCHIVE_SIZE = 5
+        Constants.SPEA2_INITIAL_POPULATION = 3
+        Constants.SPEA2_MAX_ARCHIVE_SIZE = 3
         spea2 = Spea2(default_consistent_problem())
         solutions = spea2.solve()
-        print()
-        print(str(solutions))
+        Log.newline()
+        Log.log([str(s) for s in solutions], context="test-spea2")
+

@@ -25,3 +25,6 @@ class Flower:
 
     def num_variables(self):
         return self.problem.num_variables()
+
+    def get_problem(self):
+        return self.problem

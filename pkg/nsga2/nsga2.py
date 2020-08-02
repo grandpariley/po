@@ -36,7 +36,7 @@ class Nsga2(Solver):
         if not individuals:
             return
         for o in range(len(individuals[0].get_objective_values())):
-            individuals = sort_individuals(deepcopy(individuals), o)
+            individuals = sort_individuals(individuals, o)
             individuals[0].set_crowding_distance(float('inf'))
             individuals[-1].set_crowding_distance(float('inf'))
             denominator = individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o]
@@ -65,8 +65,8 @@ class Nsga2(Solver):
         return mum, dad
 
     def get_children(self, mum, dad):
-        daughter = deepcopy(mum)
-        son = deepcopy(dad)
+        daughter = Individual(individual=mum)
+        son = Individual(individual=dad)
         son.swap_half_genes(mum)
         daughter.swap_half_genes(dad)
         return son, daughter
@@ -86,9 +86,9 @@ class Nsga2(Solver):
         return individuals
 
     def solve_helper(self):
-        parent_population = [Individual(p) for p in generate_many_random_solutions(
+        parent_population = [Individual(problem=p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
-        child_population = [Individual(p) for p in generate_many_random_solutions(
+        child_population = [Individual(problem=p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
         for _ in range(Constants.NSGA2_NUM_GENERATIONS):
             front = self.fast_non_dominated_sort(

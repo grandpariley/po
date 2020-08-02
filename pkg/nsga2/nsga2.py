@@ -5,11 +5,12 @@ from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.consts import Constants
 from pkg.random.random import Random
+from pkg.log import Log
 
 
 class Nsga2(Solver):
     def fast_non_dominated_sort(self, individuals):
-        front = [set()]
+        front = [[]]
         for p in individuals:
             for q in individuals:
                 if p.does_dominate(q):
@@ -18,16 +19,17 @@ class Nsga2(Solver):
                     p.increment_dominated()
             if not p.is_dominated():
                 p.set_rank(0)
-                front[0].add(p)
+                front[0].append(p)
         front_count = 0
         while front[front_count]:
-            next_front = set()
+            next_front = []
             for p in front[front_count]:
                 for q in p.get_dominates():
                     q.decrement_dominated()
                     if not q.is_dominated():
                         q.set_rank(front_count + 1)
-                        next_front.add(q)
+                        if q not in next_front:
+                            next_front.append(q)
             front_count += 1
             front.append(next_front)
         return front
@@ -53,15 +55,13 @@ class Nsga2(Solver):
             son, daughter = self.get_children(mum, dad)
             son.emo_phase()
             daughter.emo_phase()
-            children = children + [son, daughter]
+            children += [son, daughter]
         return children
 
     def get_parents(self, parent_population):
         tournament_pool = self.get_tournament_pool(parent_population)
         mum = Random.random_choice(tournament_pool)
         dad = Random.random_choice(tournament_pool)
-        while mum.get_objective_values() == dad.get_objective_values():
-            dad = Random.random_choice(tournament_pool)
         return mum, dad
 
     def get_children(self, mum, dad):
@@ -85,23 +85,29 @@ class Nsga2(Solver):
             individuals[i].set_inverse_tournament_rank(len(individuals) - i)
         return individuals
 
-    def solve_helper(self):
+    def solve_helper(self, parent_population, child_population, generation):
+        Log.log([str(individual.get_problem()) for individual in parent_population])
+        Log.log([str(individual.get_problem()) for individual in child_population])
+        front = self.fast_non_dominated_sort(parent_population + child_population)
+        if generation > Constants.NSGA2_NUM_GENERATIONS:
+            return [individual.get_problem() for individual in front[0]]
+        parent_population = []
+        i = 0
+        while len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
+            parent_population += front[i]
+            i += 1
+        front[i] = self.crowding_distance_assignment(front[i])
+        parent_population += sort_by_crowding_distance(front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
+        child_population = self.generate_children(parent_population)
+        return self.solve_helper(parent_population, child_population, generation + 1)
+
+
+    def solve(self):
         parent_population = [Individual(problem=p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
         child_population = [Individual(problem=p) for p in generate_many_random_solutions(
             self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
-        for _ in range(Constants.NSGA2_NUM_GENERATIONS):
-            front = self.fast_non_dominated_sort(
-                parent_population + child_population)
-            parent_population = []
-            i = 0
-            while len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
-                parent_population += front[i]
-                i += 1
-            front[i] = self.crowding_distance_assignment(list(front[i]))
-            parent_population += sort_by_crowding_distance(
-                front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
-            child_population = self.generate_children(parent_population)
-
-    def solve(self):
-        return self.solve_helper()
+        Log.begin_debug("nsga2")
+        solns = self.solve_helper(parent_population, child_population, 0)
+        Log.end_debug()
+        return solns

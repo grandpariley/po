@@ -22,12 +22,12 @@ class BranchBound(Solver):
             if node.get_value(i) is None:
                 for d in node.get_domain(i):
                     node.set_value(i, d)
-                    collection.append(deepcopy(node))
+                    collection.add(deepcopy(node))
                     Log.log("new node: " + str(node))
         return self.solve_helper(collection, solutions)
 
     def solve(self):
         Log.begin_debug("branch-bound")
-        solns = self.solve_helper([Node(self.problem)], set())
+        solns = self.solve_helper(set([Node(self.problem)]), set())
         Log.end_debug()
         return solns

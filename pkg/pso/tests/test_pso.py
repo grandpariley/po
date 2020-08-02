@@ -8,7 +8,7 @@ from pkg.log import Log
 class PsoTest(unittest.TestCase):
     def test_solve(self):
         Constants.PSO_SWARM_SIZE = 3
-        Constants.PSO_MAX_ITERATIONS = 20
+        Constants.PSO_MAX_ITERATIONS = 100
         pso = Pso(default_consistent_problem())
         solutions = pso.solve()
         Log.newline()

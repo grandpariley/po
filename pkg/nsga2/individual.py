@@ -58,6 +58,9 @@ class Individual:
     def get_dominated(self):
         return self.dominates
 
+    def get_problem(self):
+        return self.problem
+
     def decrement_dominated(self):
         if self.domination_count > 0:
             self.domination_count -= 1

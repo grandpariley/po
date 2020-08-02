@@ -3,6 +3,7 @@ from pkg.nsga2.nsga2 import Nsga2
 from pkg.nsga2.individual import Individual
 from pkg.random.random import Random
 from pkg.consts import Constants
+from pkg.log import Log
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 
@@ -19,7 +20,7 @@ class Nsga2Test(unittest.TestCase):
             individuals[i].problem.set_value(1, i + 1)
             individuals[i].problem.set_value(2, i + 1)
         front = nsga2.fast_non_dominated_sort(individuals)
-        self.assertEqual(front, [set([individuals[i]]) for i in range(3, -1, -1)] + [set()])
+        self.assertEqual(front, [set([individuals[i]]) for i in range(3, -1, -1)] + [])
 
     def test_crowding_distance_assignment(self):
         nsga2 = Nsga2(default_consistent_problem())
@@ -75,7 +76,6 @@ class Nsga2Test(unittest.TestCase):
         tournament_pool = nsga2.get_tournament_pool(individuals)
         Random.set_test_value_for("random_choice", tournament_pool[0])
         Random.set_test_value_for("random_choice", tournament_pool[-1])
-        Random.set_test_value_for("random_choice", tournament_pool[-1])
         mum, dad = nsga2.get_parents(individuals)
         self.assertEqual(mum, tournament_pool[-1])
         self.assertEqual(dad, tournament_pool[0])
@@ -130,7 +130,7 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(tournament_individuals[3].get_inverse_tournament_rank(), 1)
 
     # TODO
-    @unittest.skip("fix this")
+    # @unittest.skip("fix this")
     def test_solve(self):
         Constants.NSGA2_NUM_INDIVIDUALS = 4
         Constants.NSGA2_NUM_GENERATIONS = 20

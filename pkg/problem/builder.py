@@ -33,13 +33,14 @@ def default_portfolio_optimization_problem():
 
 def generate_many_random_solutions(problem, population_size):
     individuals = set()
-    while len(individuals) < population_size:
+    give_up = 0
+    while len(individuals) < population_size or give_up > population_size:
         p = deepcopy(problem)
-        give_up = 0
-        while not p.consistent() or give_up > population_size:
-            give_up += 1
+        while not p.consistent():
             for v in range(p.num_variables()):
                 p.set_value(v, Random.random_choice(p.get_domain(v)))
         if p.consistent() and p.variable_assignments() not in [i.variable_assignments() for i in individuals]:
             individuals.add(p)
+        else:
+            give_up += 1
     return individuals

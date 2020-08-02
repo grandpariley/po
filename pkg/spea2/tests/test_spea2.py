@@ -95,6 +95,7 @@ class Spea2Test(unittest.TestCase):
     def test_solve(self):
         Constants.SPEA2_INITIAL_POPULATION = 3
         Constants.SPEA2_MAX_ARCHIVE_SIZE = 3
+        Constants.SPEA2_MAX_GENERATIONS = 100
         spea2 = Spea2(default_consistent_problem())
         solutions = spea2.solve()
         Log.newline()

@@ -1,12 +1,13 @@
-import datetime
+import datetime, os, gc
 
 
 class Log:
-    debug_mode = False
     context = ""
 
     @classmethod
     def log(cls, obj, context=None):
+        if not os.environ['DEBUG']:
+            return
         if context is not None:
             cls.context = context
         print(str(datetime.datetime.now()) +
@@ -19,7 +20,11 @@ class Log:
     @classmethod
     def end_debug(cls):
         cls.context = ""
+        # FIXME this is so gross
+        gc.collect()
 
     @classmethod
     def newline(cls):
+        if not os.environ['DEBUG']:
+            return
         print()

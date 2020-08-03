@@ -20,7 +20,7 @@ class Nsga2Test(unittest.TestCase):
             individuals[i].problem.set_value(1, i + 1)
             individuals[i].problem.set_value(2, i + 1)
         front = nsga2.fast_non_dominated_sort(individuals)
-        self.assertEqual(front, [set([individuals[i]]) for i in range(3, -1, -1)] + [])
+        self.assertEqual(front, [[individuals[i]] for i in range(3, -1, -1)] + [[]])
 
     def test_crowding_distance_assignment(self):
         nsga2 = Nsga2(default_consistent_problem())

@@ -7,6 +7,7 @@ from pkg.nsga2.nsga2 import Nsga2
 from pkg.pso.pso import Pso
 from pkg.spea2.spea2 import Spea2
 from pkg.timer.timer import Timer
+from pkg.problem.builder import stock_names
 
 
 def main():
@@ -39,7 +40,10 @@ def main():
     for name in solutions:
         print(name + ": ")
         for soln in solutions[name]:
-            print(soln)
+            print("\trisk: " + str(-soln.objective_values()[0]))
+            print("\treward: " + str(soln.objective_values()[1]))
+            for i in range(len(stock_names)):
+                print("\t\t" + stock_names[i] + ": " + sol.variable_assignments()[i])
             print()
         print()
     solution_compare = compareSolutions(solutions)

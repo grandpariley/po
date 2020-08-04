@@ -16,6 +16,9 @@ def compareSolutions(solution_dict):
         for other_name in solution_dict:
             if name is other_name:
                 continue
+            if not solution_dict[name]:
+                non_dominated_solutions.update({name: False})
+                continue
             is_non_dominated = True
             for soln in solution_dict[name]:
                 is_non_dominated = is_non_dominated and non_dominated(soln.objective_values(), [soln2.objective_values() for soln2 in solution_dict[other_name]])

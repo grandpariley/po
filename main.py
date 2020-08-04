@@ -28,13 +28,21 @@ def main():
     spea2_soln = timer.time(spea2.solve, "spea2")
 
     # print(compareSolutions(branch_bound_soln, bee_colony_soln, flower_pollination_soln, nsga2_soln, pso_soln, spea2_soln))
-    solution_compare = compareSolutions({
+    solutions = {
         'branch_bound': branch_bound_soln,
         'flower_pollination': flower_pollination_soln,
         'nsga2': nsga2_soln,
         'pso': pso_soln,
         'spea2': spea2_soln
-    })
+    }
+    print("Solutions: ")
+    for name in solutions:
+        print(name + ": ")
+        for soln in solutions[name]:
+            print(soln)
+            print()
+        print()
+    solution_compare = compareSolutions(solutions)
     non_dominated_str = ""
     for name in solution_compare:
         if solution_compare[name]:

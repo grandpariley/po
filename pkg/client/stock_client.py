@@ -2,8 +2,8 @@ import os
 import finnhub
 import unittest
 
-stock_names = ['AAPL', 'MSFT', 'AMZN', 'TSLA',
-          'NVDA', 'GE', 'GOOGL', 'UA', 'XOM', 'NCLH']
+stock_names = ['AAPL', 'MSFT', 'TSLA',
+          'NVDA', 'GOOGL']
 
 
 class StockClient:

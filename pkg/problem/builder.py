@@ -6,6 +6,7 @@ from pkg.problem.variable import Variable
 from pkg.problem.constraint import Constraint
 from pkg.client.stock_client import StockClient, stock_names
 from pkg.consts import Constants
+from pkg.log import Log
 
 
 def default_portfolio_optimization_problem():
@@ -18,16 +19,17 @@ def default_portfolio_optimization_problem():
     def get_risk_objective():
         return lambda vsds: -sum([vsd.get_value() * vsd.get_objective_info()['risk'] for vsd in vsds])
 
-    
     def get_reward_objective():
         return lambda vsds: sum([vsd.get_value() * vsd.get_objective_info()['reward'] for vsd in vsds])
 
     stock_data = StockClient().get_stock_data()
     thing = {sd: [str(key) + ": " + str(stock_data[sd][key]) for key in stock_data[sd]] for sd in stock_data}
+    Log.begin_debug("default-po-problem")
     for t in thing:
-        print(t)
+        Log.log(t)
         for j in thing[t]:
-            print("\t" + str(j))
+            Log.log("\t" + str(j))
+    Log.end_debug()
     return Problem([convert_stock_data_to_variable(stock_data[vsd]) for vsd in stock_data], [get_budget_constraint()], [get_risk_objective(), get_reward_objective()])
 
 

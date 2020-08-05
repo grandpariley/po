@@ -88,7 +88,6 @@ class Nsga2(Solver):
     def solve_helper(self, parent_population, child_population):
         front = []
         for _ in range(Constants.NSGA2_NUM_GENERATIONS):
-            Log.log([str(individual.get_problem()) for individual in parent_population])
             parent_population = []
             i = 0
             while i < len(front) and len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:

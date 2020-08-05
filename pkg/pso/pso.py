@@ -4,6 +4,7 @@ from pkg.pso.particle import Particle
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
+from pkg.log import Log
 
 
 class Pso(Solver):
@@ -20,5 +21,8 @@ class Pso(Solver):
     def solve(self):
         self.swarm = Swarm([Particle(p) for p in generate_many_random_solutions(
             self.problem, Constants.PSO_SWARM_SIZE)])
-        return self.solve_helper()
+        Log.begin_debug("pso")
+        solns = self.solve_helper()
+        Log.end_debug()
+        return solns
         

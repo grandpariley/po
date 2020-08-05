@@ -6,6 +6,7 @@ from pkg.spea2.sort import sort_population_by_domination
 from pkg.spea2.individual import Individual
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.problem.compare import dominates
+from pkg.log import Log
 
 
 class Spea2(Solver):
@@ -51,4 +52,7 @@ class Spea2(Solver):
         return self.solve_helper(self.binary_tournament_selection(population), new_archive, generation + 1)
 
     def solve(self):
-        return self.solve_helper([Individual(p) for p in generate_many_random_solutions(self.problem, Constants.SPEA2_INITIAL_POPULATION)], [], 0)
+        Log.begin_debug("spea2")
+        solns = self.solve_helper([Individual(p) for p in generate_many_random_solutions(self.problem, Constants.SPEA2_INITIAL_POPULATION)], [], 0)
+        Log.end_debug()
+        return solns

@@ -14,13 +14,13 @@ def default_portfolio_optimization_problem():
         return Variable([i for i in range(floor(float(Constants.BUDGET) / vsd['price']))], vsd)
     
     def get_budget_constraint():
-        return Constraint(tuple(i for i in range(len(stock_names))), lambda vsds: Constants.BUDGET > sum([vsd.get_value() * vsd.get_objective_info()['price'] for vsd in vsds]))
+        return Constraint(tuple(i for i in range(len(stock_names))), lambda vsds: Constants.BUDGET > sum([(0.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['price'] for vsd in vsds]))
     
     def get_risk_objective():
-        return lambda vsds: -sum([vsd.get_value() * vsd.get_objective_info()['risk'] for vsd in vsds])
+        return lambda vsds: -sum([(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['risk'] for vsd in vsds])
 
     def get_reward_objective():
-        return lambda vsds: sum([vsd.get_value() * vsd.get_objective_info()['reward'] for vsd in vsds])
+        return lambda vsds: sum([(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['reward'] for vsd in vsds])
 
     stock_data = StockClient().get_stock_data()
     thing = {sd: [str(key) + ": " + str(stock_data[sd][key]) for key in stock_data[sd]] for sd in stock_data}
@@ -36,11 +36,10 @@ def default_portfolio_optimization_problem():
 def generate_many_random_solutions(problem, population_size):
     individuals = set()
     give_up = 0
-    while len(individuals) < population_size or give_up > population_size:
+    while len(individuals) < population_size and give_up < Constants.GIVE_UP_MAX:
         p = deepcopy(problem)
-        while not p.consistent():
-            for v in range(p.num_variables()):
-                p.set_value(v, Random.random_choice(p.get_domain(v)))
+        for v in range(p.num_variables()):
+            p.set_value(v, Random.random_choice(p.get_domain(v)))
         if p.consistent() and p.variable_assignments() not in [i.variable_assignments() for i in individuals]:
             individuals.add(p)
         else:

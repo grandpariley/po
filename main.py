@@ -19,8 +19,8 @@ def main():
     # bee_colony_soln = timer.time(bee_colony.solve, "bee_colony")
     flower_pollination = FlowerPollination(deepcopy(problem))
     flower_pollination_soln = timer.time(flower_pollination.solve, "flower_pollination")
-    # nsga2 = Nsga2(deepcopy(problem))
-    # nsga2_soln = timer.time(nsga2.solve, "nsga2")
+    nsga2 = Nsga2(deepcopy(problem))
+    nsga2_soln = timer.time(nsga2.solve, "nsga2")
     pso = Pso(deepcopy(problem))
     pso_soln = timer.time(pso.solve, "pso")
     spea2 = Spea2(deepcopy(problem))
@@ -30,7 +30,7 @@ def main():
         'branch_bound': branch_bound_soln,
         # "bee_colony": bee_colony_soln,
         'flower_pollination': flower_pollination_soln,
-        # 'nsga2': nsga2_soln,
+        'nsga2': nsga2_soln,
         'pso': pso_soln,
         'spea2': spea2_soln
     }

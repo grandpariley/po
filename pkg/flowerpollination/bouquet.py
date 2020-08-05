@@ -1,6 +1,7 @@
 from pkg.random.random import Random
 from pkg.consts import Constants
 from pkg.problem.compare import dominates
+from pkg.log import Log
 
 
 class Bouquet:
@@ -17,7 +18,7 @@ class Bouquet:
                     dominated.append(j)
                 elif i not in dominated and dominates(j.get_objective_values(), i.get_objective_values()):
                     dominated.append(i)
-        self.best = list(set(flowers) - set(dominated))
+        self.best = list(set(flowers).difference(set(dominated)))
 
     def get_best(self):
         return self.best

@@ -23,7 +23,7 @@ class Flower:
     def safe_set_value(self, index, value):
         if not self.problem.will_be_consistent(index, self.problem.closest_in_domain(index, value)):
             return
-        self.problem.set_value(index, self.problem.closest_in_domain(index, value))
+        self.problem.set_value(index, int(self.problem.closest_in_domain(index, value)))
 
     def num_variables(self):
         return self.problem.num_variables()

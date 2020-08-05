@@ -21,6 +21,8 @@ class Flower:
         return self.problem.get_value(index)
 
     def safe_set_value(self, index, value):
+        if not self.problem.will_be_consistent(index, self.problem.closest_in_domain(index, value)):
+            return
         self.problem.set_value(index, self.problem.closest_in_domain(index, value))
 
     def num_variables(self):

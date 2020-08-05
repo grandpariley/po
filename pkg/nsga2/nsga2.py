@@ -42,10 +42,14 @@ class Nsga2(Solver):
             individuals[0].set_crowding_distance(float('inf'))
             individuals[-1].set_crowding_distance(float('inf'))
             denominator = individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o]
-            if denominator != 0.0:
+            if denominator == 0.0:
+                for i in range(1, len(individuals) - 1):
+                    individuals[i].set_crowding_distance(float('inf'))
+            else:
                 for i in range(1, len(individuals) - 1):
                     numerator = individuals[i + 1].get_objective_values()[o] - individuals[i - 1].get_objective_values()[o]
                     individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + (numerator / denominator))
+
         return individuals
 
     def generate_children(self, parent_population):
@@ -87,7 +91,8 @@ class Nsga2(Solver):
 
     def solve_helper(self, parent_population, child_population):
         front = []
-        for _ in range(Constants.NSGA2_NUM_GENERATIONS):
+        for j in range(Constants.NSGA2_NUM_GENERATIONS):
+            front = self.fast_non_dominated_sort(parent_population + child_population)
             parent_population = []
             i = 0
             while i < len(front) and len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
@@ -97,8 +102,8 @@ class Nsga2(Solver):
                 front[i] = self.crowding_distance_assignment(front[i])
                 parent_population += sort_by_crowding_distance(front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
             child_population = self.generate_children(parent_population)
-            front = self.fast_non_dominated_sort(parent_population + child_population)
-        return [individual.get_problem() for individual in front[0]]
+        front = self.fast_non_dominated_sort(parent_population + child_population)
+        return [individual.get_problem() for individual in set(front[0])]
 
 
 

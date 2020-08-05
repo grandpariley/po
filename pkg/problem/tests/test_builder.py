@@ -5,7 +5,7 @@ from pkg.problem.builder import generate_many_random_solutions
 
 
 class BuilderTest(unittest.TestCase):
-    @unittest.skipIf(not bool(os.environ['RUN_EXTERNAL_API_TESTS']), "calls external api")
+    @unittest.skipIf(not bool(os.environ['EXTERNAL_API']), "calls external api")
     def test_build(self):
         problem = default_portfolio_optimization_problem()
         print(problem)

@@ -8,31 +8,29 @@ from pkg.pso.pso import Pso
 from pkg.spea2.spea2 import Spea2
 from pkg.timer.timer import Timer
 from pkg.problem.builder import stock_names
-
+from copy import deepcopy
 
 def main():
     timer = Timer()
-
-    branch_bound = BranchBound(default_portfolio_optimization_problem())
+    problem = default_portfolio_optimization_problem()
+    branch_bound = BranchBound(deepcopy(problem))
     branch_bound_soln = timer.time(branch_bound.solve, "branch_bound")
-    # bee_colony = BeeColony(default_portfolio_optimization_problem())
+    # bee_colony = BeeColony(deepcopy(problem))
     # bee_colony_soln = timer.time(bee_colony.solve, "bee_colony")
-    flower_pollination = FlowerPollination(
-        default_portfolio_optimization_problem())
-    flower_pollination_soln = timer.time(
-        flower_pollination.solve, "flower_pollination")
-    nsga2 = Nsga2(default_portfolio_optimization_problem())
-    nsga2_soln = timer.time(nsga2.solve, "nsga2")
-    pso = Pso(default_portfolio_optimization_problem())
+    flower_pollination = FlowerPollination(deepcopy(problem))
+    flower_pollination_soln = timer.time(flower_pollination.solve, "flower_pollination")
+    # nsga2 = Nsga2(deepcopy(problem))
+    # nsga2_soln = timer.time(nsga2.solve, "nsga2")
+    pso = Pso(deepcopy(problem))
     pso_soln = timer.time(pso.solve, "pso")
-    spea2 = Spea2(default_portfolio_optimization_problem())
+    spea2 = Spea2(deepcopy(problem))
     spea2_soln = timer.time(spea2.solve, "spea2")
 
-    # print(compareSolutions(branch_bound_soln, bee_colony_soln, flower_pollination_soln, nsga2_soln, pso_soln, spea2_soln))
     solutions = {
         'branch_bound': branch_bound_soln,
+        # "bee_colony": bee_colony_soln,
         'flower_pollination': flower_pollination_soln,
-        'nsga2': nsga2_soln,
+        # 'nsga2': nsga2_soln,
         'pso': pso_soln,
         'spea2': spea2_soln
     }
@@ -42,8 +40,9 @@ def main():
         for soln in solutions[name]:
             print("\trisk: " + str(-soln.objective_values()[0]))
             print("\treward: " + str(soln.objective_values()[1]))
+            print("\tbudget: " + str(sum([s.get_value() * s.get_objective_info()['price'] for s in soln.variables])))
             for i in range(len(stock_names)):
-                print("\t\t" + stock_names[i] + ": " + sol.variable_assignments()[i])
+                print("\t\t" + stock_names[i] + ": " + str(soln.variable_assignments()[i]))
             print()
         print()
     solution_compare = compareSolutions(solutions)

@@ -26,9 +26,9 @@ def default_portfolio_optimization_problem():
     thing = {sd: [str(key) + ": " + str(stock_data[sd][key]) for key in stock_data[sd]] for sd in stock_data}
     Log.begin_debug("default-po-problem")
     for t in thing:
-        Log.log(t)
+        Log.log(t, override=True)
         for j in thing[t]:
-            Log.log("\t" + str(j))
+            Log.log("\t" + str(j), override=True)
     Log.end_debug()
     return Problem([convert_stock_data_to_variable(stock_data[vsd]) for vsd in stock_data], [get_budget_constraint()], [get_risk_objective(), get_reward_objective()])
 

@@ -26,7 +26,7 @@ class Individual:
             self.rank = individual.rank
 
     def __str__(self):
-        return str(self.problem) + "\n" + str(self.dominates) + "\n" + str(self.domination_count)
+        return str(self.problem.variable_assignments())
 
     def __eq__(self, other):
         return str(self) == str(other)

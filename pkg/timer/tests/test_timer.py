@@ -15,7 +15,7 @@ class TimerTest(unittest.TestCase):
         timer = Timer()
         timer.time(lambda: sum([i for i in range(10000000)]), "test")
         self.assertEqual(timer.get_times_as_formatted_str(),
-                         "Times: \n\ttest : " + str(timer.times["test"]) + "ns")
+                         "Times: \n\ttest : " + str(timer.times["test"] / 1000) + "ms")
 
     def test_clear_times(self):
         timer = Timer()

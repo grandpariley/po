@@ -44,9 +44,9 @@ class SortTest(unittest.TestCase):
     def test_sort_individuals(self):
         individuals = [self.default_individual(), self.default_individual(), self.default_other_dominating_individual(), self.default_dominating_individual(), self.default_dominated_individual()]
         result = sort_individuals(individuals, 1)
-        self.assertEqual([self.default_dominated_individual(), self.default_individual(), self.default_individual(), self.default_dominating_individual(), self.default_other_dominating_individual()], result)
+        self.assertEqual([str(self.default_dominated_individual()), str(self.default_individual()), str(self.default_individual()), str(self.default_dominating_individual()), str(self.default_other_dominating_individual())], [str(r) for r in result])
 
     def test_sort_by_crowding_distance(self):
         individuals = [self.default_individual(), self.default_individual(), self.default_other_dominating_individual(), self.default_dominating_individual(), self.default_dominated_individual()]
         result = sort_by_crowding_distance(individuals)
-        self.assertEqual([self.default_dominated_individual(), self.default_individual(), self.default_individual(), self.default_dominating_individual(), self.default_other_dominating_individual()], result)
+        self.assertEqual([str(self.default_dominated_individual()), str(self.default_individual()), str(self.default_individual()), str(self.default_dominating_individual()), str(self.default_other_dominating_individual())], [str(r) for r in result])

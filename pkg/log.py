@@ -5,8 +5,8 @@ class Log:
     context = ""
 
     @classmethod
-    def log(cls, obj, context=None):
-        if not os.environ['DEBUG']:
+    def log(cls, obj, context=None, override=False):
+        if not (os.environ['DEBUG'] or override):
             return
         if context is not None:
             cls.context = context

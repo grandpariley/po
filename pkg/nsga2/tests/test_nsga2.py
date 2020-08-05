@@ -129,7 +129,6 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(tournament_individuals[2].get_inverse_tournament_rank(), 2)
         self.assertEqual(tournament_individuals[3].get_inverse_tournament_rank(), 1)
 
-    # TODO
     # @unittest.skip("fix this")
     def test_solve(self):
         Constants.NSGA2_NUM_INDIVIDUALS = 4

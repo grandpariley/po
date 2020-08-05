@@ -10,7 +10,7 @@ from pkg.log import Log
 
 class Nsga2(Solver):
     def fast_non_dominated_sort(self, individuals):
-        first_front = []
+        first_front = set()
         for p in individuals:
             for q in individuals:
                 if p.does_dominate(q):
@@ -19,17 +19,17 @@ class Nsga2(Solver):
                     p.increment_dominated()
             if not p.is_dominated():
                 p.set_rank(0)
-                first_front.append(p)
+                first_front.add(p)
         front_count = 0
         front = [first_front]
-        while front[front_count]:
-            next_front = []
+        while front[front_count] and len(front) < len(individuals):
+            next_front = set()
             for p in front[front_count]:
                 for q in p.get_dominates():
                     q.decrement_dominated()
                     if not q.is_dominated():
                         q.set_rank(front_count + 1)
-                        next_front.append(q)
+                        next_front.add(q)
             front_count += 1
             front.append(next_front)
         return front
@@ -99,8 +99,8 @@ class Nsga2(Solver):
                 parent_population += front[i]
                 i += 1
             if i < len(front):
-                front[i] = self.crowding_distance_assignment(front[i])
-                parent_population += sort_by_crowding_distance(front[i])[0:Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population)]
+                front[i] = self.crowding_distance_assignment(list(front[i]))
+                parent_population += sort_by_crowding_distance(list(front[i]))[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
             child_population = self.generate_children(parent_population)
         front = self.fast_non_dominated_sort(parent_population + child_population)
         return [individual.get_problem() for individual in set(front[0])]

@@ -42,17 +42,17 @@ class Spea2(Solver):
             population[i].set_inverse_tournament_rank(len(population) - i)
         return population
 
-    def solve_helper(self, population, archive, generation):
-        if generation == Constants.SPEA2_MAX_GENERATIONS:
-            return self.get_non_dominated(archive)[0]
-        non_dominated, dominated = self.get_non_dominated(archive)
-        new_archive = non_dominated
-        if len(new_archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
-                new_archive = self.truncate_archive(new_archive + dominated)
-        return self.solve_helper(self.binary_tournament_selection(population), new_archive, generation + 1)
+    def solve_helper(self, population, archive):
+        for _ in range(Constants.SPEA2_MAX_GENERATIONS):
+            population = self.binary_tournament_selection(population)
+            non_dominated, dominated = self.get_non_dominated(archive + population)
+            archive = non_dominated
+            if len(archive) != Constants.SPEA2_MAX_ARCHIVE_SIZE:
+                    archive = self.truncate_archive(archive + dominated)
+        return [individual.get_problem() for individual in self.get_non_dominated(archive)[0]]
 
     def solve(self):
         Log.begin_debug("spea2")
-        solns = self.solve_helper([Individual(p) for p in generate_many_random_solutions(self.problem, Constants.SPEA2_INITIAL_POPULATION)], [], 0)
+        solns = self.solve_helper([Individual(p) for p in generate_many_random_solutions(self.problem, Constants.SPEA2_INITIAL_POPULATION)], [])
         Log.end_debug()
         return solns

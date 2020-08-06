@@ -1,14 +1,61 @@
 \documentclass{article}
 \usepackage[sorting=none]{biblatex}
-\addbibresource{proposal.bib}
+\addbibresource{report.bib}
 \title{CS890BR Project}
-\date{2020-08-12}
+\date{\today}
 \author{Riley Herman 200352833}
 
 \begin{document}
     \pagenumbering{gobble}
     \maketitle
+    \begin{abstract}
+        this is the abstract. you know
+    \end{abstract}
     \newpage
     \pagenumbering{arabic}
-    Abstract, Introduction, Background Knowledge, Accomplishment, and Conclusion
+    \section{Introduction}
+    In the early days of the stock market, William Stanley Jevons developed a widely used theory on how to predict changes in the market.
+    This is the man that wrote such influential books as The Theory of Political Economy, expounding the marginal utility theory of value that 
+    is fundamental to understanding modern economics. A first car has enormous value in comparison to a fifteenth car. Unfortunately for Jevons, 
+    his market prediction theory was not so revolutionary. William Peter Hamilton recounts, "[Jevons] propounded the theory of a connection between 
+    commercial panics and spots on the sun. \ldots I said that while Wall Street in its heart believed in a cycle fo panic and prosperity, 
+    it did not care if there were enough spots of the sun to make a straight flush" \cite{Hamilton}. As much as Jevons' sun spot prediction method
+    sounds absurd, the inherent nature of the stock market is to be unpredictable. His theory is every bit as valid as any other when the theory 
+    attempts to explain a complex adaptive system. Michael Mauboussin acknowledges that "[m]ost systems, in nature and in business,
+    are not in equilibrium but rather in constant flux" \cite{Mauboussin}. \\
+    Having said that, and despite the orange tabby cat Orlando's success as a stock picker \cite{King}, there is little disagreement that making
+    informed portfolio choices is in the best interest of the investor. Therefore, using historical data to generate a set of optimal portfolios
+    is the widely accepted approach. Given the multitude of solving techniques, it is in the investor's best interest to determine the most efficient solver
+    to find the most efficient solution. There are five algorithms presented in this paper: Flower Pollination, Non-dominated Sorting Genetic 
+    Algorithm 2 (hereby referred to as NSGA2), Particle Swarm Optimization (PSO), Strength Pareto Evolutionary Algorithm 2 (SPEA2), and traditional
+    Branch and Bound, an exact algorithm the other algorithms are to be compared against \cite{Yang} \cite{KaucicMoradiMirzazadeh}. 
+    \section{Background Knowledge}
+    In order to understand the recommended portfolios and how they are arrived at, one must first understand the problem that is being solved, how it is 
+    modelled, what techniques are available and why they were chosen. 
+    \subsection{Portfolio Optimization}
+    The problem of portfolio optimization often finds its roots in Harry Markowitz's frequently cited book Portfolio Selection \cite{Markowitz}. Though
+    the language may not be the same, what he is proposing is clearly a multi-objective constraint optimization problem. He suggests that portfolios
+    should be weighted using risk and return with respect to a budgetary constraint. Though the problem originates in the field of 
+    economics, computing has approached the problem as an excellent candidate for a variety of multi-objective constraint optimization algorithms. \\
+    The problem is formulated as follows: given a set of stocks and a budget, one must use the risk and reward to find an amount of each stock to
+    purchase such that risk is minimal and reward is maximal. Risk and reward are not comparable to each other; the algorithm cannot decide whether
+    a conservative, low reward but also low risk portfolio is better than an aggressive, high risk but high reward portfolio. Thus the solution is a 
+    set of options, each one best in its own way. There are several pieces of information that need to be calculated: prices, which are often taken 
+    directly from source data; reward, which is NEED TO FILL IN HOW REWARD WORKS; and risk, which was once upon a time calculated as variance
+    but is now often calculated as value-at-risk. Value at risk is a type of downside risk; that is, it attempts to measure risk by estimating the
+    maximum amount lost on the stock \cite{HongHuZhang} \cite{Cid}. There are a variety of other objectives that could be optimized towards as well: 
+    liquiditiy, tax efficiency, etc. However, since the premise of these quantitative optimizations are the same it has been left out of the scope 
+    of this project. Another set of objectives that could be optimized towards are qualitative; examples of this may be longevity of the portfolio,
+    where a longer term portfolio may be able to accept more risk than a shorter term portfolio \cite{Xiongetal}, or social responsibility of the 
+    companies being traded. Once the problem is formulated in terms of variables (the stocks and how much to buy of each one), constraints (the 
+    total amount invested must be below the budget), and objective functions (risk and reward), the problem is ready to be modelled as a constraint
+    optimization problem.
+    \subsection{Constraint Optimization Techniques}
+    cop
+    \section{Implementation}
+    This section describes details of the implementation of the python library, as well as the data captured
+    \section{Conclusion}
+    This is the conclusion where we recap all the fun we had this past week.
+    \newpage
+    \printbibliography
 \end{document}

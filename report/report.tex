@@ -1,5 +1,18 @@
 \documentclass{article}
 \usepackage[sorting=none]{biblatex}
+\usepackage{listings}
+\usepackage{amsmath}
+\lstset{
+    frame=tb,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=4
+}
 \addbibresource{report.bib}
 \title{CS890BR Project}
 \date{\today}
@@ -51,9 +64,95 @@
     total amount invested must be below the budget), and objective functions (risk and reward), the problem is ready to be modelled as a constraint
     optimization problem.
     \subsection{Constraint Optimization Techniques}
-    cop
+    A constraint satisfaction problem is defined as a problem with variables, each with a domain and constrained by constraints. The portfolio
+    problem in this form is not particularily useful, because any selection of any amount of the stocks such that the total amount spent does 
+    not exceed the budget satifies the constraint. Thus the advice may be to not buy anything at all! A constraint optimization problem is a 
+    constraint satisfaction problem with the addition of one or more objective functions. An objective function is a function that is minimized
+    or maximized. For example, Dave is packing his backpack for a trip. He cannot fill it past the point at which he can no longer 
+    carry it, but filling it with bricks will not help him on his camping trip. He must fill it with the items that offer the most utility
+    without exceeding the weight constraint. The utility, in this case, must be maximized with respoect given to the constraint. 
+    \subsubsection{Branch and Bound}
+    Branch and bound is one example of a solving technique for constraint optimization problems. This is an exact method, and will give the 
+    best answer of any algorithm presented here. However, the time and space complexity of this algorithm is of major concern. That is what
+    gave rise to the inexact methods discussed below. Branch and bound can be implemented by the following pseudo-code:
+    \begin{lstlisting}
+        define BranchAndBound(node, collection, solutions):
+            if node is a leaf node and node is consistent then:
+                solutions = solutions + node
+                if node->bound > lower_bound then:
+                    lower_bound := node->bound
+                return solutions
+            end if
+            for variable in node->variables do:
+                if variable has value then:
+                    continue
+                end if
+                for value in variable->domain do:
+                    set value for variable
+                    if node is consistent and lower_bound < node->bound then:
+                        collection = collection + node
+            new_node = collection->top
+            collection = collection - new_node
+            return BranchAndBound(new_node, collection, solutions)
+    \end{lstlisting}
+    A \(node\) is a representation of the problem. It has several properties: it keeps track of the variables, and each variable keeps track of its 
+    domain and current value. It becomes a leaf node when all of its variables have values. When all constraints are satisfied, it is consistent.
+    A node also knows its bound; this is a value that corresponds to its objective functions and allows the algorithm to 
+    trim any nodes which would inevitably result in a worse solution than the solutions that have already been obtained. To extend on the example 
+    of Dave's camping trip, if Dave has a few items in his backpack that are less than ideal, Dave may realize that even if he adds the most 
+    utilitous items left, he won't acheive as good of a backpack as he has already come up with. Therefore there's no point in continuing to add 
+    items to this backpack. The collection object can be done in a variety of ways, similar to most searching algorithms. If the collection is 
+    a stack, then the algorithm will perform a depth first style of search. It's worth noting that this isn't a true depth first search as it has the
+    added bounding logic. A queue results in a breadth first style fo search, and a priority queue (using a heuritic value) will result in a
+    best first style of search. 
+    \subsubsection{Genetic Algorithms}
+    Genetic algorithms are a subset of evolutionary algorithms that are unified through the use of some general nature-inspired functions. These
+    functions include mutation, where a gene changes itself; crossover, where two genes swap part of their sequence; and selection, where the 
+    best genes are selected for the next roud of crossover and mutation. Many of these algorithms are explained through the metaphors that they 
+    borrow their names from; for example, flower pollination. Flower pollination is, intuitively, based on the pollination of flowering plants. 
+    There are four rules that govern this algorithm:
+    \begin{itemize}
+        \item Biotic, or global pollination
+        \item Abiotic, or local pollination, 
+        \item Flower constancy
+        \item Switch probability governing the decision to locally or globally pollinate
+    \end{itemize}
+    Global pollination is similar to the generic crossover genetic function. The candidate that is chosen by the pollinator is chosen using 
+    a L\'evy flight. A L\'evy flight is a type of random walk where the randomly chosen step follows a L\'evy distribution, named for 
+    mathematician Paul L\'evy. It is a left-skewed distribution so the steps will generally not be particularly aggressive. This makes the 
+    chances of a valid solution becoming invalid more manageable. 
+    Local pollination is similar to the genetic function of mutation. The pollinator steps with generally the same velocity with which it 
+    took its previous step, using a uniformly distributed random factor.
+    Flower constancy is a biological phenomenon where a pollinator will often choose the same flower species over and over again, despite 
+    other (possibly better) alternatives being present. This is preserved in the algorithm by reproductive ratio, which is proportional
+    to the degree of similar between the pollinator and its pollination candidate. 
+    The fourth rule of flower pollination is the switch probability. On any given pollination event, the choice between biotic and abiotic
+    pollination is determined by random chance. The algorithm, using all of these parts, can be expressed by the following pseudocode:
+    \begin{lstlisting}
+        define FlowerPollination():
+            flowers := initial random population of size n
+            g* := find best solutions in flowers
+            generation := 0
+            while generation < MAX_GENERATIONS do:
+                for flower in flowers do:
+                    if rand > SWITCH_PROBABILITY then:
+                        l := draw from Levy distribution
+                        flower->value := flower->value + Gl(g*->value - flower->value)
+                    else then:
+                        e := random uniform value in [0, 1]
+                        flower_a, flower_b := two random flowers from the set of solutions
+                        flower->value := flower->value + e(flower_a->value - flower_b->value)
+                    end if
+                    g* := find best solutions in flowers
+                end for
+            end while
+    \end{lstlisting}\cite{Nabil} \cite{AroraAnand}
+    
     \section{Implementation}
-    This section describes details of the implementation of the python library, as well as the data captured
+    \subsection{Data}
+    I got the data from Finnhub
+    \subsection{Code}
+    I wrote it in python 3
     \section{Conclusion}
     This is the conclusion where we recap all the fun we had this past week.
     \newpage

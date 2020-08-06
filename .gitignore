@@ -134,6 +134,7 @@ dmypy.json
 *.fdb_latexmk
 *.bcf
 *.aux
+*.pdf
 
 # vs code
 .vscode/

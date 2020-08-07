@@ -40,8 +40,8 @@
     informed portfolio choices is in the best interest of the investor. Therefore, using historical data to generate a set of optimal portfolios
     is the widely accepted approach. Given the multitude of solving techniques, it is in the investor's best interest to determine the most efficient solver
     to find the most efficient solution. There are five algorithms presented in this paper: Flower Pollination, Non-dominated Sorting Genetic 
-    Algorithm 2 (hereby referred to as NSGA2), Particle Swarm Optimization (PSO), Strength Pareto Evolutionary Algorithm 2 (SPEA2), and traditional
-    Branch and Bound, an exact algorithm the other algorithms are to be compared against \cite{Yang} \cite{KaucicMoradiMirzazadeh}. 
+    Algorithm 2 (hereby referred to as NSGA-II), Particle Swarm Optimization (PSO), Strength Pareto Evolutionary Algorithm 2 (SPEA-2), and traditional
+    Branch and Bound, an exact algorithm the other algorithms are to be compared against \cite{Yang} \cite{KaucicMoradiMirzazadeh} \cite{Guerard}. 
     \section{Background Knowledge}
     In order to understand the recommended portfolios and how they are arrived at, one must first understand the problem that is being solved, how it is 
     modelled, what techniques are available and why they were chosen. 
@@ -104,7 +104,7 @@
     items to this backpack. The collection object can be done in a variety of ways, similar to most searching algorithms. If the collection is 
     a stack, then the algorithm will perform a depth first style of search. It's worth noting that this isn't a true depth first search as it has the
     added bounding logic. A queue results in a breadth first style fo search, and a priority queue (using a heuritic value) will result in a
-    best first style of search. 
+    best first style of search. \cite{LandDoig} \cite{Apt} \cite{Dechter}
     \subsubsection{Genetic Algorithms}
     Genetic algorithms are a subset of evolutionary algorithms that are unified through the use of some general nature-inspired functions. These
     functions include mutation, where a gene changes itself; crossover, where two genes swap part of their sequence; and selection, where the 
@@ -137,7 +137,7 @@
                 for flower in flowers do:
                     if rand > SWITCH_PROBABILITY then:
                         l := draw from Levy distribution
-                        flower->value := flower->value + Gl(g*->value - flower->value)
+                        flower->value := flower->value + l(g*->value - flower->value)
                     else then:
                         e := random uniform value in [0, 1]
                         flower_a, flower_b := two random flowers from the set of solutions
@@ -147,7 +147,162 @@
                 end for
             end while
     \end{lstlisting}\cite{Nabil} \cite{AroraAnand}
-    
+    Some of the constants used in this algorithm include the maximum number of generations and the switch probability, which are generally configurable and vary 
+    from problem to problem. \\
+    Proposed in 1995, particle swarm optimization (PSO) can be considered the grandfather of some of the other algorithms discussed here. PSO is an algorithm in 
+    which particles swarm towards an optimal goal. A particle has a few components:
+    \begin{itemize}
+        \item values for each variable
+        \item a velocity for each variable
+        \item the personal best solution that has been found
+        \item the global best solution that has been found by the swarm
+    \end{itemize}
+    The PSO algorithm can be expressed by the following pseudocode:
+    \begin{lstlisting}
+        define ParticleSwarmOptimization():
+            particles := initial random population of size n, each with random velocities
+            global_best := particles
+            while stopping condition not met do:
+                for particle in particles do:
+                    if particle->position > particle->best then:
+                        particle->best := particle->position
+                    end if 
+                    for best in global_best do:
+                        if particle->best > best then:
+                            global_best := global_best + particle->best
+                            global_best := global_best - best
+                        end if
+                    particle->position := particle->position + particle->velocity
+                    particle->update_velocity()
+                end for
+            end while
+            return global_best
+    \end{lstlisting}
+    Note that \(particle \rightarrow update\_velocity()\) is left as a function in this pseudocode. This function has three components:
+    \begin{itemize}
+        \item intertia, or \(w \times particle \rightarrow velocity\)
+        \item the cognitive component, which is a \(C \times rand_1 \times (particle \rightarrow best - particle \rightarrow value)\)
+        \item the social component, which is a \(S \times rand_2 \times (global\_best - particle \rightarrow value)\)
+    \end{itemize}
+    where \(w\), \(C\), and \(S\) are all predefined constants. It then returns the sum of the components. \cite{EberhartKennedy} \cite{KhanesarTavakoliTeshnehlabShoorehdeli} \\
+    SPEA-2 (as well as NSGA-II), while still using genetic components, are not named for a natural metaphor. It proceeds as follows:
+    \begin{lstlisting}
+        define SPEA-2():
+            population := initial random population of size n
+            archive := empty set
+            generation := 0
+            while generation < MAX_GENERATIONS do:
+                dominated := empty set
+                for individual in population + archive do:
+                    for other in population + archive do:
+                        if other dominates individual then:
+                            dominated := dominated + individual
+                        else if individual dominates other then:
+                            dominated := dominated + other
+                        end if
+                    end for
+                end for
+                non_dominated := (population + archive) - dominated
+                archive := non_dominated
+                if |archive| < n then:
+                    dominated := sort_by_domination(dominated)
+                    archive := archive + dominated
+                end if
+                if |archive| > n then:
+                    archive := truncate(archive)
+                end if
+                population := binary_tournament_selection()
+            return archive
+    \end{lstlisting}
+    Several functions have been left as functions in this pseudocode: \(dominates\), \(sort\_by\_domination\), \(truncate\), and \(binary\_tournament\_selection\). 
+    \(dominates\) is a common function in multi-objective solvers; it is used to compare solutions without having to consolidate the objective functions
+    into a single, comparable value. Each objective value is compared to the respective objective value of another solution. If all are equal or greater and 
+    at least one is strictly greater, then the solution dominates the other solution. Naturally, this has several useful properties such as the transitive 
+    property. Sorting by domination, as in \(sort_by_domination\), is to put all solutions in an order such that no solution ahead of a given solution dominates 
+    that solution. The \(truncate\) operation simply shortens the list to the proper \(n\) size required for the next iteration. Since the list is sorted (at 
+    least at the rear of the list), this means that the solutions that are discarded are the most dominated and will not reveal the best results. Finally, 
+    \(binary\_tournament\_selection\) uses a binary tournament selection method to select the next generation of solutions. First, the prospective individuals
+    are sorted by domination. Then, according to their rank in the order, they are assigned probabilities for selection. The non-dominated have the best 
+    probability of being chosen, while the most dominated have the worst probability of being chosen. Then, the next population is randomly chosen from this 
+    pool of individuals. \cite{ZitzlerLaumannsThiele} \cite{KaucicMoradiMirzazadeh} \\
+    In SPEA-2, sorting is heavily relied upon. Non-dominated Sorting Genetic Algorithm II relies even more heavily on sorting a population and picking the best from 
+    the front of the list. There are two functions that NSGA-II uses: \(fast\_non\_dominated\_sort\) and \(crowding\_distance\_assignment\). \(fast\_non\_dominated\_sort\)
+    is as follows:
+    \begin{lstlisting}
+        define fast_non_dominated_sort(population):
+            front = set with a single empty set as the first item
+            for individual_p in population do:
+                individual_p->dominates := empty set
+                individual_p->is_dominated_count := 0
+                for individual_q in population do:
+                    if individual_p dominates individual_q then:
+                        individual_p->dominates := individual_p->dominates + individual_q
+                    else if individual_q dominates individual_p then:
+                        individual_p->is_dominated_count = individual_p->is_dominated_count + 1
+                    end if
+                end for
+                if individual_p->is_dominated_count = 0 then:
+                    individual_p->rank := 0
+                    front[start] := front[start] + individual_p
+                end if
+            end for
+            i := 0
+            while front[i] is not empty do:
+                next_front := empty set
+                for individual_p in front[i] do:
+                    for each individual_q in individual_p->dominates do:
+                        individual_q->is_dominated_count := individual_q->is_dominated_count - 1
+                        if individual_q->is_dominated_count = 0 then:
+                            individual_q->rank := i
+                            next_front := next_front + individual_q
+                        end if
+                    end for
+                end for
+                i := i + 1
+                front[i] = next_front
+            end while
+    \end{lstlisting}
+    \(crowding\_distance\_assignment\) is as follows:
+    \begin{lstlisting}
+        define crowding_distance_assignment(front):
+            for individual in front do:
+                individual->crowding_distance := 0
+            end for
+            for objective in individual->objectives do:
+                front := sort_by_objective_value(front, objective)
+                front[start]->crowding_distance, front[end]->crowding_distance := infinity
+                for start + 1 < i < end - 1 do:
+                    front[i]->crowding_distance = calculate_crowding_distance(front[i]->crowding_distance, front[i + 1]->objectives[objective], front[i - 1]->objectives[objective])
+                end for
+            end for
+    \end{lstlisting}
+    where \(calculate\_crowding\_distance(a, b, c)\) is the following formula:
+    \begin{equation*}
+        a = a + \dfrac{(b - c)}{f_max - f_min}
+    \end{equation*}
+    and \(f_max\), \(f_min\) are the maximum and minimum possible values for the objective in question. 
+    Finally, the full NSGA-II is as follows:
+    \begin{lstlisting}
+        define NSGA-II():
+            generation := 0
+            P := initial random population of size n
+            while generation < MAX_GENERATIONS do:
+                F = fast_non_dominated_sort(P + Q)
+                next_population := empty set
+                i := 0
+                while |next_population| + |F[i]| < n do:
+                    crowding_distance_assignment(F[i])
+                    next_population := next_population + F[i]
+                    i := i + 1
+                end while
+                next_population := next_population + F[i][begin - (n-|next_population|)]
+                Q := binary_tournament_selection()
+                generation := generation + 1
+            end while
+            return F[0]
+    \end{lstlisting}
+    This algorithm uses a similar \(binary\_tournament\_selection\) as SPEA-2.
+    \cite{DebPratapAgarwalMeyarivan} \cite{PonsichJaimesCoello}
     \section{Implementation}
     \subsection{Data}
     I got the data from Finnhub

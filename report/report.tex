@@ -29,7 +29,7 @@
     \section{Introduction}
     In the early days of the stock market, William Stanley Jevons developed a widely used theory on how to predict changes in the market.
     This is the man that wrote such influential books as The Theory of Political Economy, expounding the marginal utility theory of value that 
-    is fundamental to understanding modern economics. A first car has enormous value in comparison to a fifteenth car. Unfortunately for Jevons, 
+    is fundamental to understanding modern economics \cite{Jevons}. A first car has enormously more value than a fifteenth car. Unfortunately for Jevons, 
     his market prediction theory was not so revolutionary. William Peter Hamilton recounts, "[Jevons] propounded the theory of a connection between 
     commercial panics and spots on the sun. \ldots I said that while Wall Street in its heart believed in a cycle fo panic and prosperity, 
     it did not care if there were enough spots of the sun to make a straight flush" \cite{Hamilton}. As much as Jevons' sun spot prediction method
@@ -54,7 +54,8 @@
     purchase such that risk is minimal and reward is maximal. Risk and reward are not comparable to each other; the algorithm cannot decide whether
     a conservative, low reward but also low risk portfolio is better than an aggressive, high risk but high reward portfolio. Thus the solution is a 
     set of options, each one best in its own way. There are several pieces of information that need to be calculated: prices, which are often taken 
-    directly from source data; reward, which is NEED TO FILL IN HOW REWARD WORKS; and risk, which was once upon a time calculated as variance
+    directly from source data; reward, which is taken as the high target value (or the highest value in the time period); and risk, which was once 
+    upon a time calculated as variance
     but is now often calculated as value-at-risk. Value at risk is a type of downside risk; that is, it attempts to measure risk by estimating the
     maximum amount lost on the stock \cite{HongHuZhang} \cite{Cid}. There are a variety of other objectives that could be optimized towards as well: 
     liquiditiy, tax efficiency, etc. However, since the premise of these quantitative optimizations are the same it has been left out of the scope 
@@ -280,7 +281,7 @@
     \begin{equation*}
         a = a + \dfrac{(b - c)}{f_{max} - f_{min}}
     \end{equation*}
-    and \(f_max\), \(f_min\) are the maximum and minimum possible values for the objective in question. 
+    and \(f_{max}\), \(f_{min}\) are the maximum and minimum possible values for the objective in question. 
     Finally, the full NSGA-II is as follows:
     \begin{lstlisting}
         define NSGA-II():
@@ -330,8 +331,33 @@
     from other countries \cite{Finnhub} \cite{Allamaraju}. This data was then processed to reflect the three most important pieces of information for this project: 
     price, risk, and reward.
     \subsection{Results}
+    TODO
     \section{Conclusion}
-    This is the conclusion where we recap all the fun we had this past week.
+    As successfull as Orlando the cat has been picking stocks, modelling and understanding portfolios in order for them to be optimized is a more trustworthy 
+    method. The problem of portfolio optimization is a perfect match to the existing methodology of constraint programming, specifically constraint optimization 
+    problem solving. The exact method of Branch and Bound will result in the best set of solutions, but is inefficient in terms of time and space. This algorithm
+    was implemented as a constant to compare with the genetic algorithms. Genetic algorithms are an alternative to Branch and Bound, while not ensuring the best 
+    answer, are much more efficient. Genetic algorithms generally use the common components of mutation, crossover, and selection, but the ways in which an 
+    algorithm may use these common components differ greatly. The genetic algorithms implemented were Flower Pollination, Particle Swarm Optimization, NSGA-II, 
+    and SPEA-2. These were implemented in Python using test-driven development, object-oriented design, and with readability and reusability in mind using data 
+    gathered from the Finnhub RESTful API. Future work includes 
+    \begin{itemize}
+        \item stability improvements
+        \item attempting to solve problems on a larger scale
+        \item including vastly more objective criteria, including quantitative and qualitative
+        \item environment configuration to publish on the pip python package installer.
+        \item performance improvements; including, but not limited to multi-threading, using tuples, cross-compiling into C, using cloud computing, etc.
+        \item implementing other algorithms including Artificial Bee Colony Optimization, Ant Colony Optimization, and others.
+    \end{itemize}
+    Unfortunately for William Stanley Jevons, there are no plans for implementing sun spot tracking in this implementation. As unpredictable as
+    stock markets are, one of the best ideas in establishing performant portfolios is to create portfolios using genetic algorithms and large 
+    amounts of data. William Peter Hamilton, outside of ridiculing his contemporaries, gives some adivce to ``spectators'' of the stock market:
+    \begin{quotation}
+        Speculation necessarily involves a large element of chance. \ldots It is the speculator himself who too often makes it a sheer gamble. \ldots
+        [C]ertainly, if the amateur is to come into Wall Street and ``speculate'' with the stupidity he so frequently exhibits, the professionals there
+        can show him that his kind of speculation is not a game of chance, and they will not have to cheat to do so
+    \end{quotation}
+    \cite{Hamilton}
     \newpage
     \printbibliography
 \end{document}

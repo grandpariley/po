@@ -1,5 +1,4 @@
 import unittest
-import random
 from copy import deepcopy
 import unittest.mock as mock
 from pkg.random.random import Random

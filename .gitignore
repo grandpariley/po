@@ -135,6 +135,10 @@ dmypy.json
 *.bcf
 *.aux
 *.pdf
+*.bbl
+*.blg
+*.fls
+*.gz
 
 # vs code
 .vscode/

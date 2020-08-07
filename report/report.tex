@@ -278,7 +278,7 @@
     \end{lstlisting}
     where \(calculate\_crowding\_distance(a, b, c)\) is the following formula:
     \begin{equation*}
-        a = a + \dfrac{(b - c)}{f_max - f_min}
+        a = a + \dfrac{(b - c)}{f_{max} - f_{min}}
     \end{equation*}
     and \(f_max\), \(f_min\) are the maximum and minimum possible values for the objective in question. 
     Finally, the full NSGA-II is as follows:
@@ -304,10 +304,32 @@
     This algorithm uses a similar \(binary\_tournament\_selection\) as SPEA-2.
     \cite{DebPratapAgarwalMeyarivan} \cite{PonsichJaimesCoello}
     \section{Implementation}
-    \subsection{Data}
-    I got the data from Finnhub
     \subsection{Code}
-    I wrote it in python 3
+    The program was implemented using Python 3.8.5, which at the time of writing is the current latest stable version of Python. The libraries used during 
+    implementation are as follows (along with links to documentation):
+    \begin{itemize}
+        \item copy (\url{https://docs.python.org/3/library/copy.html})
+        \item math (\url{https://docs.python.org/3/library/math.html})
+        \item datetime (\url{https://docs.python.org/3/library/datetime.html})
+        \item os (\url{https://docs.python.org/3/library/os.html})
+        \item gc (\url{https://docs.python.org/3/library/gc.html})
+        \item unittest (\url{https://docs.python.org/3/library/unittest.html})
+        \item random (\url{https://docs.python.org/3/library/random.html})
+        \item abc (\url{https://docs.python.org/3/library/abc.html})
+        \item time (\url{https://docs.python.org/3/library/time.html})
+        \item finnhub (discussed below)
+    \end{itemize}
+    Two of the driving philosophies behind how it was implemented were reusability and readability. An object-oriented design revolving around classes and 
+    custom, generalized objects was used to acheive this. Following this pattern, there is one general problem design for all algorithms to use, one 
+    problem initializer for all of the genetic algorithms that require a set of random solutions as input, and several utility classes that each algorithm
+    optionally depends on. \cite{ReillyRalstonHemmendinger} The entire suite of solutions is fully unit tested as test driven development was the process of implementation. \cite{Beck} The code itself 
+    is hosted at \url{https://github.com/rileytoddherman/cs890br-proj} and hopefully can become a package available for use through the pip package installer.
+    \subsection{Data}
+    The data was gathered using the Finnhub client. Finnhub is a RESTful client that sources exchange data from ActivFinancial, EDI, QuoteMedia, or the stock 
+    exchanges themselves (for example, ASX). Their market data archive goes back about 35 years for American stock exchanges and about a year for stock exchanges
+    from other countries \cite{Finnhub} \cite{Allamaraju}. This data was then processed to reflect the three most important pieces of information for this project: 
+    price, risk, and reward.
+    \subsection{Results}
     \section{Conclusion}
     This is the conclusion where we recap all the fun we had this past week.
     \newpage

@@ -22,7 +22,19 @@
     \pagenumbering{gobble}
     \maketitle
     \begin{abstract}
-        this is the abstract. you know
+        Portfolio optimization is an excellent candidate for multi-objective constraint optimization techniques. Branch and bound, PSO, flower 
+        pollination, NSGA-II, and SPEA-2 were implemented and compared to solve the portfolio optimization problem. Branch and bound is an 
+        exact method of solving constraint optimization problems that mirrors common searching techniques. PSO uses many initial particles that
+        swarm around the best solutions over several generations. Flower pollination uses an initial field of flowers and has an intelligent
+        pollinator that will either locally or globally pollinate flowers to find the best bouquet. NSGA-II sorts individual solutions into 
+        fronts such that the first front is anything that is not dominated, the second front is dominated by one solutions, and so on and so forth.
+        Over several iterations of this, the first front becomes the best solutions. SPEA-2 samples repeatedly from a tournament pool made up of some 
+        random new solutions and the non-dominated solutions from the previous round. Each algorithm is given in pseudocode and detailed description.
+        The implementations are compared; while branch and bound was sampled as the fastest algorithm despite it's larger computational and spatial 
+        complexity, there are external factors that may have influenced this result. Of the genetic algorithms, PSO was fastest and was the least 
+        restrictive in the solutions generated. Flower pollination had the fewest solutions generated but all were of high quality. NSGA-II and SPEA-2
+        had similar solutions except in terms of crowding, where NSGA-II had a more spread out front of solutions and SPEA-2 (as well as all of the 
+        other genetic algorithms) had some clustering. 
     \end{abstract}
     \newpage
     \pagenumbering{arabic}

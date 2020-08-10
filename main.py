@@ -1,4 +1,4 @@
-from pkg.problem.builder import default_portfolio_optimization_problem
+from pkg.problem.builder import default_portfolio_optimization_problem, generate_many_random_solutions
 from pkg.problem.compare import compareSolutions
 from pkg.beecolony.bee_colony import BeeColony
 from pkg.branchbound.branch_bound import BranchBound
@@ -13,6 +13,7 @@ from copy import deepcopy
 def main():
     timer = Timer()
     problem = default_portfolio_optimization_problem()
+    timer.time(lambda : generate_many_random_solutions(problem, 10), "generate")
     branch_bound = BranchBound(deepcopy(problem))
     branch_bound_soln = timer.time(branch_bound.solve, "branch_bound")
     # bee_colony = BeeColony(deepcopy(problem))

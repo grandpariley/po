@@ -331,7 +331,34 @@
     from other countries \cite{Finnhub} \cite{Allamaraju}. This data was then processed to reflect the three most important pieces of information for this project: 
     price, risk, and reward.
     \subsection{Results}
-    TODO
+    One of the easiest methods to compare implementations of algorithms is by how long they take. Generally, if an exact algorithm takes a reasonable amount of 
+    time to complete, then that is the best choice because the algorithm guarantees the best solution. If the stock market were as small as the artificially small
+    problems that are being used to test this implementation, then branch and bound absolutely wins. In a rather strange turn of events, the branch and bound 
+    implementation is the fastest implemented algorithm in this example. The goes against several expectations; for one, it is the most computationally and spacially
+    complex of the set. One explanation for the bizarre result is the computation time taken up by some of the functions genetic algorithms use that branch and bound
+    does not. Three functions in particular are computationally rather expensive, yet not fully accounted for in theory because they are not the most inefficient 
+    and so at larger scales do not have as emphatic of an effect. The first is the generation of an initial pool of solutions. Branch and bound begins with a problem 
+    with no assigned variables, so spends no time in setting up a pool of potential solutions. While this may seem like a very quick operation, in implementation it is 
+    nearly half the time it takes branch and bound to solve the problem! This is in part due to the second function that is remarkably slow and forms a fundamental
+    part of the genetic algorithms: picking a random number or choice. Python's random library uses the Marsenne Twister algorithm to generate pseudorandom numbers. 
+    However, this is demonstrably not a fast process and it is used very repetitively in the genetic algorithms during mutation and crossover. Using the python module
+    timeit (\url{https://docs.python.org/3/library/timeit.html}) to time the gathering of a random floating point number, the result is nearly 100 CPU cycles per number. 
+    Random integers from the library are worse at nearly 2000 CPU cycles (it's worth noting that the timeit library does involve about 30 cycles for its own processes,
+    but the point still stands). Finally, branch and bound does not need to compare solutions using the idea of domination. Comparing solutions with domination requires
+    each variable to be considered for both of the solutions being compared, and this process happens repeatedly and often. For example, NSGA-II using a domination sorting 
+    technique. Even if the sorting takes the standard \(O(n \log{n})\), this needs to be multiplied by the domination complexity and executed for every front and for 
+    every generation. The cost compounds fairly quickly. On large scales, this compounding would pale in comparison to the compounding of branch and bound's time
+    complexity, but on small scales these functions have an oversized impact. The fastest genetic algorithm was PSO, followed by flower pollination, NSGA-II and SPEA-2.\\
+    In terms of quality of solutions, all of the algorithms found some solutions from the front branch and bound computed. All also found some solutions that were 
+    dominated by other solutions from branch and bound. Interms of number of solutions, PSO consistently found the most solutions, followed by one of NSGA-II and
+    SPEA-2, and lastly flower pollination. Flower pollination had the fewest solutions that were dominated by any other solutions, but in part this was because the
+    algorithm also came up with the fewest solutions overall. Similarly, PSO had the most dominated solutions but in part this was due to the algorithm having the 
+    most solutions in general. NSGA-II and SPEA-2 had very similar solutions; any instance where the solutions for one were significantly better than the other 
+    can be explained as statisticaly anomolies and were not a persistent pattern. Both had high quality, with very few dominated solutions, as well as many of 
+    the solutions that branch and bound had found. However, they had consistently fewer than half of the solutions that branch and bound showed were possible, 
+    which would inhibit the construction of a truly cohesive front. The only metric which differed was the clustering of solutions. In large part due to the crowding
+    distance sorting of NSGA-II, SPEA-2 (as well as PSO and flower pollination) often had clusters or pairs of solutions that would share many characteristics. 
+    NSGA-II did not have the same problem. 
     \section{Conclusion}
     As successfull as Orlando the cat has been picking stocks, modelling and understanding portfolios in order for them to be optimized is a more trustworthy 
     method. The problem of portfolio optimization is a perfect match to the existing methodology of constraint programming, specifically constraint optimization 

@@ -24,10 +24,11 @@
     \begin{abstract}
         Portfolio optimization is an excellent candidate for multi-objective constraint optimization techniques. Branch and bound, PSO, flower 
         pollination, NSGA-II, and SPEA-2 were implemented and compared to solve the portfolio optimization problem. Branch and bound is an 
-        exact method of solving constraint optimization problems that mirrors common searching techniques. PSO uses many initial particles that
+        exact method of solving constraint optimization problems that mirrors common searching techniques. The other techniques explored are 
+        all from a family of algorithms inspired by genetics, called genetic algorithms. PSO uses many initial particles that
         swarm around the best solutions over several generations. Flower pollination uses an initial field of flowers and has an intelligent
         pollinator that will either locally or globally pollinate flowers to find the best bouquet. NSGA-II sorts individual solutions into 
-        fronts such that the first front is anything that is not dominated, the second front is dominated by one solutions, and so on and so forth.
+        fronts such that the first front is anything that is not dominated, the second front is dominated by one solution, and so on and so forth.
         Over several iterations of this, the first front becomes the best solutions. SPEA-2 samples repeatedly from a tournament pool made up of some 
         random new solutions and the non-dominated solutions from the previous round. Each algorithm is given in pseudocode and detailed description.
         The implementations are compared; while branch and bound was sampled as the fastest algorithm despite it's larger computational and spatial 
@@ -43,53 +44,55 @@
     This is the man that wrote such influential books as The Theory of Political Economy, expounding the marginal utility theory of value that 
     is fundamental to understanding modern economics \cite{Jevons}. A first car has enormously more value than a fifteenth car. Unfortunately for Jevons, 
     his market prediction theory was not so revolutionary. William Peter Hamilton recounts, ``[Jevons] propounded the theory of a connection between 
-    commercial panics and spots on the sun. \ldots I said that while Wall Street in its heart believed in a cycle fo panic and prosperity, 
+    commercial panics and spots on the sun. \ldots I said that while Wall Street in its heart believed in a cycle of panic and prosperity, 
     it did not care if there were enough spots of the sun to make a straight flush'' \cite{Hamilton}. As much as Jevons' sun spot prediction method
     sounds absurd, the inherent nature of the stock market is to be unpredictable. His theory is every bit as valid as any other when the theory 
-    attempts to explain a complex adaptive system. Michael Mauboussin acknowledges that "[m]ost systems, in nature and in business,
-    are not in equilibrium but rather in constant flux" \cite{Mauboussin}. \\
+    attempts to explain a complex adaptive system. Michael Mauboussin acknowledges that ``[m]ost systems, in nature and in business,
+    are not in equilibrium but rather in constant flux'' \cite{Mauboussin}. \\
     Having said that, and despite the orange tabby cat Orlando's success as a stock picker \cite{King}, there is little disagreement that making
     informed portfolio choices is in the best interest of the investor. Therefore, using historical data to generate a set of optimal portfolios
     is the widely accepted approach. Given the multitude of solving techniques, it is in the investor's best interest to determine the most efficient solver
-    to find the most efficient solution. There are five algorithms presented in this paper: Flower Pollination, Non-dominated Sorting Genetic 
-    Algorithm 2 (hereby referred to as NSGA-II), Particle Swarm Optimization (PSO), Strength Pareto Evolutionary Algorithm 2 (SPEA-2), and traditional
+    to find the most efficient solution. There are five algorithms presented here: Flower Pollination, Non-dominated Sorting Genetic 
+    Algorithm II (hereby referred to as NSGA-II), Particle Swarm Optimization (PSO), Strength Pareto Evolutionary Algorithm 2 (SPEA-2), and traditional
     Branch and Bound, an exact algorithm the other algorithms are to be compared against \cite{Yang} \cite{KaucicMoradiMirzazadeh} \cite{Guerard}. 
     \section{Background Knowledge}
     In order to understand the recommended portfolios and how they are arrived at, one must first understand the problem that is being solved, how it is 
     modelled, what techniques are available and why they were chosen. 
     \subsection{Portfolio Optimization}
-    The problem of portfolio optimization often finds its roots in Harry Markowitz's frequently cited book Portfolio Selection \cite{Markowitz}. Though
-    the language may not be the same, what he is proposing is clearly a multi-objective constraint optimization problem. He suggests that portfolios
-    should be weighted using risk and return with respect to a budgetary constraint. Though the problem originates in the field of 
-    economics, computing has approached the problem as an excellent candidate for a variety of multi-objective constraint optimization algorithms. \\
+    The problem of portfolio optimization often finds its roots in Harry Markowitz's frequently cited book Portfolio Selection \cite{Markowitz}.
+    The language he uses is not the same language a computing problem is generally expressed, but what he is proposing is clearly a multi-objective 
+    constraint optimization problem. He suggests that portfolios should be weighted using risk and return with respect to a budgetary constraint.
     The problem is formulated as follows: given a set of stocks and a budget, one must use the risk and reward to find an amount of each stock to
     purchase such that risk is minimal and reward is maximal. Risk and reward are not comparable to each other; the algorithm cannot decide whether
-    a conservative, low reward but also low risk portfolio is better than an aggressive, high risk but high reward portfolio. Thus the solution is a 
+    a conservative, low reward but also low risk portfolio is better than an aggressive, high risk but also high reward portfolio. Thus the solution is a 
     set of options, each one best in its own way. There are several pieces of information that need to be calculated: prices, which are often taken 
     directly from source data; reward, which is taken as the high target value (or the highest value in the time period); and risk, which was once 
-    upon a time calculated as variance
-    but is now often calculated as value-at-risk. Value at risk is a type of downside risk; that is, it attempts to measure risk by estimating the
-    maximum amount lost on the stock \cite{HongHuZhang} \cite{Cid}. There are a variety of other objectives that could be optimized towards as well: 
-    liquiditiy, tax efficiency, etc. However, since the premise of these quantitative optimizations are the same it has been left out of the scope 
-    of this project. Another set of objectives that could be optimized towards are qualitative; examples of this may be longevity of the portfolio,
-    where a longer term portfolio may be able to accept more risk than a shorter term portfolio \cite{Xiongetal}, or social responsibility of the 
-    companies being traded. Once the problem is formulated in terms of variables (the stocks and how much to buy of each one), constraints (the 
-    total amount invested must be below the budget), and objective functions (risk and reward), the problem is ready to be modelled as a constraint
-    optimization problem.
+    upon a time calculated as variance but is now often calculated as value-at-risk. Value at risk is a type of downside risk; that is, it attempts 
+    to measure risk by estimating the maximum amount lost on the stock \cite{HongHuZhang} \cite{Cid}. There are a variety of other objectives that 
+    could be optimized towards as well: liquiditiy, tax efficiency, etc. However, since the premise of these quantitative optimizations are the same 
+    it has been left out of the scope of this program. Another set of objectives that could be optimized towards are qualitative; examples of this 
+    may be longevity of the portfolio, where a longer term portfolio may be able to accept more risk than a shorter term portfolio \cite{Xiongetal}, 
+    or social responsibility of the companies being traded. These have also been left out of the scope of this project for the complexities involved. 
+    Once the problem is formulated in terms of variables (the stocks and how much to buy of each one), constraints (the total amount invested must be 
+    below the budget), and objective functions (risk and reward), the problem is ready to be modelled as a constraint optimization problem.
     \subsection{Constraint Optimization Techniques}
     A constraint satisfaction problem is defined as a problem with variables, each with a domain and constrained by constraints. The portfolio
     problem in this form is not particularily useful, because any selection of any amount of the stocks such that the total amount spent does 
     not exceed the budget satifies the constraint. Thus the advice may be to not buy anything at all! A constraint optimization problem is a 
     constraint satisfaction problem with the addition of one or more objective functions. An objective function is a function that is minimized
     or maximized. For example, Dave is packing his backpack for a trip. He cannot fill it past the point at which he can no longer 
-    carry it, but filling it with bricks will not help him on his camping trip. He must fill it with the items that offer the most utility
-    without exceeding the weight constraint. The utility, in this case, must be maximized with respoect given to the constraint. 
+    carry it, but filling it with bricks will not be useful to him on his camping trip. He must fill it with the items that offer the most utility
+    without exceeding the weight constraint. The utility, in this case, must be maximized with respect given to the constraint. 
     \subsubsection{Branch and Bound}
     Branch and bound is one example of a solving technique for constraint optimization problems. This is an exact method, and will give the 
     best answer of any algorithm presented here. However, the time and space complexity of this algorithm is of major concern. That is what
-    gave rise to the inexact methods discussed below. Branch and bound can be implemented by the following pseudo-code:
+    gave rise to the inexact methods discussed below. Branch and bound can be implemented by the following pseudocode:
     \begin{lstlisting}
         define BranchAndBound(node, collection, solutions):
+            if node->bound < lower_bound then:
+                new_node = collection->top
+                collection = collection - new_node
+                return ranchAndBound(new_node, collection, solutions)
             if node is a leaf node and node is consistent then:
                 solutions = solutions + node
                 if node->bound > lower_bound then:
@@ -102,7 +105,7 @@
                 end if
                 for value in variable->domain do:
                     set value for variable
-                    if node is consistent and lower_bound < node->bound then:
+                    if node is consistent and node->bound > lower_bound then:
                         collection = collection + node
             new_node = collection->top
             collection = collection - new_node
@@ -134,7 +137,7 @@
     a L\'evy flight. A L\'evy flight is a type of random walk where the randomly chosen step follows a L\'evy distribution, named for 
     mathematician Paul L\'evy. It is a left-skewed distribution so the steps will generally not be particularly aggressive. This makes the 
     chances of a valid solution becoming invalid more manageable. 
-    Local pollination is similar to the genetic function of mutation. The pollinator steps with generally the same velocity with which it 
+    Local pollination is similar to the genetic function of mutation. The pollinator steps with generally the same direction with which it 
     took its previous step, using a uniformly distributed random factor.
     Flower constancy is a biological phenomenon where a pollinator will often choose the same flower species over and over again, despite 
     other (possibly better) alternatives being present. This is preserved in the algorithm by reproductive ratio, which is proportional
@@ -191,14 +194,15 @@
             end while
             return global_best
     \end{lstlisting}
-    Note that \(particle \rightarrow update\_velocity()\) is left as a function in this pseudocode. This function has three components:
+    Note that \(particle \rightarrow update\_velocity()\) is left as a function in this pseudocode. The calculation for the updated velocity has three components:
     \begin{itemize}
         \item intertia, or \(w \times particle \rightarrow velocity\)
-        \item the cognitive component, which is a \(C \times rand_1 \times (particle \rightarrow best - particle \rightarrow value)\)
-        \item the social component, which is a \(S \times rand_2 \times (global\_best - particle \rightarrow value)\)
+        \item the cognitive component, which is a \(C \times random_1 \times (particle \rightarrow best - particle \rightarrow value)\)
+        \item the social component, which is a \(S \times random_2 \times (global\_best - particle \rightarrow value)\)
     \end{itemize}
-    where \(w\), \(C\), and \(S\) are all predefined constants. It then returns the sum of the components. \cite{EberhartKennedy} \cite{KhanesarTavakoliTeshnehlabShoorehdeli} \\
-    SPEA-2 (as well as NSGA-II), while still using genetic components, are not named for a natural metaphor. It proceeds as follows:
+    where \(w\), \(C\), and \(S\) are all predefined constants and the random variables have floating point values between 0 and 1. It then returns the sum of 
+    the components. \cite{EberhartKennedy} \cite{KhanesarTavakoliTeshnehlabShoorehdeli} \\
+    SPEA-2 (as well as NSGA-II), while still using genetic components, are not named for a natural metaphor. SPEA-2 proceeds as follows:
     \begin{lstlisting}
         define SPEA-2():
             population := initial random population of size n
@@ -231,7 +235,7 @@
     \(dominates\) is a common function in multi-objective solvers; it is used to compare solutions without having to consolidate the objective functions
     into a single, comparable value. Each objective value is compared to the respective objective value of another solution. If all are equal or greater and 
     at least one is strictly greater, then the solution dominates the other solution. Naturally, this has several useful properties such as the transitive 
-    property. Sorting by domination, as in \(sort_by_domination\), is to put all solutions in an order such that no solution ahead of a given solution dominates 
+    property. Sorting by domination, as in \(sort\_by\_domination\), is to put all solutions in an order such that no solution ahead of a given solution dominates 
     that solution. The \(truncate\) operation simply shortens the list to the proper \(n\) size required for the next iteration. Since the list is sorted (at 
     least at the rear of the list), this means that the solutions that are discarded are the most dominated and will not reveal the best results. Finally, 
     \(binary\_tournament\_selection\) uses a binary tournament selection method to select the next generation of solutions. First, the prospective individuals
@@ -293,7 +297,7 @@
     \begin{equation*}
         a = a + \dfrac{(b - c)}{f_{max} - f_{min}}
     \end{equation*}
-    and \(f_{max}\), \(f_{min}\) are the maximum and minimum possible values for the objective in question. 
+    and \(f_{max}\), \(f_{min}\) are the maximum and minimum possible values for the objective in question respectively. 
     Finally, the full NSGA-II is as follows:
     \begin{lstlisting}
         define NSGA-II():
@@ -330,13 +334,14 @@
         \item random (\url{https://docs.python.org/3/library/random.html})
         \item abc (\url{https://docs.python.org/3/library/abc.html})
         \item time (\url{https://docs.python.org/3/library/time.html})
-        \item finnhub (discussed below)
+        \item finnhub (\url{https://finnhub.io})
     \end{itemize}
     Two of the driving philosophies behind how it was implemented were reusability and readability. An object-oriented design revolving around classes and 
     custom, generalized objects was used to acheive this. Following this pattern, there is one general problem design for all algorithms to use, one 
     problem initializer for all of the genetic algorithms that require a set of random solutions as input, and several utility classes that each algorithm
-    optionally depends on. \cite{ReillyRalstonHemmendinger} The entire suite of solutions is fully unit tested as test driven development was the process of implementation. \cite{Beck} The code itself 
-    is hosted at \url{https://github.com/rileytoddherman/cs890br-proj} and hopefully can become a package available for use through the pip package installer.
+    optionally depends on. \cite{ReillyRalstonHemmendinger} The entire suite of solutions is fully unit tested as test driven development was the process of 
+    implementation \cite{Beck}. The code itself is hosted at \url{https://github.com/rileytoddherman/cs890br-proj} and hopefully can become a package available 
+    for use through the pip package installer.
     \subsection{Data}
     The data was gathered using the Finnhub client. Finnhub is a RESTful client that sources exchange data from ActivFinancial, EDI, QuoteMedia, or the stock 
     exchanges themselves (for example, ASX). Their market data archive goes back about 35 years for American stock exchanges and about a year for stock exchanges
@@ -353,16 +358,16 @@
     with no assigned variables, so spends no time in setting up a pool of potential solutions. While this may seem like a very quick operation, in implementation it is 
     nearly half the time it takes branch and bound to solve the problem! This is in part due to the second function that is remarkably slow and forms a fundamental
     part of the genetic algorithms: picking a random number or choice. Python's random library uses the Marsenne Twister algorithm to generate pseudorandom numbers. 
-    However, this is demonstrably not a fast process and it is used very repetitively in the genetic algorithms during mutation and crossover. Using the python module
+    However, this is demonstrably not a fast process and it is used very repetitively in the genetic algorithms during a variety of functions. Using the python module
     timeit (\url{https://docs.python.org/3/library/timeit.html}) to time the gathering of a random floating point number, the result is nearly 100 CPU cycles per number. 
-    Random integers from the library are worse at nearly 2000 CPU cycles (it's worth noting that the timeit library does involve about 30 cycles for its own processes,
-    but the point still stands). Finally, branch and bound does not need to compare solutions using the idea of domination. Comparing solutions with domination requires
+    Random integers from the library are worse at nearly 2000 CPU cycles (it's worth noting that the timeit library does involve about 30 cycles for its own processes).
+    Finally, branch and bound does not need to compare solutions using the idea of domination. Comparing solutions with domination requires
     each variable to be considered for both of the solutions being compared, and this process happens repeatedly and often. For example, NSGA-II using a domination sorting 
     technique. Even if the sorting takes the standard \(O(n \log{n})\), this needs to be multiplied by the domination complexity and executed for every front and for 
     every generation. The cost compounds fairly quickly. On large scales, this compounding would pale in comparison to the compounding of branch and bound's time
     complexity, but on small scales these functions have an oversized impact. The fastest genetic algorithm was PSO, followed by flower pollination, NSGA-II and SPEA-2.\\
     In terms of quality of solutions, all of the algorithms found some solutions from the front branch and bound computed. All also found some solutions that were 
-    dominated by other solutions from branch and bound. Interms of number of solutions, PSO consistently found the most solutions, followed by one of NSGA-II and
+    dominated by other solutions from branch and bound. In terms of number of solutions, PSO consistently found the most solutions, followed by one of NSGA-II and
     SPEA-2, and lastly flower pollination. Flower pollination had the fewest solutions that were dominated by any other solutions, but in part this was because the
     algorithm also came up with the fewest solutions overall. Similarly, PSO had the most dominated solutions but in part this was due to the algorithm having the 
     most solutions in general. NSGA-II and SPEA-2 had very similar solutions; any instance where the solutions for one were significantly better than the other 
@@ -374,8 +379,8 @@
     \section{Conclusion}
     As successfull as Orlando the cat has been picking stocks, modelling and understanding portfolios in order for them to be optimized is a more trustworthy 
     method. The problem of portfolio optimization is a perfect match to the existing methodology of constraint programming, specifically constraint optimization 
-    problem solving. The exact method of Branch and Bound will result in the best set of solutions, but is inefficient in terms of time and space. This algorithm
-    was implemented as a constant to compare with the genetic algorithms. Genetic algorithms are an alternative to Branch and Bound, while not ensuring the best 
+    problem solving. The exact method of branch and bound will result in the best set of solutions, but is inefficient in terms of time and space. This algorithm
+    was implemented as a constant to compare with the genetic algorithms. Genetic algorithms are an alternative to branch and bound, while not ensuring the best 
     answer, are much more efficient. Genetic algorithms generally use the common components of mutation, crossover, and selection, but the ways in which an 
     algorithm may use these common components differ greatly. The genetic algorithms implemented were Flower Pollination, Particle Swarm Optimization, NSGA-II, 
     and SPEA-2. These were implemented in Python using test-driven development, object-oriented design, and with readability and reusability in mind using data 
@@ -392,9 +397,9 @@
     stock markets are, one of the best ideas in establishing performant portfolios is to create portfolios using genetic algorithms and large 
     amounts of data. William Peter Hamilton, outside of ridiculing his contemporaries, gives some adivce to ``spectators'' of the stock market:
     \begin{quotation}
-        Speculation necessarily involves a large element of chance. \ldots It is the speculator himself who too often makes it a sheer gamble. \ldots
+        ``Speculation necessarily involves a large element of chance. \ldots It is the speculator himself who too often makes it a sheer gamble. \ldots
         [C]ertainly, if the amateur is to come into Wall Street and ``speculate'' with the stupidity he so frequently exhibits, the professionals there
-        can show him that his kind of speculation is not a game of chance, and they will not have to cheat to do so
+        can show him that his kind of speculation is not a game of chance, and they will not have to cheat to do so.''
     \end{quotation}
     \cite{Hamilton}
     \newpage

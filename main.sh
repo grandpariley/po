@@ -7,7 +7,7 @@ function clean-tex {
 function load-env {
     if [ -f .env ]
     then
-        export $(cat .env | xargs)
+        export "$(< .env xargs)"
     fi
 }
 
@@ -22,25 +22,6 @@ case $i in
         load-env
         # /usr/bin/time -v python3 main.py
         python3 main.py
-    ;;
-    proposal)
-        cd proposal
-        pdflatex proposal.tex
-        biber proposal
-        pdflatex proposal.tex
-        cd -
-        clean-tex
-    ;;
-    report)
-        cd report
-        pdflatex report.tex
-        biber report
-        pdflatex report.tex
-        cd -
-        clean-tex
-    ;;
-    clean-tex)
-        clean-tex    
     ;;
 esac
 done

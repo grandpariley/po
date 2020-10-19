@@ -1,11 +1,12 @@
-from copy import deepcopy
-from pkg.problem.solver import Solver
+from typing import Set, List, Any
+
+from pkg.consts import Constants
+from pkg.log import Log
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generate_many_random_solutions
-from pkg.consts import Constants
+from pkg.problem.solver import Solver
 from pkg.random.random import Random
-from pkg.log import Log
 
 
 def fast_non_dominated_sort(individuals):

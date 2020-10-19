@@ -11,6 +11,7 @@ from pkg.problem.tests.default_problems import default_consistent_problem, defau
 def default_individual():
     return Individual(problem=default_consistent_problem_set_values())
 
+
 def default_individuals():
     individuals = [None for _ in range(4)]
     for i in range(4):
@@ -20,12 +21,13 @@ def default_individuals():
         individuals[i].problem.set_value(2, i + 1)
     return individuals
 
+
 class Nsga2Test(unittest.TestCase):
 
     def test_fast_non_dominating_sort(self):
         individuals = default_individuals()
         front = fast_non_dominated_sort(individuals)
-        self.assertEqual(front, [[individuals[i]] for i in range(3, -1, -1)] + [[]])
+        self.assertEqual(front, [{individuals[i]} for i in range(3, -1, -1)])
 
     def test_crowding_distance_assignment(self):
         individuals = default_individuals()

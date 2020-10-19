@@ -17,6 +17,7 @@ class FlowerPollination(Solver):
 
     def solve(self):
         Log.begin_debug("flower pollination")
-        solns = self.solve_helper(Bouquet([Flower(p) for p in generate_many_random_solutions(self.problem, Constants.FP_NUMBER_OF_FLOWERS)]))
+        solns = self.solve_helper(
+            Bouquet([Flower(p) for p in generate_many_random_solutions(self.problem, Constants.FP_NUMBER_OF_FLOWERS)]))
         Log.end_debug()
         return solns

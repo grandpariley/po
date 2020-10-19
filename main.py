@@ -1,5 +1,5 @@
 from pkg.problem.builder import default_portfolio_optimization_problem, generate_many_random_solutions
-from pkg.problem.compare import compareSolutions
+from pkg.problem.compare import compare_solutions
 from pkg.beecolony.bee_colony import BeeColony
 from pkg.branchbound.branch_bound import BranchBound
 from pkg.flowerpollination.flower_pollination import FlowerPollination
@@ -10,10 +10,11 @@ from pkg.timer.timer import Timer
 from pkg.problem.builder import stock_names
 from copy import deepcopy
 
+
 def main():
     timer = Timer()
     problem = default_portfolio_optimization_problem()
-    timer.time(lambda : generate_many_random_solutions(problem, 10), "generate")
+    timer.time(lambda: generate_many_random_solutions(problem, 10), "generate")
     branch_bound = BranchBound(deepcopy(problem))
     branch_bound_soln = timer.time(branch_bound.solve, "branch_bound")
     # bee_colony = BeeColony(deepcopy(problem))
@@ -46,7 +47,7 @@ def main():
                 print("\t\t" + stock_names[i] + ": " + str(soln.variable_assignments()[i]))
             print()
         print()
-    solution_compare = compareSolutions(solutions)
+    solution_compare = compare_solutions(solutions)
     non_dominated_str = ""
     for name in solution_compare:
         if solution_compare[name]:

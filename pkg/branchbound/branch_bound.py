@@ -14,13 +14,14 @@ class BranchBound(Solver):
     def set_lower_bound(self, node):
         if self.lower_bound < sum(node.get_objective_values()):
             self.lower_bound = sum(node.get_objective_values())
-    
+
     def solve_helper(self, collection, solutions):
         if not collection:
             return solutions
         node = collection.pop()
         if node.is_leaf():
-            if node.is_consistent() and non_dominated(node.get_objective_values(), [s.objective_values() for s in solutions]):
+            if node.is_consistent() and non_dominated(node.get_objective_values(),
+                                                      [s.objective_values() for s in solutions]):
                 self.set_lower_bound(node)
                 solutions.add(node.get_problem())
             return self.solve_helper(collection, solutions)

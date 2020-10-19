@@ -13,8 +13,8 @@ class ProblemTest(unittest.TestCase):
 
     def test_objective_values(self):
         problem = default_multi_objective_problem_set_values()
-        objVals = problem.objective_values()
-        self.assertEqual(objVals, (5, -5))
+        obj_vals = problem.objective_values()
+        self.assertEqual(obj_vals, (5, -5))
 
     def test_objective_values_empty(self):
         problem = default_consistent_problem()

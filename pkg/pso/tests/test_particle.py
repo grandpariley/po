@@ -1,18 +1,19 @@
 import unittest
 from copy import deepcopy
-import unittest.mock as mock
-from pkg.random.random import Random
 from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem_set_values
 from pkg.pso.particle import Particle
+from pkg.random.random import Random
+
+
+def default_particle():
+    return Particle(default_consistent_problem_set_values())
 
 
 class ParticleTest(unittest.TestCase):
-    def default_particle(self):
-        return Particle(default_consistent_problem_set_values())
 
     def test_move(self):
-        particle = self.default_particle()
+        particle = default_particle()
         old_position = particle.problem.objective_values()
         particle.velocity = [1, 1, 1]
         v = particle.velocity
@@ -26,13 +27,16 @@ class ParticleTest(unittest.TestCase):
         Random.begin_test()
         for _ in range(6):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
-        particle = self.default_particle()
+        particle = default_particle()
         old_particle = deepcopy(particle)
         particle.accelerate()
         new_velocity = particle.velocity
         calculated_velocity = [
-            (Constants.PSO_DRAG * old_particle.velocity[i]) + (Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(
-                i))) + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() * (old_particle.best.get_value(i) - old_particle.problem.get_value(i)))
+            (Constants.PSO_DRAG * old_particle.velocity[i]) + (
+                    Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() * (
+                    old_particle.best.get_value(i) - old_particle.problem.get_value(
+                i))) + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() * (
+                    old_particle.best.get_value(i) - old_particle.problem.get_value(i)))
             for i in range(3)
         ]
         self.assertEqual(calculated_velocity[0], new_velocity[0])

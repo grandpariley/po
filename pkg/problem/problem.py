@@ -1,8 +1,8 @@
 class Problem:
-    def __init__(self, variables, constraints, objectiveFuncs):
+    def __init__(self, variables, constraints, objective_funcs):
         self.variables = variables
         self.constraints = constraints
-        self.objectiveFuncs = objectiveFuncs
+        self.objective_funcs = objective_funcs
 
     def __str__(self):
         return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + str([str(con) for con in self.constraints])
@@ -45,9 +45,9 @@ class Problem:
         return self.variables
 
     def objective_values(self):
-        if self.objectiveFuncs is None:
+        if self.objective_funcs is None:
             return None
-        return tuple([objFunc(self.variables) for objFunc in self.objectiveFuncs])
+        return tuple([objFunc(self.variables) for objFunc in self.objective_funcs])
 
     def get_domain(self, variable_index):
         if 0 <= variable_index < len(self.variables):

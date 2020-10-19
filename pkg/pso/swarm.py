@@ -1,5 +1,4 @@
 from copy import deepcopy
-from pkg.pso.particle import Particle
 from pkg.problem.compare import non_dominated, dominates
 
 
@@ -9,6 +8,7 @@ def get_dominated(particle, best):
         if dominates(particle.get_objective_values(), b.get_objective_values()):
             dominated.append(b)
     return dominated
+
 
 class Swarm:
     def __init__(self, particles):

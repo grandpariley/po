@@ -10,7 +10,8 @@ def non_dominated(obj, objs):
             return False
     return True
 
-def compareSolutions(solution_dict):
+
+def compare_solutions(solution_dict):
     non_dominated_solutions = {}
     for name in solution_dict:
         for other_name in solution_dict:
@@ -21,6 +22,20 @@ def compareSolutions(solution_dict):
                 continue
             is_non_dominated = True
             for soln in solution_dict[name]:
-                is_non_dominated = is_non_dominated and non_dominated(soln.objective_values(), [soln2.objective_values() for soln2 in solution_dict[other_name]])
-            non_dominated_solutions.update({name: non_dominated_solutions[name] if name in non_dominated_solutions else True and is_non_dominated})
+                is_non_dominated = is_non_dominated and non_dominated(soln.objective_values(),
+                                                                      [soln2.objective_values() for soln2 in
+                                                                       solution_dict[other_name]])
+            non_dominated_solutions.update(
+                {name: non_dominated_solutions[name] if name in non_dominated_solutions else True and is_non_dominated})
     return non_dominated_solutions
+
+
+def get_dominated(population):
+    dominated = []
+    for i in population:
+        for j in population:
+            if j not in dominated and dominates(i.get_objective_values(), j.get_objective_values()):
+                dominated.append(j)
+            elif i not in dominated and dominates(j.get_objective_values(), i.get_objective_values()):
+                dominated.append(i)
+    return dominated

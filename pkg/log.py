@@ -1,4 +1,6 @@
-import datetime, os, gc
+import datetime
+import gc
+import os
 
 
 class Log:

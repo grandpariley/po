@@ -1,11 +1,11 @@
 class Constraint:
-    def __init__(self, variable_indicies, func):
+    def __init__(self, variable_indexes, func):
         self.func = func
-        self.variable_indicies = variable_indicies
+        self.variable_indexes = variable_indexes
 
     def __str__(self):
-        return str(self.variable_indicies)
+        return str(self.variable_indexes)
 
     def holds(self, curr_variables):
-        vrs = tuple(curr_variables[i] for i in self.variable_indicies)
+        vrs = tuple(curr_variables[i] for i in self.variable_indexes)
         return bool(self.func(vrs))

@@ -23,6 +23,6 @@ class Individual:
 
     def get_objective_values(self):
         return self.problem.objective_values()
-    
+
     def get_problem(self):
         return self.problem

@@ -93,6 +93,7 @@ class Individual:
             random_index = Random.random_int_between_a_and_b(
                 0, self.problem.num_variables() - 1)
             new_value = self.problem.closest_in_domain(random_index, self.problem.get_value(
-                random_index) + Random.random_float_between_a_and_b(-Constants.NSGA2_MUTATION_STRENGTH, Constants.NSGA2_MUTATION_STRENGTH))
-            if (self.problem.will_be_consistent(random_index, new_value)):
+                random_index) + Random.random_float_between_a_and_b(-Constants.NSGA2_MUTATION_STRENGTH,
+                                                                    Constants.NSGA2_MUTATION_STRENGTH))
+            if self.problem.will_be_consistent(random_index, new_value):
                 self.problem.set_value(random_index, new_value)

@@ -16,7 +16,7 @@ class Flower:
 
     def get_objective_values(self):
         return self.problem.objective_values()
-    
+
     def get_value(self, index):
         return self.problem.get_value(index)
 

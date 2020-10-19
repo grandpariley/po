@@ -33,11 +33,7 @@ class Particle:
 
     def accelerate(self):
         for i in range(self.problem.num_variables()):
-            self.velocity[i] = (Constants.PSO_DRAG * self.velocity[i])
-            + (Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() *
-               (self.best.get_value(i) - self.problem.get_value(i)))
-            + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() *
-               (self.best.get_value(i) - self.problem.get_value(i)))
+            self.velocity[i] = (Constants.PSO_DRAG * self.velocity[i]) + (Constants.PSO_SOCIAL_SCALE * Random.random_float_between_0_and_1() * (self.best.get_value(i) - self.problem.get_value(i))) + (Constants.PSO_COGNITIVE_SCALE * Random.random_float_between_0_and_1() * (self.best.get_value(i) - self.problem.get_value(i)))
 
     def update_best(self):
         if dominates(self.problem.objective_values(), self.best.objective_values()):

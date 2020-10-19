@@ -4,7 +4,7 @@ from pkg.log import Log
 
 class Timer:
     def __init__(self):
-        self.clear_times()
+        self.times = {}
 
     def time(self, func, label):
         Log.begin_debug("timer")
@@ -19,9 +19,6 @@ class Timer:
 
     def get_times_as_formatted_str(self):
         builder = "Times: "
-        for label, time in self.times.items():
-            builder += "\n\t" + str(label) + " : " + str(time / 1000.000) + "ms"
+        for label, thyme in self.times.items():
+            builder += "\n\t" + str(label) + " : " + str(thyme / 1000.000) + "ms"
         return builder
-
-    def clear_times(self):
-        self.times = {}

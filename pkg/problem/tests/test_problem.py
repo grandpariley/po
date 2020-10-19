@@ -1,5 +1,6 @@
 import unittest
-from pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem, default_inconsistent_problem_set_values, default_multi_objective_problem_set_values
+from pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem, \
+    default_inconsistent_problem_set_values, default_multi_objective_problem_set_values
 
 
 class ProblemTest(unittest.TestCase):
@@ -18,7 +19,7 @@ class ProblemTest(unittest.TestCase):
 
     def test_objective_values_empty(self):
         problem = default_consistent_problem()
-        problem.objectiveFuncs = None
+        problem.objective_funcs = None
         self.assertIsNone(problem.objective_values())
 
     def test_all_assigned_true(self):

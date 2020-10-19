@@ -1,7 +1,7 @@
-from math import gamma, pi, sin
+from math import pi, sin
 
 
-class Constants():
+class Constants:
     BUDGET = 5000.00
     GIVE_UP_MAX = 500
     # define PSO constants

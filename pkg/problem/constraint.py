@@ -8,4 +8,7 @@ class Constraint:
 
     def holds(self, curr_variables):
         vrs = tuple(curr_variables[i] for i in self.variable_indexes)
+        for vr in vrs:
+            if vr.get_value() is None:
+                return False
         return bool(self.func(vrs))

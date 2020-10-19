@@ -7,17 +7,24 @@ from pkg.random.random import Random
 from pkg.consts import Constants
 
 
+def default_flower():
+    return Flower(default_consistent_problem())
+
+
+def default_flowers():
+    flowers = [None for _ in range(6)]
+    for i in range(5):
+        flowers[i] = default_flower()
+        flowers[i].problem.set_value(0, i)
+        flowers[i].problem.set_value(1, i + 1)
+        flowers[i].problem.set_value(2, i + 1)
+    return flowers
+
+
 class BouquetTest(unittest.TestCase):
-    def default_flower(self):
-        return Flower(default_consistent_problem())
 
     def test_calculate_best(self):
-        flowers = [None for _ in range(6)]
-        for i in range(5):
-            flowers[i] = self.default_flower()
-            flowers[i].problem.set_value(0, i)
-            flowers[i].problem.set_value(1, i + 1)
-            flowers[i].problem.set_value(2, i + 1)
+        flowers = default_flowers()
         flowers[5] = deepcopy(flowers[4])
         bouquet = Bouquet(flowers)
         bouquet.calculate_best()
@@ -25,12 +32,7 @@ class BouquetTest(unittest.TestCase):
 
     def test_pollinate(self):
         Random.begin_test()
-        flowers = [None for _ in range(6)]
-        for i in range(5):
-            flowers[i] = self.default_flower()
-            flowers[i].problem.set_value(0, i)
-            flowers[i].problem.set_value(1, i + 1)
-            flowers[i].problem.set_value(2, i + 1)
+        flowers = default_flowers()
         flowers[5] = deepcopy(flowers[4])
         for _ in range(9):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
@@ -46,12 +48,7 @@ class BouquetTest(unittest.TestCase):
 
     def test_local_pollination(self):
         Random.begin_test()
-        flowers = [None for _ in range(6)]
-        for i in range(5):
-            flowers[i] = self.default_flower()
-            flowers[i].problem.set_value(0, i)
-            flowers[i].problem.set_value(1, i + 1)
-            flowers[i].problem.set_value(2, i + 1)
+        flowers = default_flowers()
         flowers[5] = deepcopy(flowers[4])
         for _ in range(len(flowers[0].get_objective_values()) * flowers[0].num_variables()):
             Random.set_test_value_for("random_float_between_0_and_1", 0.5)
@@ -61,16 +58,11 @@ class BouquetTest(unittest.TestCase):
         local_pollination_result = bouquet.flowers[0]
         self.assertEqual(local_pollination_result.get_objective_values(), (4, 5, 5))
         Random.end_test()
-    
+
     def test_global_pollination(self):
         Constants.FP_GAMMA_CONSTANT = 1
         Constants._fp_levy_constant = 1
-        flowers = [None for _ in range(6)]
-        for i in range(5):
-            flowers[i] = self.default_flower()
-            flowers[i].problem.set_value(0, i)
-            flowers[i].problem.set_value(1, i + 1)
-            flowers[i].problem.set_value(2, i + 1)
+        flowers = default_flowers()
         flowers[5] = deepcopy(flowers[4])
         bouquet = Bouquet(flowers)
         bouquet.calculate_best()

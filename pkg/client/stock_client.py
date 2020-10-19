@@ -58,9 +58,8 @@ def format(data):
 
 class StockClient:
     def __init__(self):
-        self.finnhub_client = finnhub.Client(
-            api_key=os.getenv("FINNHUB_API_KEY"))
-        self.stocks = [] if os.environ['EXTERNAL_API'] else default_stock_data()
+        self.finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
+        self.stocks = [] if os.getenv("EXTERNAL_API") else default_stock_data()
 
     def get_stock_data(self):
         if bool(self.stocks):

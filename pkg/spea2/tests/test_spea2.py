@@ -27,7 +27,7 @@ class Spea2Test(unittest.TestCase):
 
     def test_get_non_dominated(self):
         population = default_population()
-        population[5] = deepcopy(population[4])
+        population.append(deepcopy(population[4]))
         non_dominated, dominated = get_non_dominated(population)
         self.assertEqual(population[4:5], non_dominated)
         self.assertEqual(population[:4], dominated)

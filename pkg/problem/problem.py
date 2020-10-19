@@ -5,7 +5,8 @@ class Problem:
         self.objective_funcs = objective_funcs
 
     def __str__(self):
-        return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + str([str(con) for con in self.constraints])
+        return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + str(
+            [str(con) for con in self.constraints])
 
     def consistent(self):
         for constraint in self.constraints:
@@ -47,7 +48,7 @@ class Problem:
     def objective_values(self):
         if self.objective_funcs is None:
             return None
-        return tuple([objFunc(self.variables) for objFunc in self.objective_funcs])
+        return tuple([obj_func(self.variables) for obj_func in self.objective_funcs])
 
     def get_domain(self, variable_index):
         if 0 <= variable_index < len(self.variables):

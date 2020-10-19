@@ -8,12 +8,11 @@ class Log:
 
     @classmethod
     def log(cls, obj, context=None, override=False):
-        if not (os.environ['DEBUG'] or override):
+        if not (os.getenv("DEBUG") or override):
             return
         if context is not None:
             cls.context = context
-        print(str(datetime.datetime.now()) +
-              " : " + cls.context + " : " + str(obj))
+        print(str(datetime.datetime.now()) + " : " + cls.context + " : " + str(obj))
 
     @classmethod
     def begin_debug(cls, context):
@@ -27,6 +26,6 @@ class Log:
 
     @classmethod
     def newline(cls):
-        if not os.environ['DEBUG']:
+        if not os.getenv("DEBUG"):
             return
         print()

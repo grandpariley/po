@@ -18,6 +18,13 @@ class DiscreteDomain(Domain):
             return False
         return item in self.values
 
+    def __iter__(self):
+        self.iterator = iter(self.values)
+        return self
+
+    def __next__(self):
+        return next(self.iterator)
+
     def pop(self):
         if not self.values:
             return None

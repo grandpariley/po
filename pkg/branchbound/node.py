@@ -22,16 +22,16 @@ class Node:
 
     def get_problem(self):
         return self.problem
-   
+
     def num_variables(self):
         return self.problem.num_variables()
-   
+
     def get_value(self, variable_index):
         return self.problem.get_value(variable_index)
-   
+
     def get_domain(self, variable_index):
         return self.problem.get_domain(variable_index)
-   
+
     def set_value(self, variable_index, variable_value):
         return self.problem.set_value(variable_index, variable_value)
 

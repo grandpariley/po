@@ -1,5 +1,6 @@
 import unittest
 
+from pkg.consts import Constants
 from pkg.problem.continuous_domain import ContinuousDomain
 from pkg.random.random import Random
 
@@ -39,4 +40,18 @@ class ContinuousDomainTest(unittest.TestCase):
         Random.begin_test()
         Random.set_test_value_for("random_float_between_a_and_b", 3)
         self.assertTrue(default_domain().random(), 3)
+        Random.end_test()
+
+    def test_iterator(self):
+        Random.begin_test()
+        Random.set_test_value_for("random_float_between_a_and_b", 4)
+        Random.set_test_value_for("random_float_between_a_and_b", 3)
+        Random.set_test_value_for("random_float_between_a_and_b", 2)
+        Random.set_test_value_for("random_float_between_a_and_b", 1)
+        Constants.CONTINUOUS_DOMAIN_ITERATION_LIMIT = 4
+        domain = default_domain()
+        i = 1
+        for d in domain:
+            self.assertEqual(d, i)
+            i += 1
         Random.end_test()

@@ -34,3 +34,10 @@ class FunctionalDomainTest(unittest.TestCase):
         Random.set_test_value_for("random_choice", 3)
         self.assertTrue(default_domain().random(), 3)
         Random.end_test()
+
+    def test_iterator(self):
+        domain = default_domain()
+        i = 1
+        for d in domain:
+            self.assertEqual(d, i)
+            i += 1

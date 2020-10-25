@@ -1,3 +1,4 @@
+from pkg.consts import Constants
 from pkg.problem.domain import Domain
 from pkg.random.random import Random
 from math import inf
@@ -21,6 +22,16 @@ class ContinuousDomain(Domain):
         if not self.low or not self.high:
             return False
         return self.low <= item <= self.high
+
+    def __iter__(self):
+        self.counter = 0
+        return self
+
+    def __next__(self):
+        self.counter += 1
+        if self.counter > Constants.CONTINUOUS_DOMAIN_ITERATION_LIMIT:
+            raise StopIteration
+        return self.random()
 
     def top(self):
         return self.random()

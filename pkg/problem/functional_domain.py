@@ -18,6 +18,13 @@ class FunctionalDomain(Domain):
             return False
         return item in self.get_values()
 
+    def __iter__(self):
+        self.iterator = iter(self.get_values())
+        return self
+
+    def __next__(self):
+        return next(self.iterator)
+
     def pop(self):
         if not self.get_values:
             return None

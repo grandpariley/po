@@ -27,7 +27,7 @@ class BranchBound(Solver):
             return self.solve_helper(collection, solutions)
         for i in range(node.num_variables()):
             if node.get_value(i) is None:
-                for d in node.get_domain(i):
+                for d in node.get_variable_iterator(i):
                     node.set_value(i, d)
                     if node.is_consistent() and self.bound_ok(node):
                         collection.append(deepcopy(node))

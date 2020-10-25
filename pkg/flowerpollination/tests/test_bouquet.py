@@ -44,7 +44,7 @@ class BouquetTest(unittest.TestCase):
         self.assertEqual(local_pollination_result.get_objective_values(), (4, 5, 5))
         bouquet.pollinate(1)
         global_pollination_result = bouquet.flowers[1]
-        self.assertEqual(global_pollination_result.get_objective_values(), (4, 5, 5))
+        self.assertEqual(global_pollination_result.get_objective_values(), (3, 4, 4))
 
     def test_local_pollination(self):
         Random.begin_test()
@@ -56,7 +56,7 @@ class BouquetTest(unittest.TestCase):
         bouquet.calculate_best()
         bouquet.local_pollination(0)
         local_pollination_result = bouquet.flowers[0]
-        self.assertEqual(local_pollination_result.get_objective_values(), (3, 5, 5))
+        self.assertEqual(local_pollination_result.get_objective_values(), (3, 4, 4))
         Random.end_test()
 
     def test_global_pollination(self):

@@ -1,6 +1,3 @@
-from copy import deepcopy
-
-
 class Variable:
     def __init__(self, domain, objective_info):
         self.domain = domain
@@ -11,14 +8,10 @@ class Variable:
         return str(self.domain) + " {" + str(self.value) + "}"
 
     def pop(self):
-        if not self.domain:
-            return None
         return self.domain.pop()
 
     def top(self):
-        if not self.domain:
-            return None
-        return self.domain[-1]
+        return self.domain.top()
 
     def set_value(self, value):
         if value in self.domain:
@@ -33,23 +26,11 @@ class Variable:
     def get_domain(self):
         return self.domain
 
+    def get_random_from_domain(self):
+        return self.domain.random()
+
     def closest_in_domain(self, value):
-        if not self.domain:
-            return None
-        if value in self.domain:
-            return value
-        domain = deepcopy(self.domain)
-        domain.append(value)
-        domain.sort()
-        if value == domain[0]:
-            return domain[1]
-        elif value == domain[-1]:
-            return domain[-2]
-        closest_under = domain[domain.index(value) - 1]
-        closest_over = domain[domain.index(value) + 1]
-        if abs(closest_under - value) < abs(closest_over - value):
-            return closest_under
-        return closest_over
+        return self.domain.closest(value)
 
     def get_objective_info(self):
         return self.objective_info

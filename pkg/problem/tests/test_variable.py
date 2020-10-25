@@ -1,9 +1,11 @@
 import unittest
+
+from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.problem.variable import Variable
 
 
 def default_variable():
-    return Variable([1, 2, 3, 4, 5], {})
+    return Variable(DiscreteDomain([1, 2, 3, 4, 5]), {})
 
 
 class VariableTest(unittest.TestCase):
@@ -14,7 +16,7 @@ class VariableTest(unittest.TestCase):
         self.assertEqual(len(var.domain), 4)
 
     def test_pop_empty(self):
-        var = Variable([], {})
+        var = Variable(DiscreteDomain([]), {})
         self.assertIsNone(var.pop())
 
     def test_top(self):
@@ -23,7 +25,7 @@ class VariableTest(unittest.TestCase):
         self.assertEqual(len(var.domain), 5)
 
     def test_top_empty(self):
-        var = Variable([], {})
+        var = Variable(DiscreteDomain([]), {})
         self.assertIsNone(var.top())
 
     def test_set_value(self):
@@ -43,9 +45,6 @@ class VariableTest(unittest.TestCase):
         var.reset_value()
         self.assertIsNone(var.get_value())
 
-    def test_get_domain(self):
-        self.assertEqual(default_variable().get_domain(), [1, 2, 3, 4, 5])
-
     def test_closest_in_domain_in_domain(self):
         self.assertEqual(default_variable().closest_in_domain(3), 3)
 
@@ -55,4 +54,4 @@ class VariableTest(unittest.TestCase):
         self.assertEqual(default_variable().closest_in_domain(3.2), 3)
 
     def test_closest_in_domain_empty_domain(self):
-        self.assertIsNone(Variable([], {}).closest_in_domain(3))
+        self.assertIsNone(Variable(DiscreteDomain([]), {}).closest_in_domain(3))

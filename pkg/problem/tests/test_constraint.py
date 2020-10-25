@@ -1,12 +1,13 @@
 import unittest
 from pkg.problem.constraint import Constraint
+from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.problem.variable import Variable
 
 
 def default_variables():
     return [
-        Variable([0, 1], {}),
-        Variable([0, 1], {})
+        Variable(DiscreteDomain([0, 1]), {}),
+        Variable(DiscreteDomain([0, 1]), {})
     ]
 
 

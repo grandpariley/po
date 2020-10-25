@@ -2,6 +2,7 @@ from math import pi, sin
 
 
 class Constants:
+    CONTINUOUS_DOMAIN_ITERATION_LIMIT = 500
     BUDGET = 5000.00
     GIVE_UP_MAX = 500
     # define PSO constants

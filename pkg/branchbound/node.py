@@ -29,8 +29,8 @@ class Node:
     def get_value(self, variable_index):
         return self.problem.get_value(variable_index)
 
-    def get_domain(self, variable_index):
-        return self.problem.get_domain(variable_index)
+    def get_variable_iterator(self, variable_index):
+        return self.problem.get_variable_iterator(variable_index)
 
     def set_value(self, variable_index, variable_value):
         return self.problem.set_value(variable_index, variable_value)

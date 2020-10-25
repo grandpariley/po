@@ -40,8 +40,6 @@ class ContinuousDomain(Domain):
         return self.random()
 
     def closest(self, el):
-        if not self.low or not self.high:
-            return False
         if el <= self.low:
             return self.low
         if el >= self.high:

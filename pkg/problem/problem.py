@@ -63,3 +63,7 @@ class Problem:
     def closest_in_domain(self, variable_index, value):
         if 0 <= variable_index < len(self.variables):
             return self.variables[variable_index].closest_in_domain(value)
+
+    def get_variable_iterator(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            return iter(self.variables[variable_index].get_domain())

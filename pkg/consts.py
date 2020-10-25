@@ -1,4 +1,15 @@
 from math import pi, sin
+from os import getenv
+
+from pkg.log_level import LogLevel
+
+
+def fp_levy_constant():
+    sheepda = 1.5
+    s = 0.5
+    senpai = sin(pi * sheepda / 2.00000000)
+    horatio = 1.00000000 / (s ** (1 + sheepda))
+    return ((sheepda * senpai) / pi) * horatio
 
 
 class Constants:
@@ -30,14 +41,7 @@ class Constants:
     BC_POPULATION_SIZE = 10
     BC_MAX_CYCLE_NUMBER = 50
     BC_LIMIT = 50
+    FP_LEVY_CONSTANT = fp_levy_constant()
 
-    @classmethod
-    def FP_LEVY_CONSTANT(cls):
-        if cls._fp_levy_constant is not None:
-            return cls._fp_levy_constant
-        sheepda = 1.5
-        s = 0.5
-        senpai = sin(pi * sheepda / 2.00000000)
-        horatio = 1.00000000 / (s ** (1 + sheepda))
-        cls._fp_levy_constant = ((sheepda * senpai) / pi) * horatio
-        return cls._fp_levy_constant
+    LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'none'))
+    EXTERNAL_API = getenv('EXTERNAL_API', 'false') == 'true'

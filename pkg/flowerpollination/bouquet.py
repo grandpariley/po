@@ -39,7 +39,7 @@ class Bouquet:
             best_wrt_objective = get_best_wrt_objective(self.best, o)
             for v in range(self.flowers[flower_index].num_variables()):
                 new_value = self.flowers[flower_index].get_value(
-                    v) + Constants.FP_GAMMA_CONSTANT * Constants.FP_LEVY_CONSTANT() * (
+                    v) + Constants.FP_GAMMA_CONSTANT * Constants.FP_LEVY_CONSTANT * (
                                         best_wrt_objective.get_value(v) - self.flowers[flower_index].get_value(v))
                 self.flowers[flower_index].safe_set_value(v, new_value)
 

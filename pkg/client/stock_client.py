@@ -1,5 +1,7 @@
 import os, finnhub
 
+from pkg.consts import Constants
+
 stock_names = ['AAPL', 'MSFT', 'TSLA',
                'NVDA', 'GOOGL']
 
@@ -59,7 +61,7 @@ def format(data):
 class StockClient:
     def __init__(self):
         self.finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
-        self.stocks = [] if os.getenv("EXTERNAL_API") else default_stock_data()
+        self.stocks = [] if Constants.EXTERNAL_API else default_stock_data()
 
     def get_stock_data(self):
         if bool(self.stocks):

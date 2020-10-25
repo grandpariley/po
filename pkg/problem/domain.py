@@ -29,7 +29,11 @@ class Domain:
         raise NotImplementedError
 
     @abstractmethod
-    def contains(self, el):
+    def __len__(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def __contains__(self, item):
         raise NotImplementedError
 
     @abstractmethod
@@ -42,4 +46,8 @@ class Domain:
 
     @abstractmethod
     def closest(self, el):
+        raise NotImplementedError
+
+    @abstractmethod
+    def random(self):
         raise NotImplementedError

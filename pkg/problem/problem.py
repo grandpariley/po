@@ -50,10 +50,9 @@ class Problem:
             return None
         return tuple([obj_func(self.variables) for obj_func in self.objective_funcs])
 
-    def get_domain(self, variable_index):
+    def get_random_from_variable(self, variable_index):
         if 0 <= variable_index < len(self.variables):
-            return self.variables[variable_index].get_domain()
-        return []
+            return self.variables[variable_index].get_random_from_domain()
 
     def num_variables(self):
         return len(self.variables)

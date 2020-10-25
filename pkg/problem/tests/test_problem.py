@@ -47,10 +47,6 @@ class ProblemTest(unittest.TestCase):
         problem.reset_value(1)
         self.assertIsNone(problem.variables[1].get_value())
 
-    def test_get_domain(self):
-        problem = default_consistent_problem_set_values()
-        self.assertEqual(problem.get_domain(1), [0, 1, 2, 3, 4, 5])
-
     def test_num_variables(self):
         problem = default_consistent_problem_set_values()
         self.assertEqual(problem.num_variables(), 3)

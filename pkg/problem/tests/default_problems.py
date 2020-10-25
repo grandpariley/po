@@ -1,3 +1,4 @@
+from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.problem.variable import Variable
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
@@ -5,9 +6,9 @@ from pkg.problem.problem import Problem
 
 def default_variables():
     return [
-        Variable([0, 1, 2, 3, 4, 5], []),
-        Variable([0, 1, 2, 3, 4, 5], []),
-        Variable([0, 1, 2, 3, 4, 5], []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
     ]
 
 

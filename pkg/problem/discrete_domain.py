@@ -1,4 +1,5 @@
 from pkg.problem.domain import Domain, closest_in_list
+from pkg.random.random import Random
 
 
 class DiscreteDomain(Domain):
@@ -9,10 +10,13 @@ class DiscreteDomain(Domain):
     def __str__(self):
         return str(self.values)
 
-    def contains(self, el):
+    def __len__(self):
+        return len(self.values)
+
+    def __contains__(self, item):
         if not self.values:
             return False
-        return el in self.values
+        return item in self.values
 
     def pop(self):
         if not self.values:
@@ -26,3 +30,6 @@ class DiscreteDomain(Domain):
 
     def closest(self, el):
         return closest_in_list(el, self.values)
+
+    def random(self):
+        return Random.random_choice(self.values)

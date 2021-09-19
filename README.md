@@ -8,9 +8,10 @@ Included in this library is also an implementation for each of the following alg
  
  - Branch and Bound
  - NSGA-2
- - Flower Pollination
- - Particle Swarm optimization
- - SPEA-II
+ <!-- - Flower Pollination -->
+ <!-- - Particle Swarm optimization -->
+ <!-- - SPEA-II -->
+ <!-- - MoBOA -->
  
 More algorithm implementations forthcoming. 
 

@@ -7,6 +7,9 @@ class Problem:
     def __str__(self):
         return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + str(
             [str(con) for con in self.constraints])
+    
+    def __repr__(self):
+        return str(self)
 
     def consistent(self):
         for constraint in self.constraints:

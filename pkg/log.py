@@ -10,8 +10,8 @@ class Log:
     context = ''
 
     @classmethod
-    def log(cls, obj, context=None, override=False):
-        if not override or Constants.LOG_LEVEL == LogLevel.NONE:
+    def log(cls, obj, context=None):
+        if Constants.LOG_LEVEL == LogLevel.NONE:
             return
         if context is None and cls.context is None:
             cls.context = os.getenv('LOG_LEVEL')

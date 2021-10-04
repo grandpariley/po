@@ -1,5 +1,3 @@
-from typing import Set, List, Any
-
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.nsga2.individual import Individual
@@ -10,7 +8,7 @@ from pkg.random.random import Random
 
 
 def fast_non_dominated_sort(individuals):
-    first_front = set()
+    first_front = []
     for p in individuals:
         for q in individuals:
             if p.does_dominate(q):
@@ -19,17 +17,17 @@ def fast_non_dominated_sort(individuals):
                 p.increment_dominated()
         if not p.is_dominated():
             p.set_rank(0)
-            first_front.add(p)
+            first_front.append(p)
     front_count = 0
     front = [first_front]
     while front[front_count] and len(front) < len(individuals):
-        next_front = set()
+        next_front = []
         for p in front[front_count]:
             for q in p.get_dominates():
                 q.decrement_dominated()
                 if not q.is_dominated():
                     q.set_rank(front_count + 1)
-                    next_front.add(q)
+                    next_front.append(q)
         front_count += 1
         front.append(next_front)
     return front
@@ -99,7 +97,7 @@ def generate_children(parent_population):
 class Nsga2(Solver):
 
     def solve_helper(self, parent_population, child_population):
-        for j in range(Constants.NSGA2_NUM_GENERATIONS):
+        for _ in range(Constants.NSGA2_NUM_GENERATIONS):
             front = fast_non_dominated_sort(parent_population + child_population)
             parent_population = []
             i = 0
@@ -115,9 +113,9 @@ class Nsga2(Solver):
         return [individual.get_problem() for individual in set(front[0])]
 
     def solve(self):
-        parent_population = [Individual(problem=p) for p in generate_many_random_solutions(
-            self.problem, Constants.NSGA2_NUM_INDIVIDUALS)]
+        problems = generate_many_random_solutions(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
         Log.begin_debug("nsga2")
+        parent_population = [Individual(problem=p) for p in problems]
         solns = self.solve_helper(parent_population, [])
         Log.end_debug()
         return solns

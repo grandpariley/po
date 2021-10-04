@@ -1,6 +1,5 @@
 from pkg.problem.builder import default_portfolio_optimization_problem, generate_many_random_solutions
 from pkg.problem.compare import compare_solutions
-from pkg.branchbound.branch_bound import BranchBound
 from pkg.nsga2.nsga2 import Nsga2
 from pkg.timer.timer import Timer
 from pkg.problem.builder import stock_names
@@ -11,12 +10,9 @@ def main():
     timer = Timer()
     problem = default_portfolio_optimization_problem()
     timer.time(lambda: generate_many_random_solutions(problem, 10), "generate")
-    branch_bound = BranchBound(deepcopy(problem))
-    branch_bound_soln = timer.time(branch_bound.solve, "branch_bound")
     nsga2 = Nsga2(deepcopy(problem))
     nsga2_soln = timer.time(nsga2.solve, "nsga2")
     solutions = {
-        'branch_bound': branch_bound_soln,
         'nsga2': nsga2_soln,
     }
     print("Solutions: ")

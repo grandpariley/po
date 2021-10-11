@@ -1,3 +1,5 @@
+from copy import deepcopy
+from pkg.log import Log
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
@@ -12,7 +14,7 @@ class Individual:
             raise ValueError("must have one of a problem or an individual")
         if problem is not None:
             self.problem = problem
-            self.dominates = set()
+            self.dominates = []
             self.domination_count = 0
             self.crowding_distance = 0
             self.inverse_tournament_rank = 0
@@ -41,7 +43,8 @@ class Individual:
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
     def add_dominated(self, q):
-        self.dominates.add(q)
+        if q not in self.dominates:
+            self.dominates.append(q)
 
     def get_dominates(self):
         return self.dominates
@@ -81,19 +84,25 @@ class Individual:
         return self.inverse_tournament_rank
 
     def swap_half_genes(self, other):
-        while True:
-            for _ in range(floor(self.problem.num_variables() / 2)):
-                random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
-                self.problem.set_value(random_index, other.problem.get_value(random_index))
-            if self.problem.consistent():
+        give_up = 0
+        while give_up < Constants.GIVE_UP_MAX:
+            problem = deepcopy(self.problem)
+            for _ in range(floor(problem.num_variables() / 2)):
+                random_index = Random.random_int_between_a_and_b(
+                    0, problem.num_variables() - 1)
+                problem.set_value(
+                    random_index, other.problem.get_value(random_index))
+            if problem.consistent():
+                self.problem = problem
                 break
+            else:
+                give_up += 1
 
     def emo_phase(self):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
             random_index = Random.random_int_between_a_and_b(
                 0, self.problem.num_variables() - 1)
             new_value = self.problem.closest_in_domain(random_index, self.problem.get_value(
-                random_index) + Random.random_float_between_a_and_b(-Constants.NSGA2_MUTATION_STRENGTH,
-                                                                    Constants.NSGA2_MUTATION_STRENGTH))
+                random_index) + Random.random_float_between_a_and_b(-Constants.NSGA2_MUTATION_STRENGTH, Constants.NSGA2_MUTATION_STRENGTH))
             if self.problem.will_be_consistent(random_index, new_value):
                 self.problem.set_value(random_index, new_value)

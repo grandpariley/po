@@ -6,18 +6,14 @@ def closest_in_list(el, lst):
         return None
     if el in lst:
         return el
-    lst.append(el)
-    lst.sort()
-    if el == lst[0]:
-        return lst[1]
-    elif el == lst[-1]:
-        return lst[-2]
-    closest_under = lst[lst.index(el) - 1]
-    closest_over = lst[lst.index(el) + 1]
-    if abs(closest_under - el) < abs(closest_over - el):
-        return closest_under
-    return closest_over
-
+    current_closest = lst[0]
+    current_closest_distance = float('inf')
+    for l in lst:
+        distance = l - el
+        if current_closest_distance > abs(distance) or (current_closest_distance == abs(distance) and l > current_closest):
+            current_closest = l
+            current_closest_distance = abs(distance)
+    return current_closest
 
 class Domain:
     @abstractmethod

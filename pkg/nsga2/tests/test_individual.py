@@ -39,7 +39,7 @@ class IndividualTest(unittest.TestCase):
         individual = default_dominating_individual()
         other_individual = default_individual()
         individual.add_dominated(other_individual)
-        self.assertEqual(individual.get_dominated(), {other_individual})
+        self.assertEqual(individual.get_dominated(), [other_individual])
 
     def test_increment_dominated(self):
         individual = default_dominating_individual()

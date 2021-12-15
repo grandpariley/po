@@ -6,8 +6,8 @@ from pkg.problem.variable import Variable
 
 def default_variables():
     return [
-        Variable(DiscreteDomain([0, 1]), {}),
-        Variable(DiscreteDomain([0, 1]), {})
+        Variable(DiscreteDomain([0, 1], 0), {}),
+        Variable(DiscreteDomain([0, 1], 0), {})
     ]
 
 

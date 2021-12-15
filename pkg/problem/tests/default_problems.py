@@ -6,9 +6,9 @@ from pkg.problem.problem import Problem
 
 def default_variables():
     return [
-        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
-        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
-        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5]), []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5], 0), []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5], 0), []),
+        Variable(DiscreteDomain([0, 1, 2, 3, 4, 5], 0), []),
     ]
 
 

@@ -2,7 +2,7 @@ class Variable:
     def __init__(self, domain, objective_info):
         self.domain = domain
         self.objective_info = objective_info
-        self.value = None
+        self.value = domain.get_base_value()
 
     def __str__(self):
         return str(self.domain) + " {" + str(self.value) + "}"
@@ -22,9 +22,6 @@ class Variable:
 
     def reset_value(self):
         self.value = None
-
-    def get_domain(self):
-        return self.domain
 
     def get_random_from_domain(self):
         return self.domain.random()

@@ -1,5 +1,4 @@
 from copy import deepcopy
-from pkg.log import Log
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
@@ -100,9 +99,6 @@ class Individual:
 
     def emo_phase(self):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
-            random_index = Random.random_int_between_a_and_b(
-                0, self.problem.num_variables() - 1)
-            new_value = self.problem.closest_in_domain(random_index, self.problem.get_value(
-                random_index) + Random.random_float_between_a_and_b(-Constants.NSGA2_MUTATION_STRENGTH, Constants.NSGA2_MUTATION_STRENGTH))
-            if self.problem.will_be_consistent(random_index, new_value):
-                self.problem.set_value(random_index, new_value)
+            random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
+            new_value = self.problem.get_consistent_value_in_domain(random_index)
+            self.problem.set_value(random_index, new_value)

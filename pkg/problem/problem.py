@@ -26,12 +26,6 @@ class Problem:
         self.set_value(variable_index, old_value)
         return consistent
 
-    def all_assigned(self):
-        for variable in self.variables:
-            if variable.get_value() is None:
-                return False
-        return True
-
     def set_value(self, variable_index, value):
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].set_value(value)
@@ -45,6 +39,10 @@ class Problem:
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()
 
+    def get_domain(self, variable_index):
+        if 0 <= variable_index < len(self.variables):
+            self.variables[variable_index].get_domain()
+
     def get_variables(self):
         return self.variables
 
@@ -53,20 +51,6 @@ class Problem:
             return None
         return tuple([obj_func(self.variables) for obj_func in self.objective_funcs])
 
-    def get_random_from_variable(self, variable_index):
-        if 0 <= variable_index < len(self.variables):
-            return self.variables[variable_index].get_random_from_domain()
-
     def num_variables(self):
         return len(self.variables)
 
-    def variable_assignments(self):
-        return tuple([v.get_value() for v in self.variables])
-
-    def closest_in_domain(self, variable_index, value):
-        if 0 <= variable_index < len(self.variables):
-            return self.variables[variable_index].closest_in_domain(value)
-
-    def get_variable_iterator(self, variable_index):
-        if 0 <= variable_index < len(self.variables):
-            return iter(self.variables[variable_index].get_domain())

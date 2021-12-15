@@ -55,3 +55,6 @@ class Domain:
     @abstractmethod
     def random(self):
         raise NotImplementedError
+
+    def get_base_value(self):
+        raise NotImplementedError

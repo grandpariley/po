@@ -1,4 +1,3 @@
-import gc
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.nsga2.individual import Individual
@@ -6,6 +5,7 @@ from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
 from pkg.problem.builder import generate_many_random_solutions
 from pkg.problem.solver import Solver
 from pkg.random.random import Random
+from pkg.problem.builder import stock_names
 
 
 def fast_non_dominated_sort_front(individuals, rank):
@@ -27,8 +27,7 @@ def fast_non_dominated_sort(individuals):
     front = [first_front]
     front_count = 0
     while front[front_count] and sum(len(f) for f in front) < len(individuals):
-        next_front = fast_non_dominated_sort_front(
-            front[front_count], front_count + 1)
+        next_front = fast_non_dominated_sort_front(front[front_count], front_count + 1)
         front.append(next_front)
         front_count += 1
     return front
@@ -41,17 +40,14 @@ def crowding_distance_assignment(individuals):
         individuals = sort_individuals(individuals, o)
         individuals[0].set_crowding_distance(float('inf'))
         individuals[-1].set_crowding_distance(float('inf'))
-        denominator = individuals[0].get_objective_values(
-        )[o] - individuals[-1].get_objective_values()[o]
+        denominator = individuals[0].get_objective_values()[o] - individuals[-1].get_objective_values()[o]
         if denominator == 0.0:
             for i in range(1, len(individuals) - 1):
                 individuals[i].set_crowding_distance(float('inf'))
         else:
             for i in range(1, len(individuals) - 1):
-                numerator = individuals[i + 1].get_objective_values(
-                )[o] - individuals[i - 1].get_objective_values()[o]
-                individuals[i].set_crowding_distance(
-                    individuals[i].get_crowding_distance() + (numerator / denominator))
+                numerator = individuals[i + 1].get_objective_values()[o] - individuals[i - 1].get_objective_values()[o]
+                individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + (numerator / denominator))
 
     return individuals
 
@@ -99,30 +95,37 @@ def generate_children(parent_population):
 
 
 class Nsga2(Solver):
-
     def solve_helper(self, parent_population):
         for _ in range(Constants.NSGA2_NUM_GENERATIONS):
             child_population = generate_children(parent_population)
-            front = fast_non_dominated_sort(
-                parent_population + child_population)
+            front = fast_non_dominated_sort(set(parent_population + child_population))
             parent_population = []
             i = 0
             while i < len(front) and len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
                 parent_population += front[i]
                 i += 1
             if i < len(front):
-                front[i] = crowding_distance_assignment(list(front[i]))
-                parent_population += sort_by_crowding_distance(list(front[i]))[
-                    Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
-            gc.collect()
+                front[i] = crowding_distance_assignment(front[i])
+                parent_population += sort_by_crowding_distance(front[i])[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
+            
         front = fast_non_dominated_sort(parent_population)
         return [individual.get_problem() for individual in front[0]]
 
     def solve(self):
-        problems = generate_many_random_solutions(
-            self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
+        problems = generate_many_random_solutions(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
+        self.print_problems(problems)
         Log.begin_debug("nsga2")
         parent_population = [Individual(problem=p) for p in problems]
         solns = self.solve_helper(parent_population)
         Log.end_debug()
         return solns
+
+    def print_problems(self, problems):
+        print("Problems: ")
+        for p in problems:
+            print("\trisk: " + str(p.objective_values()[0]))
+            print("\treward: " + str(p.objective_values()[1]))
+            print("\tbudget: " + str(sum([s.get_value() * s.get_objective_info()['price'] for s in p.variables])))
+            for i in range(len(stock_names)):
+                print("\t\t" + stock_names[i] + ": " + str(p.variable_assignments()[i]))
+            print()

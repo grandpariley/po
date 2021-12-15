@@ -5,7 +5,7 @@ from pkg.random.random import Random
 
 
 def default_domain():
-    return DiscreteDomain([1, 2, 3, 4, 5])
+    return DiscreteDomain([1, 2, 3, 4, 5], 1)
 
 
 class DiscreteDomainTest(unittest.TestCase):

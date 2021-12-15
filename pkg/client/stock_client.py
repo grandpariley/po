@@ -1,7 +1,3 @@
-import os, finnhub
-
-from pkg.consts import Constants
-
 stock_names = ['AAPL', 'MSFT', 'TSLA',
                'NVDA', 'GOOGL']
 
@@ -48,7 +44,7 @@ def get_price(d):
     return d['targetMean']
 
 
-def format(data):
+def format_data(data):
     return {
         d['symbol']: {
             'price': get_price(d),
@@ -57,17 +53,16 @@ def format(data):
         } for d in data
     }
 
-
-class StockClient:
-    def __init__(self):
-        self.finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
-        self.stocks = [] if Constants.EXTERNAL_API else default_stock_data()
-
-    def get_stock_data(self):
-        if bool(self.stocks):
-            return self.stocks
-        prices = []
-        for stock in stock_names:
-            prices.append(self.finnhub_client.price_target(stock))
-        self.stocks = format(prices)
-        return self.stocks
+# class StockClient:
+#     def __init__(self):
+#         # self.finnhub_client = finnhub.Client(api_key=os.getenv("FINNHUB_API_KEY"))
+#         self.stocks = [] if Constants.EXTERNAL_API else default_stock_data()
+#
+#     def get_stock_data(self):
+#         if bool(self.stocks):
+#             return self.stocks
+#         prices = []
+#         for stock in stock_names:
+#             prices.append(self.finnhub_client.price_target(stock))
+#         self.stocks = format_data(prices)
+#         return self.stocks

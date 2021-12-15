@@ -8,11 +8,9 @@ class Timer:
 
     def time(self, func, label):
         Log.begin_debug("timer")
-        # Log.log("starting " + label, "timer")
         start = time.process_time_ns()
         rt = func()
         end = time.process_time_ns()
-        # Log.log("stopping " + label, "timer")
         self.times[label] = (end - start)
         Log.end_debug()
         return rt

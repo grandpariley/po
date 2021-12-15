@@ -6,12 +6,8 @@ The purpose of this project is a clear, readable representation of multi-objecti
 Currently this is not available for use through `pip`, but that is a future state I would like to get to.
 Included in this library is also an implementation for each of the following algorithms:
  
- - Branch and Bound
  - NSGA-2
- <!-- - Flower Pollination -->
- <!-- - Particle Swarm optimization -->
- <!-- - SPEA-II -->
- <!-- - MoBOA -->
+ - MoBOA
  
 More algorithm implementations forthcoming. 
 

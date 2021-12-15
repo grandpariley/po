@@ -5,7 +5,7 @@ from pkg.problem.variable import Variable
 
 
 def default_variable():
-    return Variable(DiscreteDomain([1, 2, 3, 4, 5]), {})
+    return Variable(DiscreteDomain([1, 2, 3, 4, 5], 1), {})
 
 
 class VariableTest(unittest.TestCase):

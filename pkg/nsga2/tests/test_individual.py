@@ -32,8 +32,7 @@ def default_other_dominating_individual():
 class IndividualTest(unittest.TestCase):
 
     def test_does_dominate(self):
-        self.assertTrue(default_dominating_individual(
-        ).does_dominate(default_individual()))
+        self.assertTrue(default_dominating_individual().does_dominate(default_individual()))
 
     def test_add_dominated(self):
         individual = default_dominating_individual()

@@ -26,7 +26,6 @@ class Log:
     @classmethod
     def end_debug(cls):
         cls.context = ''
-        # FIXME this is so gross
         gc.collect()
 
     @classmethod

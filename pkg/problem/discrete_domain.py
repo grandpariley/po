@@ -3,9 +3,10 @@ from pkg.random.random import Random
 
 
 class DiscreteDomain(Domain):
-    def __init__(self, values):
+    def __init__(self, values, base_value):
         super().__init__()
         self.values = values
+        self.base_value = base_value
 
     def __str__(self):
         return str(self.values)
@@ -40,3 +41,6 @@ class DiscreteDomain(Domain):
 
     def random(self):
         return Random.random_choice(self.values)
+
+    def get_base_value(self):
+        return self.base_value

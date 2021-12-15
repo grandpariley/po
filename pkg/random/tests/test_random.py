@@ -41,7 +41,7 @@ class RandomTest(unittest.TestCase):
         self.assertEqual(
             Random.non_random_values["random_int_between_a_and_b"], [0, 1, 2])
         self.assertEqual(Random.non_random_values["random_float_between_a_and_b"], [
-                         0.000, 4.123, 5.432])
+            0.000, 4.123, 5.432])
         self.assertEqual(Random.non_random_values["random_choice"], [3, 5, 2])
         Random.end_test()
 

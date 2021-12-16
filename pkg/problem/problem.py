@@ -39,10 +39,6 @@ class Problem:
         if 0 <= variable_index < len(self.variables):
             self.variables[variable_index].reset_value()
 
-    def get_domain(self, variable_index):
-        if 0 <= variable_index < len(self.variables):
-            self.variables[variable_index].get_domain()
-
     def get_variables(self):
         return self.variables
 

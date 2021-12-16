@@ -13,14 +13,14 @@ def default_variables():
 
 
 def default_consistent_problem():
-    variables = default_variables()
     return Problem(
-        variables,
+        default_variables(),
         [
-            Constraint((0, 1),
-                       lambda variables: variables[0].get_value() != variables[1].get_value()),
-            Constraint(tuple([2]), lambda variables: variables[0].get_value() > 0),
-        ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
+            Constraint((0, 1), lambda v: v[0].get_value() != v[1].get_value()),
+            Constraint(tuple([2]), lambda v: v[0].get_value() > 0),
+        ],
+        [lambda v: v[0].get_value(), lambda v: v[1].get_value(), lambda v: v[2].get_value()]
+    )
 
 
 def default_consistent_problem_set_values():
@@ -32,13 +32,13 @@ def default_consistent_problem_set_values():
 
 
 def default_inconsistent_problem():
-    variables = default_variables()
     return Problem(
-        variables,
+        default_variables(),
         [
-            Constraint((0, 2),
-                       lambda variables: False),
-        ], [lambda variables: variables[0].get_value(), lambda variables: variables[1].get_value(), lambda variables: variables[2].get_value()])
+            Constraint((0, 2), lambda v: False),
+        ],
+        [lambda v: v[0].get_value(), lambda v: v[1].get_value(), lambda v: v[2].get_value()]
+    )
 
 
 def default_inconsistent_problem_set_values():
@@ -50,15 +50,15 @@ def default_inconsistent_problem_set_values():
 
 
 def default_multi_objective_problem():
-    variables = default_variables()
     return Problem(
-        variables,
+        default_variables(),
         [
-            Constraint((0, 2),
-                       lambda variables: variables[0] == variables[1]),
-            Constraint(tuple([1]), lambda variables: variables[0] == 1),
-            Constraint(tuple([2]), lambda variables: variables[0] > 0)
-        ], [lambda variables: sum([var.get_value() for var in variables]), lambda variables: -sum(var.get_value() for var in variables)])
+            Constraint((0, 2), lambda v: v[0] == v[1]),
+            Constraint(tuple([1]), lambda v: v[0] == 1),
+            Constraint(tuple([2]), lambda v: v[0] > 0)
+        ],
+        [lambda v: sum([var.get_value() for var in v]), lambda v: -sum(var.get_value() for var in v)]
+    )
 
 
 def default_multi_objective_problem_set_values():

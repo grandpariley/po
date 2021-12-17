@@ -19,15 +19,3 @@ class Variable:
 
     def get_value(self):
         return self.value
-
-    def reset_value(self):
-        self.value = None
-
-    def get_random_from_domain(self):
-        return self.domain.random()
-
-    def closest_in_domain(self, value):
-        return self.domain.closest(value)
-
-    def get_objective_info(self):
-        return self.objective_info

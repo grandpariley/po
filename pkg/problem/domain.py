@@ -1,20 +1,6 @@
 from abc import abstractmethod
 
 
-def closest_in_list(el, lst):
-    if not lst or not el:
-        return None
-    if el in lst:
-        return el
-    current_closest = lst[0]
-    current_closest_distance = float('inf')
-    for l in lst:
-        distance = l - el
-        if current_closest_distance > abs(distance) or (current_closest_distance == abs(distance) and l > current_closest):
-            current_closest = l
-            current_closest_distance = abs(distance)
-    return current_closest
-
 class Domain:
     @abstractmethod
     def __init__(self):
@@ -49,11 +35,7 @@ class Domain:
         raise NotImplementedError
 
     @abstractmethod
-    def closest(self, el):
-        raise NotImplementedError
-
-    @abstractmethod
-    def random(self):
+    def closest(self, target):
         raise NotImplementedError
 
     def get_base_value(self):

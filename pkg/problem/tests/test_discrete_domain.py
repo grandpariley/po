@@ -29,12 +29,6 @@ class DiscreteDomainTest(unittest.TestCase):
         self.assertFalse(0.5 in default_domain())
         self.assertFalse(5.5 in default_domain())
 
-    def test_random(self):
-        Random.begin_test()
-        Random.set_test_value_for("random_choice", 3)
-        self.assertTrue(default_domain().random(), 3)
-        Random.end_test()
-
     def test_iterator(self):
         domain = default_domain()
         i = 1

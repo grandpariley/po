@@ -22,15 +22,6 @@ class ProblemTest(unittest.TestCase):
         problem.objective_funcs = None
         self.assertIsNone(problem.objective_values())
 
-    def test_all_assigned_true(self):
-        problem = default_consistent_problem_set_values()
-        self.assertTrue(problem.all_assigned())
-
-    def test_all_assigned_false(self):
-        problem = default_consistent_problem_set_values()
-        problem.reset_value(1)
-        self.assertFalse(problem.all_assigned())
-
     def test_set_value(self):
         problem = default_consistent_problem_set_values()
         problem.set_value(1, 2)
@@ -42,25 +33,6 @@ class ProblemTest(unittest.TestCase):
         problem.set_value(5, 3)
         self.assertEqual(problem.variables, orig_variables)
 
-    def test_reset_value(self):
-        problem = default_consistent_problem_set_values()
-        problem.reset_value(1)
-        self.assertIsNone(problem.variables[1].get_value())
-
     def test_num_variables(self):
         problem = default_consistent_problem_set_values()
         self.assertEqual(problem.num_variables(), 3)
-
-    def test_will_be_consistent(self):
-        problem = default_consistent_problem_set_values()
-        self.assertTrue(problem.will_be_consistent(2, 1))
-        self.assertEqual(problem.variables[2].get_value(), 2)
-
-    def test_will_be_consistent_false(self):
-        problem = default_consistent_problem_set_values()
-        self.assertFalse(problem.will_be_consistent(2, 0))
-        self.assertEqual(problem.variables[2].get_value(), 2)
-
-    def test_variable_assignments(self):
-        problem = default_consistent_problem_set_values()
-        self.assertEqual(problem.variable_assignments(), (2, 1, 2))

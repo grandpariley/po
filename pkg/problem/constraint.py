@@ -7,5 +7,4 @@ class Constraint:
         return str(self.variable_indexes)
 
     def holds(self, curr_variables):
-        vrs = tuple(curr_variables[i] for i in self.variable_indexes)
-        return bool(self.func(vrs))
+        return bool(self.func(tuple(curr_variables[i] for i in self.variable_indexes)))

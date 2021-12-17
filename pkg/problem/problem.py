@@ -5,9 +5,10 @@ class Problem:
         self.objective_funcs = objective_funcs
 
     def __str__(self):
-        return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + str(
-            [str(con) for con in self.constraints])
-    
+        return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + \
+               str([str(con) for con in self.constraints]) + "\n\tobjective values: " + \
+               str([str(obj) for obj in self.objective_values()]) + "\n"
+
     def __repr__(self):
         return str(self)
 
@@ -16,15 +17,6 @@ class Problem:
             if not constraint.holds(self.variables):
                 return False
         return True
-
-    def will_be_consistent(self, variable_index, variable_value):
-        if variable_index < 0 or variable_index >= len(self.variables):
-            return False
-        old_value = self.get_value(variable_index)
-        self.set_value(variable_index, variable_value)
-        consistent = self.consistent()
-        self.set_value(variable_index, old_value)
-        return consistent
 
     def set_value(self, variable_index, value):
         if 0 <= variable_index < len(self.variables):
@@ -35,18 +27,10 @@ class Problem:
             return self.variables[variable_index].get_value()
         return None
 
-    def reset_value(self, variable_index):
-        if 0 <= variable_index < len(self.variables):
-            self.variables[variable_index].reset_value()
-
-    def get_variables(self):
-        return self.variables
+    def num_variables(self):
+        return len(self.variables)
 
     def objective_values(self):
         if self.objective_funcs is None:
             return None
         return tuple([obj_func(self.variables) for obj_func in self.objective_funcs])
-
-    def num_variables(self):
-        return len(self.variables)
-

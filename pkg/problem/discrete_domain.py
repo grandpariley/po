@@ -1,5 +1,4 @@
-from pkg.problem.domain import Domain, closest_in_list
-from pkg.random.random import Random
+from pkg.problem.domain import Domain
 
 
 class DiscreteDomain(Domain):
@@ -36,11 +35,20 @@ class DiscreteDomain(Domain):
             return None
         return self.values[-1]
 
-    def closest(self, el):
-        return closest_in_list(el, self.values)
-
-    def random(self):
-        return Random.random_choice(self.values)
+    def closest(self, target):
+        if not target:
+            return None
+        if target in self.values:
+            return target
+        current_closest = self.values[0]
+        current_closest_distance = float('inf')
+        for value in self.values:
+            distance = value - target
+            if current_closest_distance > abs(distance) or (
+                    current_closest_distance == abs(distance) and value > current_closest):
+                current_closest = value
+                current_closest_distance = abs(distance)
+        return current_closest
 
     def get_base_value(self):
         return self.base_value

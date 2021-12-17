@@ -15,16 +15,16 @@ def default_portfolio_optimization_problem():
         return Variable(DiscreteDomain([i for i in range(floor(float(Constants.BUDGET) / vsd['price']))], 0), vsd)
 
     budget_constraint = Constraint(tuple(i for i in range(len(stock_names))), lambda vsds: Constants.BUDGET > sum(
-        [(0.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['price'] for vsd in vsds]))
+        [(0.0 if vsd.get_value() is None else vsd.get_value()) * vsd.objective_info['price'] for vsd in vsds]))
 
     def risk_objective(vsds):
         return -sum(
-            [(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['risk'] for vsd in vsds]
+            [(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.objective_info['risk'] for vsd in vsds]
         )
 
     def reward_objective(vsds):
         return sum(
-            [(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.get_objective_info()['reward'] for vsd in vsds]
+            [(1.0 if vsd.get_value() is None else vsd.get_value()) * vsd.objective_info['reward'] for vsd in vsds]
         )
 
     stock_data = default_stock_data()
@@ -33,6 +33,16 @@ def default_portfolio_optimization_problem():
         [budget_constraint],
         [risk_objective, reward_objective]
     )
+
+
+def trim_for_remaining_budget(problem, v):
+    p = deepcopy(problem)
+    new_domain = []
+    for d in p.variables[v].domain:
+        p.set_value(v, d)
+        if p.consistent():
+            new_domain.append(d)
+    return new_domain
 
 
 def generate_solutions_discrete_domain(problem, population_size):
@@ -45,13 +55,3 @@ def generate_solutions_discrete_domain(problem, population_size):
             solution.set_value(v, new_value)
         solutions.add(solution)
     return solutions
-
-
-def trim_for_remaining_budget(problem, v):
-    p = deepcopy(problem)
-    new_domain = []
-    for d in p.variables[v].domain:
-        p.set_value(v, d)
-        if p.consistent():
-            new_domain.append(d)
-    return new_domain

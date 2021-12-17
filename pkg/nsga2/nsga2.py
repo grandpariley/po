@@ -2,10 +2,9 @@ from pkg.consts import Constants
 from pkg.log import Log
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
-from pkg.problem.builder import generate_many_random_solutions
+from pkg.problem.builder import generate_solutions_discrete_domain
 from pkg.problem.solver import Solver
 from pkg.random.random import Random
-from pkg.problem.builder import stock_names
 
 
 def fast_non_dominated_sort_front(individuals, rank):
@@ -106,26 +105,16 @@ class Nsga2(Solver):
                 i += 1
             if i < len(front):
                 front[i] = crowding_distance_assignment(front[i])
-                parent_population += sort_by_crowding_distance(front[i])[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
-            
+                parent_population += sort_by_crowding_distance(front[i])[
+                                     Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
+
         front = fast_non_dominated_sort(parent_population)
         return [individual.get_problem() for individual in front[0]]
 
     def solve(self):
-        problems = generate_many_random_solutions(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
-        self.print_problems(problems)
+        problems = generate_solutions_discrete_domain(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
         Log.begin_debug("nsga2")
         parent_population = [Individual(problem=p) for p in problems]
-        solns = self.solve_helper(parent_population)
+        solutions = self.solve_helper(parent_population)
         Log.end_debug()
-        return solns
-
-    def print_problems(self, problems):
-        print("Problems: ")
-        for p in problems:
-            print("\trisk: " + str(p.objective_values()[0]))
-            print("\treward: " + str(p.objective_values()[1]))
-            print("\tbudget: " + str(sum([s.get_value() * s.get_objective_info()['price'] for s in p.variables])))
-            for i in range(len(stock_names)):
-                print("\t\t" + stock_names[i] + ": " + str(p.variable_assignments()[i]))
-            print()
+        return solutions

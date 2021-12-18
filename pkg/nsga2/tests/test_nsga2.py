@@ -67,6 +67,7 @@ class Nsga2Test(unittest.TestCase):
         mum, dad = get_parents(individuals)
         self.assertEqual(mum, tournament_pool[-1])
         self.assertEqual(dad, tournament_pool[0])
+        Random.end_test()
 
     def test_get_children(self):
         Random.begin_test()
@@ -100,10 +101,11 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(tournament_individuals[3].get_inverse_tournament_rank(), 1)
 
     def test_solve(self):
-        Constants.NSGA2_NUM_INDIVIDUALS = 4
+        Constants.NSGA2_NUM_INDIVIDUALS = 3
         Constants.NSGA2_NUM_GENERATIONS = 20
         Constants.NSGA2_NUM_GENES_MUTATING = 2
         nsga2 = Nsga2(default_consistent_problem())
         solutions = nsga2.solve()
         Log.newline()
         Log.log([str(s) for s in solutions], context="test-nsga2")
+        self.assertTrue(True)

@@ -47,4 +47,6 @@ class Random:
     def random_choice(cls, lst):
         if cls.test and cls.non_random_values["random_choice"]:
             return cls.non_random_values["random_choice"].pop()
-        return random.choice(lst)
+        if len(lst) > 0:
+            return random.choice(lst)
+        raise ValueError("no choice in list: " + str(lst))

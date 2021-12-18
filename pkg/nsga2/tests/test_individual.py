@@ -86,16 +86,12 @@ class IndividualTest(unittest.TestCase):
 
     def test_emo_phase(self):
         Random.begin_test()
-        Constants.NSGA2_NUM_GENES_MUTATING = 3
+        Constants.NSGA2_NUM_GENES_MUTATING = 1
         Random.set_test_value_for("random_int_between_a_and_b", 2)
-        Random.set_test_value_for("random_int_between_a_and_b", 1)
-        Random.set_test_value_for("random_int_between_a_and_b", 0)
-        Random.set_test_value_for("random_float_between_a_and_b", 1)
-        Random.set_test_value_for("random_float_between_a_and_b", 1)
-        Random.set_test_value_for("random_float_between_a_and_b", 1)
+        Random.set_test_value_for("random_choice", 3)
         child = default_dominating_individual()
         child.emo_phase()
-        self.assertEqual(child.problem.get_value(0), 2)
+        self.assertEqual(child.problem.get_value(0), 1)
         self.assertEqual(child.problem.get_value(1), 1)
         self.assertEqual(child.problem.get_value(2), 3)
         Random.end_test()

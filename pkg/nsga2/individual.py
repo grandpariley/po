@@ -5,6 +5,16 @@ from pkg.consts import Constants
 from math import floor
 
 
+def trim_for_remaining_budget(problem, v):
+    p = deepcopy(problem)
+    new_domain = []
+    for d in p.variables[v].domain:
+        p.set_value(v, d)
+        if p.consistent():
+            new_domain.append(d)
+    return new_domain
+
+
 class Individual:
     def __init__(self, problem=None, individual=None):
         if problem is None and individual is None:
@@ -99,6 +109,7 @@ class Individual:
 
     def emo_phase(self):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
-            random_index = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
-            new_value = self.problem.get_consistent_value_in_domain(random_index)
-            self.problem.set_value(random_index, new_value)
+            random_variable = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
+            d = trim_for_remaining_budget(self.problem, random_variable)
+            new_value = Random.random_choice(d)
+            self.problem.set_value(random_variable, new_value)

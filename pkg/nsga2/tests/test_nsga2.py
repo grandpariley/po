@@ -26,8 +26,11 @@ class Nsga2Test(unittest.TestCase):
 
     def test_fast_non_dominating_sort(self):
         individuals = default_individuals()
-        front = fast_non_dominated_sort(individuals)
-        self.assertEqual(front, [[individuals[i]] for i in range(3, -1, -1)])
+        fast_non_dominated_sort(individuals)
+        self.assertEqual(
+            [i for i in range(len(individuals) - 1, -1, -1)],
+            [individuals[i].get_domination_count() for i in range(len(individuals))]
+        )
 
     def test_crowding_distance_assignment(self):
         individuals = default_individuals()

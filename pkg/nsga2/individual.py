@@ -27,17 +27,16 @@ class Individual:
             self.domination_count = 0
             self.crowding_distance = 0
             self.inverse_tournament_rank = 0
-            self.rank = None
         elif individual is not None:
             self.problem = individual.problem
             self.dominates = individual.dominates
             self.domination_count = individual.domination_count
             self.crowding_distance = individual.crowding_distance
             self.inverse_tournament_rank = individual.inverse_tournament_rank
-            self.rank = individual.rank
 
     def __str__(self):
-        return str(self.problem)
+        return str(self.problem) + "\tcrowding distance: " + str(self.crowding_distance) + \
+               "\n\tdomination_count: " + str(self.domination_count) + "\n"
 
     def __repr__(self):
         return str(self)
@@ -64,11 +63,11 @@ class Individual:
     def increment_dominated(self):
         self.domination_count += 1
 
-    def set_rank(self, rank):
-        self.rank = rank
-
     def is_dominated(self):
         return self.domination_count != 0
+
+    def get_domination_count(self):
+        return self.domination_count
 
     def get_dominated(self):
         return self.dominates

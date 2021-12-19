@@ -7,29 +7,15 @@ from pkg.problem.solver import Solver
 from pkg.random.random import Random
 
 
-def fast_non_dominated_sort_front(individuals, rank):
-    front = []
+def fast_non_dominated_sort(individuals):
+    if not individuals:
+        return
     for p in individuals:
         for q in individuals:
             if p.does_dominate(q):
                 p.add_dominated(q)
             elif q.does_dominate(p):
                 p.increment_dominated()
-        if not p.is_dominated():
-            p.set_rank(rank)
-            front.append(p)
-    return front
-
-
-def fast_non_dominated_sort(individuals):
-    first_front = fast_non_dominated_sort_front(individuals, 0)
-    front = [first_front]
-    front_count = 0
-    while front[front_count] and sum(len(f) for f in front) < len(individuals):
-        next_front = fast_non_dominated_sort_front(front[front_count], front_count + 1)
-        front.append(next_front)
-        front_count += 1
-    return front
 
 
 def crowding_distance_assignment(individuals):
@@ -93,28 +79,42 @@ def generate_children(parent_population):
     return children
 
 
-class Nsga2(Solver):
-    def solve_helper(self, parent_population):
-        for _ in range(Constants.NSGA2_NUM_GENERATIONS):
-            child_population = generate_children(parent_population)
-            front = fast_non_dominated_sort(set(parent_population + child_population))
-            parent_population = []
-            i = 0
-            while i < len(front) and len(parent_population) + len(front[i]) < Constants.NSGA2_NUM_INDIVIDUALS:
-                parent_population += front[i]
-                i += 1
-            if i < len(front):
-                front[i] = crowding_distance_assignment(front[i])
-                parent_population += sort_by_crowding_distance(front[i])[
-                                     Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
+def solve_helper(parent_population):
+    for _ in range(Constants.NSGA2_NUM_GENERATIONS):
+        child_population = generate_children(parent_population)
+        sorted_population = set(parent_population + child_population)
+        fast_non_dominated_sort(sorted_population)
+        parent_population = []
+        rank = 0
+        sorting_group = []
+        while len(parent_population) < Constants.NSGA2_NUM_INDIVIDUALS:
+            for i in sorted_population:
+                if i.get_domination_count() == rank:
+                    sorting_group.append(i)
+            if len(parent_population + sorting_group) < Constants.NSGA2_NUM_INDIVIDUALS:
+                parent_population += sorting_group
+                sorting_group = []
+            rank += 1
+        if len(parent_population) < Constants.NSGA2_NUM_INDIVIDUALS:
+            crowding_distance_assigned = crowding_distance_assignment(sorting_group)
+            parent_population += sort_by_crowding_distance(
+                crowding_distance_assigned
+            )[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
 
-        front = fast_non_dominated_sort(parent_population)
-        return [individual.get_problem() for individual in front[0]]
+    fast_non_dominated_sort(parent_population)
+    front = []
+    for i in parent_population:
+        if i.get_rank() == 0:
+            front.append(i)
+    return front
+
+
+class Nsga2(Solver):
 
     def solve(self):
         problems = generate_solutions_discrete_domain(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
         Log.begin_debug("nsga2")
         parent_population = [Individual(problem=p) for p in problems]
-        solutions = self.solve_helper(parent_population)
+        solutions = solve_helper(parent_population)
         Log.end_debug()
         return solutions

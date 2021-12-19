@@ -23,14 +23,12 @@ class Individual:
             raise ValueError("must have one of a problem or an individual")
         if problem is not None:
             self.problem = problem
-            self.dominates = []
             self.domination_count = 0
             self.crowding_distance = 0
             self.inverse_tournament_rank = 0
         elif individual is not None:
             self.problem = individual.problem
             self.dominates = individual.dominates
-            self.domination_count = individual.domination_count
             self.crowding_distance = individual.crowding_distance
             self.inverse_tournament_rank = individual.inverse_tournament_rank
 
@@ -53,24 +51,17 @@ class Individual:
     def does_dominate(self, q):
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
-    def add_dominated(self, q):
-        if q not in self.dominates:
-            self.dominates.append(q)
-
-    def get_dominates(self):
-        return self.dominates
-
     def increment_dominated(self):
         self.domination_count += 1
+
+    def reset_domination_count(self):
+        self.domination_count = 0
 
     def is_dominated(self):
         return self.domination_count != 0
 
     def get_domination_count(self):
         return self.domination_count
-
-    def get_dominated(self):
-        return self.dominates
 
     def get_problem(self):
         return self.problem

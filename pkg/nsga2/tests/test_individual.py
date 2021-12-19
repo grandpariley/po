@@ -34,23 +34,11 @@ class IndividualTest(unittest.TestCase):
     def test_does_dominate(self):
         self.assertTrue(default_dominating_individual().does_dominate(default_individual()))
 
-    def test_add_dominated(self):
-        individual = default_dominating_individual()
-        other_individual = default_individual()
-        individual.add_dominated(other_individual)
-        self.assertEqual(individual.get_dominated(), [other_individual])
-
     def test_increment_dominated(self):
         individual = default_dominating_individual()
         self.assertEqual(individual.domination_count, 0)
         individual.increment_dominated()
         self.assertEqual(individual.domination_count, 1)
-
-    def test_set_rank(self):
-        individual = default_dominating_individual()
-        self.assertIsNone(individual.rank)
-        individual.set_rank(3)
-        self.assertEqual(individual.rank, 3)
 
     def test_is_dominated(self):
         individual = default_dominating_individual()

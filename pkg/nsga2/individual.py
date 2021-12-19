@@ -28,7 +28,7 @@ class Individual:
             self.inverse_tournament_rank = 0
         elif individual is not None:
             self.problem = individual.problem
-            self.dominates = individual.dominates
+            self.domination_count = individual.domination_count
             self.crowding_distance = individual.crowding_distance
             self.inverse_tournament_rank = individual.inverse_tournament_rank
 

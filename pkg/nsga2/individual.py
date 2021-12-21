@@ -87,7 +87,7 @@ class Individual:
 
     def swap_half_genes(self, other):
         give_up = 0
-        while give_up < Constants.GIVE_UP_MAX:
+        while give_up < Constants.NSGA2_GIVE_UP_MAX:
             problem = deepcopy(self.problem)
             for _ in range(floor(problem.num_variables() / 2)):
                 random_index = Random.random_int_between_a_and_b(

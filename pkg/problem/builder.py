@@ -47,16 +47,13 @@ def trim_for_remaining_budget(problem, v):
 
 def generate_solutions_discrete_domain(problem, population_size):
     solutions = set()
-    give_up = False
-    while not give_up and len(solutions) < population_size:
+    while len(solutions) < population_size:
         solution = deepcopy(problem)
         for v in range(solution.num_variables()):
             d = trim_for_remaining_budget(solution, v)
             if len(d) == 0:
-                give_up = True
                 break
             new_value = Random.random_choice(d)
             solution.set_value(v, new_value)
-        if not give_up:
-            solutions.add(solution)
+        solutions.add(solution)
     return solutions

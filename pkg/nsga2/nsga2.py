@@ -2,7 +2,6 @@ from pkg.consts import Constants
 from pkg.log import Log
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance, sort_individuals
-from pkg.problem.builder import generate_solutions_discrete_domain
 from pkg.problem.solver import Solver
 from pkg.random.random import Random
 
@@ -117,9 +116,9 @@ def solve_helper(parent_population):
 class Nsga2(Solver):
 
     def solve(self):
-        problems = generate_solutions_discrete_domain(self.problem, Constants.NSGA2_NUM_INDIVIDUALS)
+        Constants.NSGA2_NUM_INDIVIDUALS = len(self.problems)
         Log.begin_debug("nsga2")
-        parent_population = [Individual(problem=p) for p in problems]
+        parent_population = [Individual(problem=p) for p in self.problems]
         solutions = solve_helper(parent_population)
         Log.end_debug()
         return solutions

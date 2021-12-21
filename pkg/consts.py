@@ -2,10 +2,10 @@ from os import getenv
 
 from pkg.log_level import LogLevel
 
+
 class Constants:
-    CONTINUOUS_DOMAIN_ITERATION_LIMIT = 500
     BUDGET = 3500.00
-    GIVE_UP_MAX = 100
+    NSGA2_GIVE_UP_MAX = 5
     NSGA2_NUM_INDIVIDUALS = 20
     NSGA2_NUM_GENERATIONS = 2
     NSGA2_NUM_GENES_MUTATING = 3

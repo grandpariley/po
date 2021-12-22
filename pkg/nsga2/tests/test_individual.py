@@ -83,3 +83,8 @@ class IndividualTest(unittest.TestCase):
         self.assertEqual(child.problem.get_value(1), 1)
         self.assertEqual(child.problem.get_value(2), 3)
         Random.end_test()
+
+    def test_eq(self):
+        self.assertTrue(default_individual() == default_individual())
+        self.assertFalse(default_individual() == default_dominating_individual())
+        print({default_individual(), default_individual(), default_dominating_individual()})

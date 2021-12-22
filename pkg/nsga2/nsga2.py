@@ -14,6 +14,7 @@ def fast_non_dominated_sort(individuals):
         for q in individuals:
             if q.does_dominate(p):
                 p.increment_dominated()
+    return individuals
 
 
 def crowding_distance_assignment(individuals):
@@ -96,15 +97,15 @@ def fill_parent_population(sorted_population):
                 crowding_distance_assigned
             )[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
             break
-        return parent_population
+    return parent_population
 
 
 def solve_helper(parent_population):
     for _ in range(Constants.NSGA2_NUM_GENERATIONS):
         child_population = generate_children(parent_population)
         sorted_population = set(parent_population + child_population)
-        fast_non_dominated_sort(sorted_population)
-        parent_population = fill_parent_population(sorted_population)
+        sorted_population = fast_non_dominated_sort(sorted_population)
+        parent_population = fill_parent_population(set(sorted_population))
     fast_non_dominated_sort(parent_population)
     front = []
     for i in parent_population:

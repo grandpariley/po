@@ -40,13 +40,18 @@ class Individual:
         return str(self)
 
     def __eq__(self, other):
-        return str(self) == str(other)
+        if self.problem.num_variables() != other.problem.num_variables():
+            return False
+        for i in range(self.problem.num_variables()):
+            if self.problem.get_value(i) != other.problem.get_value(i):
+                return False
+        return True
 
     def __ne__(self, other):
         return not self.__eq__(other)
 
     def __hash__(self):
-        return hash(str(self))
+        return hash(str([self.problem.get_value(v) for v in range(self.problem.num_variables())]))
 
     def does_dominate(self, q):
         return dominates(self.problem.objective_values(), q.problem.objective_values())

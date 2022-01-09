@@ -18,7 +18,7 @@ class Plot:
                 xpoints.append(s.objective_values()[0])
                 ypoints.append(s.objective_values()[1])
             plt.subplot(1, 1, i)
-            plt.plot(np.array(xpoints), np.array(ypoints))
+            plt.scatter(np.array(xpoints), np.array(ypoints))
         plt.show()
 
     def compare(self):

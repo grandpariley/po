@@ -1,19 +1,22 @@
-from copy import deepcopy
-
+from pkg.consts import Constants
+from pkg.moboa.moboa import Moboa
 from pkg.nsga2.nsga2 import Nsga2
-from pkg.problem.builder import default_portfolio_optimization_problem, generate_many_random_solutions
-from pkg.problem.builder import stock_names
+from pkg.problem.builder import default_portfolio_optimization_problem, generate_solutions_discrete_domain, stock_names
 from pkg.timer.timer import Timer
 
 
 def main():
     timer = Timer()
     problem = default_portfolio_optimization_problem()
-    timer.time(lambda: generate_many_random_solutions(problem, 10), "generate")
-    nsga2 = Nsga2(deepcopy(problem))
-    nsga2_soln = timer.time(nsga2.solve, "nsga2")
+    nsga2_problems = timer.time(lambda: generate_solutions_discrete_domain(problem, Constants.NSGA2_NUM_INDIVIDUALS),
+                                "generate nsga2")
+    nsga2_soln = timer.time(Nsga2(nsga2_problems).solve, "nsga2")
+    moboa_problems = timer.time(lambda: generate_solutions_discrete_domain(problem, Constants.MOBOA_NUM_INDIVIDUALS),
+                                "generate moboa")
+    moboa_soln = timer.time(Moboa(moboa_problems).solve, "moboa")
     solutions = {
         'nsga2': nsga2_soln,
+        'moboa': moboa_soln,
     }
     print("Solutions: ")
     for name in solutions:

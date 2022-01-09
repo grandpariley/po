@@ -9,16 +9,16 @@ class Plot:
 
     def print(self):
         i = 0
+        fig = plt.figure(figsize=(12, 12))
         for key in self.solutions:
-            print(key)
             i += 1
-            xpoints = []
-            ypoints = []
+            points = [[], [], []]
             for s in self.solutions[key]:
-                xpoints.append(s.objective_values()[0])
-                ypoints.append(s.objective_values()[1])
-            plt.subplot(1, 1, i)
-            plt.scatter(np.array(xpoints), np.array(ypoints))
+                points[0].append(s.objective_values()[0])
+                points[1].append(s.objective_values()[1])
+                points[2].append(1)
+            subplot = fig.add_subplot(1, 1, i, projection='3d')
+            subplot.scatter(np.array(points[0]), np.array(points[1]), np.array(points[2]))
         plt.show()
 
     def compare(self):

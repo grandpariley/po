@@ -122,4 +122,4 @@ class Nsga2(Solver):
         parent_population = [Individual(problem=p) for p in self.problems]
         solutions = solve_helper(parent_population)
         Log.end_debug()
-        return solutions
+        return [s.problem for s in solutions]

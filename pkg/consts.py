@@ -11,6 +11,7 @@ class Constants:
     NSGA2_NUM_GENES_MUTATING = 3
     NSGA2_MUTATION_STRENGTH = 2
     MOBOA_NUM_INDIVIDUALS = 20
+    MOBOA_NUM_GENERATIONS = 2
 
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'none'))
     EXTERNAL_API = getenv('EXTERNAL_API', 'false') == 'true'

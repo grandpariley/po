@@ -43,23 +43,9 @@ class Nsga2Test(unittest.TestCase):
         self.assertEqual(crowding_distance_individuals[3].get_crowding_distance(), float('inf'))
 
     def test_generate_children(self):
-        Random.begin_test()
         individuals = default_individuals()
-        tournament_pool = get_tournament_pool(individuals)
-        Constants.NSGA2_NUM_GENES_MUTATING = 3
-        for _ in range(2):
-            for _ in range(2):
-                Random.set_test_value_for("random_int_between_a_and_b", 2)
-                Random.set_test_value_for("random_int_between_a_and_b", 1)
-                Random.set_test_value_for("random_int_between_a_and_b", 0)
-                Random.set_test_value_for("random_float_between_a_and_b", 1)
-                Random.set_test_value_for("random_float_between_a_and_b", 1)
-                Random.set_test_value_for("random_float_between_a_and_b", 1)
-            Random.set_test_value_for("random_choice", tournament_pool[1])
-            Random.set_test_value_for("random_choice", tournament_pool[0])
         children = generate_children(individuals)
         self.assertEqual(len(children), 4)
-        Random.end_test()
 
     def test_get_parents(self):
         Random.begin_test()

@@ -24,7 +24,8 @@ def solve_helper(parent_population):
     for _ in range(Constants.MOBOA_NUM_GENERATIONS):
         promising = get_promising(parent_population)
         network = BayesianNetwork(promising)
-        child_population = network.generate()
+        network.generate()
+        child_population = network.get_children()
         parent_population = filter_populations(parent_population, child_population)
     return parent_population
 

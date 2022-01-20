@@ -21,7 +21,7 @@ def main():
     nsga2_soln = timer.time(nsga2.solve, "nsga2")
     solutions = {
         'nsga2': nsga2_soln,
-        'moboa': moboa_soln,
+        # 'moboa': moboa_soln,
     }
     plot = Plot(solutions, timer)
     plot.print()

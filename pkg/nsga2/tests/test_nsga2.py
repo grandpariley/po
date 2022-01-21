@@ -1,10 +1,11 @@
 import unittest
-from pkg.nsga2.nsga2 import Nsga2, fast_non_dominated_sort, crowding_distance_assignment, get_tournament_pool, \
-    generate_children, get_parents, get_children, assign_tournament_probabilities
+
+from pkg.nsga2.family import generate_children, get_parents, get_children
+from pkg.nsga2.nsga2 import Nsga2, fast_non_dominated_sort, crowding_distance_assignment
 from pkg.nsga2.individual import Individual
+from pkg.nsga2.tournament import get_tournament_pool, assign_tournament_probabilities
 from pkg.random.random import Random
 from pkg.consts import Constants
-from pkg.log import Log
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
 
 

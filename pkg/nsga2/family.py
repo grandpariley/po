@@ -1,7 +1,7 @@
 from pkg.consts import Constants
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance
-from pkg.nsga2.tournament import get_tournament_pool
+from pkg.nsga2.tournament import get_traditional_tournament_pool
 from pkg.random.random import Random
 
 
@@ -13,17 +13,17 @@ def get_children(mum, dad):
     return son, daughter
 
 
-def get_parents(parent_population):
+def get_parents(parent_population, get_tournament_pool):
     tournament_pool = get_tournament_pool(parent_population)
     mum = Random.random_choice(tournament_pool)
     dad = Random.random_choice(tournament_pool)
     return mum, dad
 
 
-def generate_children(parent_population):
+def generate_children(parent_population, get_tournament_pool):
     children = []
     while len(children) < len(parent_population):
-        mum, dad = get_parents(parent_population)
+        mum, dad = get_parents(parent_population, get_tournament_pool)
         son, daughter = get_children(mum, dad)
         son.emo_phase()
         daughter.emo_phase()

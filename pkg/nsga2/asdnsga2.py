@@ -1,6 +1,6 @@
 from pkg.consts import Constants
 from pkg.log import Log
-from pkg.nsga2.family import generate_children, fill_parent_population
+from pkg.nsga2.family import generate_children, fill_parent_population_improved
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_individuals, fast_non_dominated_sort
 from pkg.nsga2.tournament import get_improved_tournament_pool
@@ -30,7 +30,7 @@ def solve_helper(parent_population):
         child_population = generate_children(parent_population, get_improved_tournament_pool)
         sorted_population = set(parent_population + child_population)
         sorted_population = fast_non_dominated_sort(sorted_population)
-        parent_population = fill_parent_population(set(sorted_population), crowding_distance_assignment)
+        parent_population = fill_parent_population_improved(set(sorted_population), crowding_distance_assignment)
     fast_non_dominated_sort(parent_population)
     front = []
     for i in parent_population:

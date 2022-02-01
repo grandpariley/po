@@ -1,7 +1,6 @@
 from pkg.consts import Constants
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import sort_by_crowding_distance
-from pkg.nsga2.tournament import get_traditional_tournament_pool
 from pkg.random.random import Random
 
 

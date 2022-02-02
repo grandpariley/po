@@ -3,7 +3,7 @@ import unittest
 from pkg.nsga2.family import generate_children, get_parents, get_children
 from pkg.nsga2.nsga2 import Nsga2, fast_non_dominated_sort, crowding_distance_assignment
 from pkg.nsga2.individual import Individual
-from pkg.nsga2.tournament import get_traditional_tournament_pool, assign_tournament_probabilities
+from pkg.nsga2.tournament import get_tournament_pool, assign_tournament_probabilities
 from pkg.random.random import Random
 from pkg.consts import Constants
 from pkg.problem.tests.default_problems import default_consistent_problem, default_consistent_problem_set_values
@@ -37,24 +37,24 @@ class Nsga2Test(unittest.TestCase):
         individuals = default_individuals()
         for individual in individuals:
             self.assertEqual(individual.get_crowding_distance(), 0)
-        crowding_distance_individuals = crowding_distance_assignment(individuals)
-        self.assertEqual(crowding_distance_individuals[0].get_crowding_distance(), float('inf'))
-        self.assertEqual(crowding_distance_individuals[1].get_crowding_distance(), 3.3333333333333335)
-        self.assertEqual(crowding_distance_individuals[2].get_crowding_distance(), float('inf'))
-        self.assertEqual(crowding_distance_individuals[3].get_crowding_distance(), float('inf'))
+        crowding_distance_assignment(individuals)
+        self.assertEqual(individuals[0].get_crowding_distance(), float('inf'))
+        self.assertEqual(individuals[1].get_crowding_distance(), 3.3333333333333335)
+        self.assertEqual(individuals[2].get_crowding_distance(), float('inf'))
+        self.assertEqual(individuals[3].get_crowding_distance(), float('inf'))
 
     def test_generate_children(self):
         individuals = default_individuals()
-        children = generate_children(individuals, get_traditional_tournament_pool)
+        children = generate_children(individuals, get_tournament_pool)
         self.assertEqual(len(children), 4)
 
     def test_get_parents(self):
         Random.begin_test()
         individuals = default_individuals()
-        tournament_pool = get_traditional_tournament_pool(individuals)
+        tournament_pool = get_tournament_pool(individuals)
         Random.set_test_value_for("random_choice", tournament_pool[0])
         Random.set_test_value_for("random_choice", tournament_pool[-1])
-        mum, dad = get_parents(individuals, get_traditional_tournament_pool)
+        mum, dad = get_parents(individuals, get_tournament_pool)
         self.assertEqual(mum, tournament_pool[-1])
         self.assertEqual(dad, tournament_pool[0])
         Random.end_test()
@@ -74,7 +74,7 @@ class Nsga2Test(unittest.TestCase):
 
     def test_tournament_pool(self):
         individuals = default_individuals()
-        tournament_pool = get_traditional_tournament_pool(individuals)
+        tournament_pool = get_tournament_pool(individuals)
         self.assertEqual([individuals[0] for i in range(4)], tournament_pool[0:4])
         self.assertEqual([individuals[1] for i in range(3)], tournament_pool[4:7])
         self.assertEqual([individuals[2] for i in range(2)], tournament_pool[7:9])

@@ -25,11 +25,15 @@ class Individual:
             self.problem = problem
             self.domination_count = 0
             self.crowding_distance = 0
+            self.special_crowding_distance = 0
+            self.population_crowding_distance = 0
             self.inverse_tournament_rank = 0
         elif individual is not None:
             self.problem = individual.problem
             self.domination_count = individual.domination_count
             self.crowding_distance = individual.crowding_distance
+            self.special_crowding_distance = individual.special_crowding_distance
+            self.population_crowding_distance = individual.population_crowding_distance
             self.inverse_tournament_rank = individual.inverse_tournament_rank
 
     def __str__(self):
@@ -77,6 +81,18 @@ class Individual:
 
     def get_crowding_distance(self):
         return self.crowding_distance
+
+    def set_special_crowding_distance(self, special_crowding_distance):
+        self.special_crowding_distance = special_crowding_distance
+
+    def get_special_crowding_distance(self):
+        return self.special_crowding_distance
+
+    def set_population_crowding_distance(self, population_crowding_distance):
+        self.population_crowding_distance = population_crowding_distance
+
+    def get_population_crowding_distance(self):
+        return self.population_crowding_distance
 
     def get_objective_values(self):
         return self.problem.objective_values()

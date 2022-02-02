@@ -8,24 +8,8 @@ def assign_tournament_probabilities(individuals):
     return individuals
 
 
-def assign_improved_tournament_probabilities(individuals):
-    individuals = sort_by_crowding_distance(individuals)
-    for i in range(len(individuals)):
-        individuals[i].set_inverse_tournament_rank(len(individuals) - i)
-    return individuals
-
-
-def get_traditional_tournament_pool(individuals):
+def get_tournament_pool(individuals):
     individuals = assign_tournament_probabilities(individuals)
-    population_pool = []
-    for i in range(len(individuals)):
-        for _ in range(individuals[i].get_inverse_tournament_rank()):
-            population_pool.append(individuals[i])
-    return population_pool
-
-
-def get_improved_tournament_pool(individuals):
-    individuals = assign_improved_tournament_probabilities(individuals)
     population_pool = []
     for i in range(len(individuals)):
         for _ in range(individuals[i].get_inverse_tournament_rank()):

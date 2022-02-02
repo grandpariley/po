@@ -32,6 +32,12 @@ def sort_by_crowding_distance(individuals):
     return individuals
 
 
+def sort_by_special_crowding_distance(individuals):
+    partition = default_partition(lambda i: i.get_special_crowding_distance())
+    sort(individuals, 0, len(individuals) - 1, partition)
+    return individuals
+
+
 def fast_non_dominated_sort(individuals):
     if not individuals:
         return

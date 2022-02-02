@@ -32,15 +32,10 @@ def get_parents(parent_population, improved):
 def compare_partners(partner1, partner2):
     if partner1.get_inverse_tournament_rank() > partner2.get_inverse_tournament_rank() or (
             partner1.get_inverse_tournament_rank() == partner2.get_inverse_tournament_rank() and
-            get_scd(partner1) > get_scd(partner2)
+            partner1.get_special_crowding_distance() > partner2.get_special_crowding_distance()
     ):
         return partner1
     return partner2
-
-
-# TODO
-def get_scd(individual):
-    return 0
 
 
 def generate_children(parent_population, improved=False):

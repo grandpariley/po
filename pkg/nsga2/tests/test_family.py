@@ -18,7 +18,7 @@ class FamilyTest(unittest.TestCase):
         tournament_pool = get_tournament_pool(individuals)
         Random.set_test_value_for("random_choice", tournament_pool[0])
         Random.set_test_value_for("random_choice", tournament_pool[-1])
-        mum, dad = get_parents(individuals, get_tournament_pool)
+        mum, dad = get_parents(individuals, False)
         self.assertEqual(mum, tournament_pool[-1])
         self.assertEqual(dad, tournament_pool[0])
         Random.end_test()

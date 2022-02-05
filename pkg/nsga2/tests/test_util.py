@@ -7,12 +7,13 @@ def default_individual():
 
 
 def default_individuals():
-    individuals = [None for _ in range(4)]
+    individuals = []
     for i in range(4):
-        individuals[i] = default_individual()
-        individuals[i].problem.set_value(0, i)
-        individuals[i].problem.set_value(1, i + 1)
-        individuals[i].problem.set_value(2, i + 1)
+        individual = default_individual()
+        individual.problem.set_value(0, i)
+        individual.problem.set_value(1, i + 1)
+        individual.problem.set_value(2, i + 1)
+        individuals.append(individual)
     return individuals
 
 
@@ -46,7 +47,7 @@ def default_dominated_individual():
     return individual
 
 
-def default_individual():
+def default_individual_with_values():
     problem = default_consistent_problem()
     problem.set_value(0, 1)
     problem.set_value(1, 1)

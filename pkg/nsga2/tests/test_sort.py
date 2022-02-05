@@ -1,50 +1,19 @@
 import unittest
-from pkg.problem.tests.default_problems import default_consistent_problem
-from pkg.nsga2.individual import Individual
-from pkg.nsga2.sort import sort_individuals, sort_by_crowding_distance
 
-
-def default_other_dominating_individual():
-    problem = default_consistent_problem()
-    problem.set_value(0, 1)
-    problem.set_value(1, 3)
-    problem.set_value(2, 1)
-    individual = Individual(problem=problem)
-    individual.set_crowding_distance(3)
-    return individual
-
-
-def default_dominating_individual():
-    problem = default_consistent_problem()
-    problem.set_value(0, 1)
-    problem.set_value(1, 2)
-    problem.set_value(2, 1)
-    individual = Individual(problem=problem)
-    individual.set_crowding_distance(2)
-    return individual
-
-
-def default_dominated_individual():
-    problem = default_consistent_problem()
-    problem.set_value(0, 1)
-    problem.set_value(1, 0)
-    problem.set_value(2, 1)
-    individual = Individual(problem=problem)
-    individual.set_crowding_distance(0)
-    return individual
-
-
-def default_individual():
-    problem = default_consistent_problem()
-    problem.set_value(0, 1)
-    problem.set_value(1, 1)
-    problem.set_value(2, 1)
-    individual = Individual(problem=problem)
-    individual.set_crowding_distance(1)
-    return individual
+from pkg.nsga2.tests.test_util import default_individuals, default_individual, default_other_dominating_individual, \
+    default_dominating_individual, default_dominated_individual
+from pkg.nsga2.sort import sort_individuals, sort_by_crowding_distance, fast_non_dominated_sort
 
 
 class SortTest(unittest.TestCase):
+
+    def test_fast_non_dominating_sort(self):
+        individuals = default_individuals()
+        fast_non_dominated_sort(individuals)
+        self.assertEqual(
+            [i for i in range(len(individuals) - 1, -1, -1)],
+            [individuals[i].get_domination_count() for i in range(len(individuals))]
+        )
 
     def test_sort_individuals(self):
         individuals = [default_individual(), default_individual(), default_other_dominating_individual(),

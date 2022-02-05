@@ -1,13 +1,12 @@
 import unittest
 
 from pkg.consts import Constants
-from pkg.nsga2.nsga2 import Nsga2
+from pkg.nsga2.asdnsga2 import Asdnsga2
 from pkg.problem.tests.default_problems import default_consistent_problem
 from pkg.random.random import Random
 
 
-class Nsga2Test(unittest.TestCase):
-
+class Asdnsga2Test(unittest.TestCase):
     def test_solve(self):
         Constants.NSGA2_NUM_GENERATIONS = 3
         Constants.NSGA2_NUM_GENES_MUTATING = 1
@@ -31,8 +30,8 @@ class Nsga2Test(unittest.TestCase):
         p5.set_value(0, 1)
         p5.set_value(1, 3)
         p5.set_value(2, 1)
-        nsga2 = Nsga2([p1, p2, p3, p4, p5])
-        solutions = nsga2.solve()
+        asdnsga2 = Asdnsga2([p1, p2, p3, p4, p5])
+        solutions = asdnsga2.solve()
         print(solutions)
         self.assertTrue(True)
         Random.end_test()

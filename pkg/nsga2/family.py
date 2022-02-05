@@ -64,9 +64,9 @@ def fill_parent_population_traditional(sorted_population):
             parent_population += sorting_group
             break
         else:
-            crowding_distance_assigned = crowding_distance_assignment(sorting_group)
+            crowding_distance_assignment(sorting_group)
             parent_population += sort_by_crowding_distance(
-                crowding_distance_assigned
+                sorting_group
             )[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]
             break
     return parent_population

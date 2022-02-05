@@ -1,32 +1,9 @@
 import unittest
-from pkg.problem.tests.default_problems import default_consistent_problem
-from pkg.nsga2.individual import Individual
+
+from pkg.nsga2.tests.test_util import default_dominating_individual, default_individual, \
+    default_other_dominating_individual
 from pkg.random.random import Random
 from pkg.consts import Constants
-
-
-def default_individual():
-    problem = default_consistent_problem()
-    problem.set_value(0, 1)
-    problem.set_value(1, 1)
-    problem.set_value(2, 1)
-    return Individual(problem=problem)
-
-
-def default_dominating_individual():
-    other_problem = default_consistent_problem()
-    other_problem.set_value(0, 1)
-    other_problem.set_value(1, 1)
-    other_problem.set_value(2, 2)
-    return Individual(problem=other_problem)
-
-
-def default_other_dominating_individual():
-    other_problem = default_consistent_problem()
-    other_problem.set_value(0, 2)
-    other_problem.set_value(1, 1)
-    other_problem.set_value(2, 3)
-    return Individual(problem=other_problem)
 
 
 class IndividualTest(unittest.TestCase):

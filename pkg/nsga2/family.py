@@ -87,7 +87,6 @@ def fill_parent_population_improved(sorted_population):
             parent_population += sorting_group
             break
         else:
-            special_crowding_distance_assignment(sorting_group, sorted_population)
             parent_population += sort_by_crowding_distance(
                 sorting_group
             )[Constants.NSGA2_NUM_INDIVIDUALS - len(parent_population):-1]

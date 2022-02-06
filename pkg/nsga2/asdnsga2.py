@@ -1,5 +1,6 @@
 from pkg.consts import Constants
 from pkg.log import Log
+from pkg.nsga2.crowding_distance import special_crowding_distance_assignment
 from pkg.nsga2.family import generate_children, fill_parent_population_improved
 from pkg.nsga2.individual import Individual
 from pkg.nsga2.sort import fast_non_dominated_sort
@@ -8,10 +9,10 @@ from pkg.problem.solver import Solver
 
 def solve_helper(parent_population):
     for _ in range(Constants.NSGA2_NUM_GENERATIONS):
+        parent_population = fast_non_dominated_sort(parent_population)
+        special_crowding_distance_assignment(parent_population)
         child_population = generate_children(parent_population, improved=True)
-        sorted_population = list(set(parent_population + child_population))
-        sorted_population = fast_non_dominated_sort(sorted_population)
-        parent_population = fill_parent_population_improved(list(set(sorted_population)))
+        parent_population = fill_parent_population_improved(list(set(child_population + parent_population)))
     fast_non_dominated_sort(parent_population)
     front = []
     for i in parent_population:

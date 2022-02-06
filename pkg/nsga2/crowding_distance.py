@@ -16,11 +16,29 @@ def crowding_distance_assignment(individuals):
             for i in range(1, len(individuals) - 1):
                 numerator = individuals[i + 1].get_objective_values()[o] - individuals[i - 1].get_objective_values()[o]
                 individuals[i].set_crowding_distance(individuals[i].get_crowding_distance() + (numerator / denominator))
+    average_crowding_distance_decision_space = sum([i.get_crowding_distance() for i in individuals][1:-1]) / len(
+        individuals)
+    for i in individuals:
+        i.set_average_crowding_distance_decision_space(average_crowding_distance_decision_space)
 
 
-def special_crowding_distance_assignment(individuals, population):
-    crowding_distance_assignment(individuals)
-    for o in range(len(individuals[0].get_objective_values())):
+def special_crowding_distance_assignment(population):
+    population_crowding_distance_assignment(population)
+    for p in population:
+        front = get_all_with_rank(population, p.get_domination_count())
+        crowding_distance_assignment(front)
+    average_crowding_distance_object_space = sum([i.get_population_crowding_distance() for i in population][1:-1]) / \
+                                             len(population)
+    for p in population:
+        if p.get_crowding_distance() > p.get_average_crowding_distance_decision_space() or p.get_population_crowding_distance() > average_crowding_distance_object_space:
+            p.set_special_crowding_distance(max(p.get_crowding_distance(), p.get_population_crowding_distance()))
+        else:
+            p.set_special_crowding_distance(min(p.get_crowding_distance(), p.get_population_crowding_distance()))
+    sort_by_special_crowding_distance(population)
+
+
+def population_crowding_distance_assignment(population):
+    for o in range(len(population[0].get_objective_values())):
         population = sort_individuals(population, o)
         population[0].set_population_crowding_distance(float('inf'))
         population[-1].set_population_crowding_distance(float('inf'))
@@ -33,13 +51,11 @@ def special_crowding_distance_assignment(individuals, population):
                 numerator = population[i + 1].get_objective_values()[o] - population[i - 1].get_objective_values()[o]
                 population[i].set_population_crowding_distance(
                     population[i].get_population_crowding_distance() + (numerator / denominator))
-    average_crowding_distance_decision_space = sum([i.get_crowding_distance() for i in individuals][1:-1]) / \
-                                               len(individuals)
-    average_crowding_distance_object_space = sum([i.get_population_crowding_distance() for i in population][1:-1]) / \
-                                             len(population)
-    for i in individuals:
-        if i.get_crowding_distance() > average_crowding_distance_decision_space or i.get_population_crowding_distance() > average_crowding_distance_object_space:
-            i.set_special_crowding_distance(max(i.get_crowding_distance(), i.get_population_crowding_distance()))
-        else:
-            i.set_special_crowding_distance(min(i.get_crowding_distance(), i.get_population_crowding_distance()))
-    sort_by_special_crowding_distance(individuals)
+
+
+def get_all_with_rank(population, rank):
+    front = []
+    for p in population:
+        if p.get_domination_count() == rank:
+            front.append(p)
+    return front

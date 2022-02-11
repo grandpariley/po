@@ -1,7 +1,6 @@
 from copy import deepcopy
 from math import floor
 
-from pkg.client.stock_client import stock_names, default_stock_data
 from pkg.consts import Constants
 from pkg.parse.parse import parse_from_importer
 from pkg.problem.constraint import Constraint
@@ -15,13 +14,6 @@ def default_portfolio_optimization_problem():
     def convert_stock_data_to_variable(portfolio_option):
         return Variable(DiscreteDomain([i for i in range(floor(float(Constants.BUDGET) / portfolio_option.price))], 0),
                         portfolio_option)
-
-    budget_constraint = Constraint(
-        tuple(i for i in range(len(stock_names))),
-        lambda variables: Constants.BUDGET > sum(
-            [(0.0 if variable.get_value() is None else variable.get_value()) * variable.objective_info.price for
-             variable in variables]
-        ))
 
     def var_objective(pos):
         return sum(
@@ -54,6 +46,12 @@ def default_portfolio_optimization_problem():
         )
 
     portfolio_options = parse_from_importer()
+    budget_constraint = Constraint(
+        tuple(i for i in range(len(portfolio_options))),
+        lambda variables: Constants.BUDGET > sum(
+            [(0.0 if variable.get_value() is None else variable.get_value()) * variable.objective_info.price for
+             variable in variables]
+        ))
     return Problem(
         [convert_stock_data_to_variable(portfolio_option) for portfolio_option in portfolio_options],
         [budget_constraint],

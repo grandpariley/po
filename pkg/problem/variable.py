@@ -7,6 +7,9 @@ class Variable:
     def __str__(self):
         return str(self.domain) + " {" + str(self.value) + "}"
 
+    def __repr__(self):
+        return "{" + str(self.value) + "}"
+
     def pop(self):
         return self.domain.pop()
 

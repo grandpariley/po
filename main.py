@@ -1,5 +1,3 @@
-from copy import deepcopy
-
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.nsga2.asdnsga2 import Asdnsga2
@@ -12,18 +10,23 @@ from pkg.timer.timer import Timer
 def main():
     timer = Timer()
     problem = default_portfolio_optimization_problem()
-    Log.log("Begin generate")
-    problems = timer.time(lambda: generate_solutions_discrete_domain(problem, Constants.NSGA2_NUM_INDIVIDUALS),
-                          "generate")
+    Log.log("Begin generate for nsga-ii")
+    nsga2_problems = timer.time(lambda: generate_solutions_discrete_domain(problem, Constants.NSGA2_NUM_INDIVIDUALS),
+                                "generate")
     Log.log("Generated! Starting NSGA-2 solve")
-    nsga2_soln = timer.time(Nsga2(deepcopy(problems)).solve, "nsga2")
+    nsga2_soln = timer.time(Nsga2(nsga2_problems).solve, "nsga2")
+    Log.log("Begin generate for asdnsga-ii")
+    asdnsga2_problems = timer.time(lambda: generate_solutions_discrete_domain(problem, Constants.NSGA2_NUM_INDIVIDUALS),
+                                   "generate")
     Log.log("Done! Starting ASDNSGA-2 solve")
-    asdnsga2_soln = timer.time(Asdnsga2(deepcopy(problems)).solve, "asdnsga2")
+    asdnsga2_soln = timer.time(Asdnsga2(asdnsga2_problems).solve, "asdnsga2")
     Log.log("Done!")
     solutions = {
         'nsga2': nsga2_soln,
         'asdnsga2': asdnsga2_soln,
     }
+    for key in solutions:
+        print(key, [repr(v) for v in solutions[key]])
     plot = Plot(solutions, timer)
     plot.print()
     plot.compare()

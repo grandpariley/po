@@ -9,8 +9,8 @@ from pkg.random.random import Random
 def get_children(mum, dad):
     daughter = Individual(individual=mum)
     son = Individual(individual=dad)
-    son.swap_half_genes(mum)
-    daughter.swap_half_genes(dad)
+    # son.swap_half_genes(mum)
+    # daughter.swap_half_genes(dad)
     return son, daughter
 
 
@@ -43,8 +43,8 @@ def generate_children(parent_population, improved=False):
     while len(children) < len(parent_population):
         mum, dad = get_parents(parent_population, improved)
         son, daughter = get_children(mum, dad)
-        son.emo_phase()
-        daughter.emo_phase()
+        # son.emo_phase()
+        # daughter.emo_phase()
         children += [son, daughter]
     return children
 

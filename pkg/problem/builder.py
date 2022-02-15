@@ -66,13 +66,13 @@ def generate_solutions_discrete_domain(problem, population_size):
         solution = deepcopy(problem)
         rand_variable_index = 0
         while check_budget(solution):
-            rand_variable_index = Random.random_int_between_a_and_b(0, solution.num_variables())
+            rand_variable_index = Random.random_int_between_a_and_b(0, solution.num_variables() - 1)
             solution.set_value(
                 rand_variable_index,
                 Random.random_choice(solution.variables[rand_variable_index].domain.values)
             )
         solution.set_value(rand_variable_index, 0)
-        Log.log("Another solution: " + str(len(solutions)) + " :: " + repr(solution), context="builder")
+        Log.log("Another solution: " + str(len(solutions)) + " :: " + repr(solution) + " ", context="builder")
         solutions.add(solution)
     return list(solutions)
 

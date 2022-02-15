@@ -1,4 +1,3 @@
-from copy import deepcopy
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
@@ -6,12 +5,13 @@ from math import floor
 
 
 def trim_for_remaining_budget(problem, v):
-    p = deepcopy(problem)
     new_domain = []
-    for d in p.variables[v].domain:
-        p.set_value(v, d)
-        if p.consistent():
+    old_value = problem.variables[v].get_value()
+    for d in problem.variables[v].domain:
+        problem.set_value(v, d)
+        if problem.consistent():
             new_domain.append(d)
+    problem.set_value(v, old_value)
     return new_domain
 
 
@@ -114,13 +114,13 @@ class Individual:
     def swap_half_genes(self, other):
         give_up = 0
         while give_up < Constants.NSGA2_GIVE_UP_MAX:
-            problem = deepcopy(self.problem)
-            for _ in range(floor(problem.num_variables() / 2)):
+            problem = self.problem
+            for _ in range(floor(self.problem.num_variables() / 2)):
                 random_index = Random.random_int_between_a_and_b(
-                    0, problem.num_variables() - 1)
+                    0, self.problem.num_variables() - 1)
                 problem.set_value(
                     random_index, other.problem.get_value(random_index))
-            if problem.consistent():
+            if self.problem.consistent():
                 self.problem = problem
                 break
             else:

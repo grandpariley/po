@@ -13,7 +13,7 @@ class Problem:
         representation = ""
         for v in range(len(self.variables)):
             if self.variables[v].get_value():
-                representation += str(v) + " " + repr(self.variables[v]) + ";"
+                representation += str(v) + " " + repr(self.variables[v]) + "; "
         return representation
 
     def consistent(self):

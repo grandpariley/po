@@ -26,9 +26,11 @@ def main():
         'asdnsga2': asdnsga2_soln,
     }
     for key in solutions:
-        print(key, [repr(v) for v in solutions[key]])
+        print(key)
+        for v in solutions[key]:
+            print(repr(v))
     plot = Plot(solutions, timer)
-    plot.print()
+    # plot.print()
     plot.compare()
 
 

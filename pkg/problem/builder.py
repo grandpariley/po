@@ -82,7 +82,6 @@ def generate_solutions_discrete_domain(problem, population_size):
                 rand_variable_index,
                 new_value
             )
-        Log.log("Another solution: " + str(len(solutions)) + " :: " + repr(solution), context="builder")
         solutions.add(solution)
     return list(solutions)
 

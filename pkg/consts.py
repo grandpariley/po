@@ -5,7 +5,6 @@ from pkg.log_level import LogLevel
 
 class Constants:
     BUDGET = 10000.00
-    NSGA2_GIVE_UP_MAX = 5
     NSGA2_NUM_INDIVIDUALS = 10
     NSGA2_NUM_GENERATIONS = 5
     NSGA2_NUM_GENES_MUTATING = 30

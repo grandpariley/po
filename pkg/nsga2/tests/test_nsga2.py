@@ -33,6 +33,5 @@ class Nsga2Test(unittest.TestCase):
         p5.set_value(2, 1)
         nsga2 = Nsga2([p1, p2, p3, p4, p5])
         solutions = nsga2.solve()
-        print(solutions)
         self.assertTrue(True)
         Random.end_test()

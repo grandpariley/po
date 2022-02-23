@@ -32,6 +32,5 @@ class Asdnsga2Test(unittest.TestCase):
         p5.set_value(2, 1)
         asdnsga2 = Asdnsga2([p1, p2, p3, p4, p5])
         solutions = asdnsga2.solve()
-        print(solutions)
         self.assertTrue(True)
         Random.end_test()

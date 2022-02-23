@@ -8,7 +8,6 @@ from pkg.problem.solver import Solver
 
 def solve_helper(parent_population):
     for _ in range(Constants.NSGA2_NUM_GENERATIONS):
-        Log.log("generation number " + str(_))
         child_population = generate_children(parent_population)
         sorted_population = set(parent_population + child_population)
         sorted_population = fast_non_dominated_sort(sorted_population)

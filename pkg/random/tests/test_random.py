@@ -100,6 +100,5 @@ class RandomTest(unittest.TestCase):
 
     def test_random_normal(self):
         true_rando = Random.random_normal([1, 2, 3, 4, 5, 6])
-        print(str(true_rando))
         self.assertLessEqual(true_rando, 6)
         self.assertLessEqual(1, true_rando)

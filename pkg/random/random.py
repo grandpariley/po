@@ -1,4 +1,5 @@
 import random
+import numpy as np
 
 
 class Random:
@@ -49,4 +50,12 @@ class Random:
             return cls.non_random_values["random_choice"].pop()
         if len(lst) > 0:
             return random.choice(lst)
+        raise ValueError("no choice in list: " + str(lst))
+
+    @classmethod
+    def random_normal(cls, lst):
+        if cls.test and cls.non_random_values["random_choice"]:
+            return cls.non_random_values["random_choice"].pop()
+        if len(lst) > 0:
+            return lst[np.floor(np.random.normal(np.mean(lst), np.std(lst))).astype(int) % len(lst)]
         raise ValueError("no choice in list: " + str(lst))

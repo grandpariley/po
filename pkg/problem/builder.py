@@ -76,7 +76,7 @@ def generate_solutions_discrete_domain(problem, population_size):
             )
             if len(d) == 0:
                 break
-            new_value = Random.random_choice(d)
+            new_value = Random.random_normal(d)
             current_budget -= new_value * solution.variables[rand_variable_index].objective_info.price
             solution.set_value(
                 rand_variable_index,

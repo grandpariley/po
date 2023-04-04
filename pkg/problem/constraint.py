@@ -1,10 +1,16 @@
 class Constraint:
-    def __init__(self, variable_indexes, func):
+    def __init__(self, variables, func):
+        self.variables = variables
         self.func = func
-        self.variable_indexes = variable_indexes
 
     def __str__(self):
-        return str(self.variable_indexes)
+        return str(self.variables)
 
     def holds(self, curr_variables):
-        return bool(self.func(tuple(curr_variables[i] for i in self.variable_indexes)))
+        param = {}
+        if self.variables is not None:
+            for v in self.variables:
+                if v in curr_variables.keys():
+                    param[v] = curr_variables[v]
+            return bool(self.func(param))
+        return bool(self.func(curr_variables))

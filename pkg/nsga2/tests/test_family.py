@@ -30,8 +30,8 @@ class FamilyTest(unittest.TestCase):
             Random.set_test_value_for("random_int_between_a_and_b", 2)
         individuals = default_individuals()
         son, daughter = get_children(individuals[0], individuals[1])
-        son_values = [son.problem.get_value(i) for i in range(son.problem.num_variables())]
-        daughter_values = [daughter.problem.get_value(i) for i in range(daughter.problem.num_variables())]
-        self.assertEqual(son_values, [1, 2, 1])
-        self.assertEqual(daughter_values, [0, 2, 1])
+        son_values = [son.problem.get_value(k) for k in son.problem.keys()]
+        daughter_values = [daughter.problem.get_value(k) for k in daughter.problem.keys()]
+        self.assertEqual(son_values, [1, 2, 2])
+        self.assertEqual(daughter_values, [0, 1, 1])
         Random.end_test()

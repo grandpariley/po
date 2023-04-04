@@ -15,10 +15,6 @@ GENERATED_SOLUTIONS_FILE = 'generated-solutions.json'
 
 
 def default_portfolio_optimization_problem():
-    def convert_stock_data_to_variable(portfolio_option):
-        return Variable(DiscreteDomain([i for i in range(floor(float(Constants.BUDGET) / portfolio_option.price))], 0),
-                        portfolio_option) 
-
     def var_objective(pos):
         return sum(
             [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.var for po in pos]
@@ -51,16 +47,16 @@ def default_portfolio_optimization_problem():
 
     portfolio_options = parse_from_importer()
     budget_constraint = Constraint(
-        tuple(i for i in range(len(portfolio_options))),
+        None,
         lambda variables: Constants.BUDGET > sum(
             [(0.0 if variable.get_value() is None else variable.get_value()) * variable.objective_info.price for
-             variable in variables]
+             variable in variables.values()]
         ))
     return Problem(
-        [convert_stock_data_to_variable(portfolio_option) for portfolio_option in portfolio_options],
+        {},
         [budget_constraint],
         [var_objective, cvar_objective, return_objective, environment_objective, governance_objective, social_objective]
-    )
+    ), portfolio_options
 
 
 def generate_solutions_discrete_domain(problem, population_size):

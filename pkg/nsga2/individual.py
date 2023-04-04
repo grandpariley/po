@@ -29,16 +29,16 @@ class Individual:
 
     def __str__(self):
         return str(self.problem) + "\tcrowding distance: " + str(self.crowding_distance) + \
-               "\n\tdomination_count: " + str(self.domination_count) + "\n"
+            "\n\tdomination_count: " + str(self.domination_count) + "\n"
 
     def __repr__(self):
         return str(self)
 
     def __eq__(self, other):
-        if self.problem.num_variables() != other.problem.num_variables():
+        if len(self.problem.keys()) != len(other.problem.keys()):
             return False
-        for i in range(self.problem.num_variables()):
-            if self.problem.get_value(i) != other.problem.get_value(i):
+        for k in self.problem.keys():
+            if self.problem.get_value(k) != other.problem.get_value(k):
                 return False
         return True
 
@@ -46,7 +46,7 @@ class Individual:
         return not self.__eq__(other)
 
     def __hash__(self):
-        return hash(str([self.problem.get_value(v) for v in range(self.problem.num_variables())]))
+        return hash(str([self.problem.get_value(v) for v in self.problem.keys()]))
 
     def does_dominate(self, q):
         return dominates(self.problem.objective_values(), q.problem.objective_values())
@@ -100,8 +100,10 @@ class Individual:
     def get_inverse_tournament_rank(self):
         return self.inverse_tournament_rank
 
+# FIXME - RH - USE ALL PO OPTIONS
     def swap_half_genes(self, other):
-        variables = [Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1) for _ in range(floor(self.problem.num_variables() / 2))]
+        variables = [Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1) for _ in
+                     range(floor(len(self.problem.keys()) / 2))]
         for v in variables:
             if self.problem.get_value(v) != other.problem.get_value(v):
                 original = self.problem.get_value(v)
@@ -115,6 +117,6 @@ class Individual:
 
     def emo_phase(self):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
-            random_variable = Random.random_int_between_a_and_b(0, self.problem.num_variables() - 1)
+            random_variable = Random.random_choice(self.problem.keys())
             new_value = Random.random_choice(self.problem.variables[random_variable].domain.values)
             self.problem.set_value(random_variable, new_value)

@@ -11,9 +11,9 @@ class Problem:
 
     def __repr__(self):
         representation = ""
-        for v in range(len(self.variables)):
-            if self.variables[v].get_value():
-                representation += str(v) + " " + repr(self.variables[v]) + "; "
+        for v in self.variables:
+            if v.get_value():
+                representation += repr(v) + "; "
         return representation
 
     def consistent(self):
@@ -23,16 +23,15 @@ class Problem:
         return True
 
     def set_value(self, variable_index, value):
-        if 0 <= variable_index < len(self.variables):
-            self.variables[variable_index].set_value(value)
+        self.variables[variable_index].set_value(value)
 
     def get_value(self, variable_index):
-        if 0 <= variable_index < len(self.variables):
+        if variable_index in self.keys():
             return self.variables[variable_index].get_value()
         return None
 
-    def num_variables(self):
-        return len(self.variables)
+    def keys(self):
+        return list(self.variables.keys())
 
     def objective_values(self):
         if self.objective_funcs is None:

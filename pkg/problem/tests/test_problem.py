@@ -24,15 +24,8 @@ class ProblemTest(unittest.TestCase):
 
     def test_set_value(self):
         problem = default_consistent_problem_set_values()
-        problem.set_value(1, 2)
-        self.assertEqual(problem.variables[1].get_value(), 2)
+        problem.set_value("1", 2)
+        self.assertEqual(problem.variables["1"].get_value(), 2)
 
-    def test_set_value_out_of_scope(self):
-        problem = default_consistent_problem_set_values()
-        orig_variables = problem.variables
-        problem.set_value(5, 3)
-        self.assertEqual(problem.variables, orig_variables)
-
-    def test_num_variables(self):
-        problem = default_consistent_problem_set_values()
-        self.assertEqual(problem.num_variables(), 3)
+    def test_keys(self):
+        self.assertEqual(["0", "1", "2"], default_consistent_problem().keys())

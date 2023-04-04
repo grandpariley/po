@@ -45,20 +45,20 @@ class IndividualTest(unittest.TestCase):
         parent = default_dominating_individual()
         child = default_other_dominating_individual()
         child.swap_half_genes(parent)
-        values = [child.problem.get_value(i) for i in range(child.problem.num_variables())]
+        values = [child.problem.get_value(k) for k in child.problem.keys()]
         self.assertEqual(values, [1, 3, 1])
         Random.end_test()
 
     def test_emo_phase(self):
         Random.begin_test()
         Constants.NSGA2_NUM_GENES_MUTATING = 1
-        Random.set_test_value_for("random_int_between_a_and_b", 2)
         Random.set_test_value_for("random_choice", 3)
+        Random.set_test_value_for("random_choice", "2")
         child = default_dominating_individual()
         child.emo_phase()
-        self.assertEqual(child.problem.get_value(0), 1)
-        self.assertEqual(child.problem.get_value(1), 2)
-        self.assertEqual(child.problem.get_value(2), 3)
+        self.assertEqual(child.problem.get_value("0"), 1)
+        self.assertEqual(child.problem.get_value("1"), 2)
+        self.assertEqual(child.problem.get_value("2"), 3)
         Random.end_test()
 
     def test_eq(self):

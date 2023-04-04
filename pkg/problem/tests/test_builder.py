@@ -10,7 +10,6 @@ class BuilderTest(unittest.TestCase):
         self.assertTrue(True)
 
     @unittest.skip("data.json is not guaranteed to be there")
-
     def test_generate(self):
         problems = generate_solutions_discrete_domain(default_portfolio_optimization_problem(), 5)
         self.assertTrue(True)

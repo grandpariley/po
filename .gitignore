@@ -147,3 +147,4 @@ dmypy.json
 .idea/
 
 data.json
+generated-solutions.json

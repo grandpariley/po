@@ -5,12 +5,15 @@ do
 case $i in 
     test)
 #        load-env
-        LOG_LEVEL='none' EXTERNAL_API='false' python3 -m unittest discover
+        LOG_LEVEL='none' GENERATE_ONLY='false' python3 -m unittest discover
+    ;;
+    gen)
+#        load-env
+        LOG_LEVEL='debug' GENERATE_ONLY='true' python3 main.py
     ;;
     run)
 #        load-env
-        # /usr/bin/time -v python3 main.py
-        LOG_LEVEL='debug' EXTERNAL_API='false' python3 main.py
+        LOG_LEVEL='debug' GENERATE_ONLY='false' python3 main.py
     ;;
 esac
 done

@@ -6,11 +6,11 @@ from pkg.nsga2.tournament import get_tournament_pool
 from pkg.random.random import Random
 
 
-def get_children(mum, dad):
+def get_children(mum, dad, data):
     daughter = Individual(individual=mum)
     son = Individual(individual=dad)
-    son.swap_half_genes(mum)
-    daughter.swap_half_genes(dad)
+    son.swap_half_genes(mum, data)
+    daughter.swap_half_genes(dad, data)
     return son, daughter
 
 
@@ -38,13 +38,13 @@ def compare_partners(partner1, partner2):
     return partner2
 
 
-def generate_children(parent_population, improved=False):
+def generate_children(parent_population, data, improved=False):
     children, mum, dad = [], None, None
     while len(children) < len(parent_population):
         mum, dad = get_parents(parent_population, improved)
-        son, daughter = get_children(mum, dad)
-        son.emo_phase()
-        daughter.emo_phase()
+        son, daughter = get_children(mum, dad, data)
+        son.emo_phase(data)
+        daughter.emo_phase(data)
         children += [son, daughter]
     return children
 

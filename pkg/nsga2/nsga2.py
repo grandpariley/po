@@ -6,9 +6,9 @@ from pkg.nsga2.sort import fast_non_dominated_sort
 from pkg.problem.solver import Solver
 
 
-def solve_helper(parent_population):
+def solve_helper(parent_population, data):
     for _ in range(Constants.NSGA2_NUM_GENERATIONS):
-        child_population = generate_children(parent_population)
+        child_population = generate_children(parent_population, data)
         sorted_population = set(parent_population + child_population)
         sorted_population = fast_non_dominated_sort(sorted_population)
         parent_population = fill_parent_population_traditional(list(set(sorted_population)))
@@ -26,6 +26,6 @@ class Nsga2(Solver):
         Constants.NSGA2_NUM_INDIVIDUALS = len(self.problems)
         Log.begin_debug("nsga2")
         parent_population = [Individual(problem=p) for p in self.problems]
-        solutions = solve_helper(parent_population)
+        solutions = solve_helper(parent_population, self.data)
         Log.end_debug()
         return [s.problem for s in solutions]

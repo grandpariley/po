@@ -9,6 +9,7 @@ case $i in
     ;;
     gen)
 #        load-env
+        rm generated-solutions.json
         LOG_LEVEL='debug' GENERATE_ONLY='true' python3 main.py
     ;;
     run)

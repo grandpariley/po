@@ -100,23 +100,22 @@ class Individual:
     def get_inverse_tournament_rank(self):
         return self.inverse_tournament_rank
 
-# FIXME - RH - USE ALL PO OPTIONS
-    def swap_half_genes(self, other):
+    def swap_half_genes(self, other, data):
         variables = [Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1) for _ in
                      range(floor(len(self.problem.keys()) / 2))]
         for v in variables:
             if self.problem.get_value(v) != other.problem.get_value(v):
                 original = self.problem.get_value(v)
-                self.problem.set_value(v, other.problem.get_value(v))
+                self.problem.set_value(v, other.problem.get_value(v), data[v])
                 if not self.problem.consistent():
                     self.problem.set_value(v, original)
                 original = other.problem.get_value(v)
-                other.problem.set_value(v, self.problem.get_value(v))
+                other.problem.set_value(v, self.problem.get_value(v), data[v])
                 if not other.problem.consistent():
                     other.problem.set_value(v, original)
 
-    def emo_phase(self):
+    def emo_phase(self, data):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
             random_variable = Random.random_choice(self.problem.keys())
             new_value = Random.random_choice(self.problem.variables[random_variable].domain.values)
-            self.problem.set_value(random_variable, new_value)
+            self.problem.set_value(random_variable, new_value, data[random_variable])

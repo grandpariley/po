@@ -2,6 +2,7 @@ import unittest
 
 from pkg.nsga2.tests.test_util import default_dominating_individual, default_individual, \
     default_other_dominating_individual, default_individual_with_values
+from pkg.problem.tests.default_problems import get_test_data
 from pkg.random.random import Random
 from pkg.consts import Constants
 
@@ -44,7 +45,7 @@ class IndividualTest(unittest.TestCase):
         Random.set_test_value_for("random_int_between_a_and_b", 2)
         parent = default_dominating_individual()
         child = default_other_dominating_individual()
-        child.swap_half_genes(parent)
+        child.swap_half_genes(parent, get_test_data())
         values = [child.problem.get_value(k) for k in child.problem.keys()]
         self.assertEqual(values, [1, 3, 1])
         Random.end_test()
@@ -55,7 +56,7 @@ class IndividualTest(unittest.TestCase):
         Random.set_test_value_for("random_choice", 3)
         Random.set_test_value_for("random_choice", "2")
         child = default_dominating_individual()
-        child.emo_phase()
+        child.emo_phase(get_test_data())
         self.assertEqual(child.problem.get_value("0"), 1)
         self.assertEqual(child.problem.get_value("1"), 2)
         self.assertEqual(child.problem.get_value("2"), 3)

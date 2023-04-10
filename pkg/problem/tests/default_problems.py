@@ -67,3 +67,11 @@ def default_multi_objective_problem_set_values():
     problem.set_value("1", 1)
     problem.set_value("2", 2)
     return problem
+
+
+def get_test_data():
+    return {
+        "0": {},
+        "1": {},
+        "2": {}
+    }

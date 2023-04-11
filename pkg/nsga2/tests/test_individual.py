@@ -53,7 +53,7 @@ class IndividualTest(unittest.TestCase):
     def test_emo_phase(self):
         Random.begin_test()
         Constants.NSGA2_NUM_GENES_MUTATING = 1
-        Random.set_test_value_for("random_choice", 3)
+        Random.set_test_value_for("random_int_between_a_and_b", 3)
         Random.set_test_value_for("random_choice", "2")
         child = default_dominating_individual()
         child.emo_phase(get_test_data())

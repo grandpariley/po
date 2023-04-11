@@ -117,5 +117,5 @@ class Individual:
     def emo_phase(self, data):
         for _ in range(Constants.NSGA2_NUM_GENES_MUTATING):
             random_variable = Random.random_choice(self.problem.keys())
-            new_value = Random.random_choice(self.problem.variables[random_variable].domain.values)
+            new_value = self.problem.variables[random_variable].domain.get_random()
             self.problem.set_value(random_variable, new_value, data[random_variable])

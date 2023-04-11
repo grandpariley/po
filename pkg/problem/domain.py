@@ -27,16 +27,13 @@ class Domain:
         raise NotImplementedError
 
     @abstractmethod
-    def pop(self):
-        raise NotImplementedError
-
-    @abstractmethod
-    def top(self):
+    def get_random(self):
         raise NotImplementedError
 
     @abstractmethod
     def closest(self, target):
         raise NotImplementedError
 
+    @abstractmethod
     def get_base_value(self):
         raise NotImplementedError

@@ -32,7 +32,7 @@ class Problem:
     def set_value(self, variable_index, value, info=None):
         if variable_index not in self.variables.keys() and info is not None:
             self.variables[variable_index] = Variable(
-                DiscreteDomain([i for i in range(floor(Constants.BUDGET / info.price))], 0.00), info)
+                DiscreteDomain(floor(Constants.BUDGET / info.price), 0.00), info)
         self.variables[variable_index].set_value(value)
 
     def get_value(self, variable_index):

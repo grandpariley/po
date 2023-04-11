@@ -96,7 +96,7 @@ def get_potential_variable_data(current_budget, portfolio_options, possible_vari
     possible_variables.remove(rand_variable_index)
     price = portfolio_options[rand_variable_index].price
     domain = get_max_domain(
-        DiscreteDomain([i for i in range(floor(Constants.BUDGET / price))], 0.00).values,
+        [i for i in range(floor(Constants.BUDGET / price))],
         price,
         current_budget
     )

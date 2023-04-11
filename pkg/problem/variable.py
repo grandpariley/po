@@ -10,12 +10,6 @@ class Variable:
     def __repr__(self):
         return "{" + str(self.value) + "}"
 
-    def pop(self):
-        return self.domain.pop()
-
-    def top(self):
-        return self.domain.top()
-
     def set_value(self, value):
         if value in self.domain:
             self.value = value

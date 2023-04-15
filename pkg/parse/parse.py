@@ -7,6 +7,6 @@ def parse_from_importer():
     with open('data.json') as json_file:
         data = json.load(json_file)
         pos = {}
-        for d in data:
-            pos[d['ticker']] = PortfolioOption(d)
+        for key in data:
+            pos[key] = PortfolioOption(data[key])
         return pos

@@ -59,20 +59,16 @@ def default_portfolio_optimization_problem():
 
 
 def generate_solutions_discrete_domain(problem, portfolio_options, population_size):
-    if not Path(GENERATED_SOLUTIONS_FILE).exists():
-        with open(GENERATED_SOLUTIONS_FILE, 'a') as file:
-            solution_hashes = set()
-            solutions = []
-            while len(solution_hashes) < population_size:
-                solution = get_new_solution(portfolio_options, problem)
-                solution_hash = hash(solution)
-                if solution_hash not in solution_hashes:
-                    solution_hashes.add(solution_hash)
-                    solutions.append(solution)
-                    print(str(len(solution_hashes)) + " / " + str(population_size))
-            json.dump(json.dumps(solutions, default=lambda o: o.__dict__), file)
-    with open(GENERATED_SOLUTIONS_FILE) as file:
-        return json.load(file)
+    solution_hashes = set()
+    solutions = []
+    while len(solution_hashes) < population_size:
+        solution = get_new_solution(portfolio_options, problem)
+        solution_hash = hash(solution)
+        if solution_hash not in solution_hashes:
+            solution_hashes.add(solution_hash)
+            solutions.append(solution)
+            print(str(len(solution_hashes)) + " / " + str(population_size))
+    return solutions
 
 
 def get_new_solution(portfolio_options, problem):

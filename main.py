@@ -14,8 +14,6 @@ def main():
     Log.log("Begin generating solutions")
     solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NSGA2_NUM_INDIVIDUALS),
                            "generate")
-    if Constants.GENERATE_ONLY:
-        return
     Log.log("Generated! Starting to solve using NSGA-II")
     nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
     solutions = {

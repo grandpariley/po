@@ -1,49 +1,52 @@
-import json
 from copy import deepcopy
 from math import floor
-from pathlib import Path
 
 from pkg.consts import Constants
 from pkg.parse.parse import parse_from_importer
 from pkg.problem.constraint import Constraint
-from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
 GENERATED_SOLUTIONS_FILE = 'generated-solutions.json'
 
 
+def var_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.var for po in pos]
+    )
+
+
+def cvar_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.cvar for po in pos]
+    )
+
+
+def return_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.ret for po in pos]
+    )
+
+
+def environment_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.environment for po in pos]
+    )
+
+
+def governance_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.governance for po in pos]
+    )
+
+
+def social_objective(pos):
+    return sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.social for po in pos]
+    )
+
+
 def default_portfolio_optimization_problem():
-    def var_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.var for po in pos]
-        )
-
-    def cvar_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.cvar for po in pos]
-        )
-
-    def return_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.ret for po in pos]
-        )
-
-    def environment_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.environment for po in pos]
-        )
-
-    def governance_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.governance for po in pos]
-        )
-
-    def social_objective(pos):
-        return sum(
-            [(0.0 if not po.get_value() else po.get_value()) * po.objective_info.social for po in pos]
-        )
-
     portfolio_options = parse_from_importer()
     budget_constraint = Constraint(
         None,

@@ -147,4 +147,4 @@ dmypy.json
 .idea/
 
 data.json
-generated-solutions.json
+generated-solutions.pkl

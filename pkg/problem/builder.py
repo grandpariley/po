@@ -66,6 +66,7 @@ def default_portfolio_optimization_problem():
 def generate_solutions_discrete_domain(problem, portfolio_options, population_size):
     if os.path.exists(GENERATED_SOLUTIONS_FILE):
         with open(GENERATED_SOLUTIONS_FILE, 'rb') as file:
+            Log.log("hit cache!")
             return dill.load(file)
     solution_hashes = set()
     solutions = []
@@ -77,7 +78,7 @@ def generate_solutions_discrete_domain(problem, portfolio_options, population_si
             solutions.append(solution)
             Log.log(str(len(solution_hashes)) + " / " + str(population_size))
     with open(GENERATED_SOLUTIONS_FILE, 'wb') as file:
-        dill.dump(file, solutions)
+        dill.dump(solutions, file)
     return solutions
 
 

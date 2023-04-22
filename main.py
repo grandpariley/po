@@ -11,10 +11,10 @@ from pkg.timer.timer import Timer
 def main():
     timer = Timer()
     problem, pos = default_portfolio_optimization_problem()
-    Log.log("Begin generating solutions")
+    Log.log("Begin generating solutions", "generate")
     solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NSGA2_NUM_INDIVIDUALS),
                            "generate")
-    Log.log("Generated! Starting to solve using NSGA-II")
+    Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
     nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
     solutions = {
         'nsga2': nsga2_soln,

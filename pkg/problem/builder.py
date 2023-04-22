@@ -2,6 +2,7 @@ from copy import deepcopy
 from math import floor
 
 from pkg.consts import Constants
+from pkg.log import Log
 from pkg.parse.parse import parse_from_importer
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
@@ -70,7 +71,7 @@ def generate_solutions_discrete_domain(problem, portfolio_options, population_si
         if solution_hash not in solution_hashes:
             solution_hashes.add(solution_hash)
             solutions.append(solution)
-            print(str(len(solution_hashes)) + " / " + str(population_size))
+            Log.log(str(len(solution_hashes)) + " / " + str(population_size))
     return solutions
 
 

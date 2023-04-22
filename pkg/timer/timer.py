@@ -7,12 +7,10 @@ class Timer:
         self.times = {}
 
     def time(self, func, label):
-        Log.begin_debug("timer")
         start = time.process_time_ns()
         rt = func()
         end = time.process_time_ns()
         self.times[label] = (end - start)
-        Log.end_debug()
         return rt
 
     def get_times_as_formatted_str(self):

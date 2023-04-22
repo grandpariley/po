@@ -55,6 +55,7 @@ class IndividualTest(unittest.TestCase):
         Constants.NSGA2_NUM_GENES_MUTATING = 1
         Random.set_test_value_for("random_int_between_a_and_b", 3)
         Random.set_test_value_for("random_choice", "2")
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
         child = default_dominating_individual()
         child.emo_phase(get_test_data())
         self.assertEqual(child.problem.get_value("0"), 1)

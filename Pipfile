@@ -7,10 +7,11 @@ verify_ssl = true
 pylint = "*"
 autopep8 = "*"
 
-[packages] 
+[packages]
 python-dotenv = "*"
 matplotlib = "*"
 numpy = "*"
+dill = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,7 @@
 from copy import deepcopy
 from math import floor
-
+import dill
+import os
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.parse.parse import parse_from_importer
@@ -8,7 +9,7 @@ from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
-GENERATED_SOLUTIONS_FILE = 'generated-solutions.json'
+GENERATED_SOLUTIONS_FILE = 'generated-solutions.pkl'
 
 
 def var_objective(pos):
@@ -63,6 +64,9 @@ def default_portfolio_optimization_problem():
 
 
 def generate_solutions_discrete_domain(problem, portfolio_options, population_size):
+    if os.path.exists(GENERATED_SOLUTIONS_FILE):
+        with open(GENERATED_SOLUTIONS_FILE, 'rb') as file:
+            return dill.load(file)
     solution_hashes = set()
     solutions = []
     while len(solution_hashes) < population_size:
@@ -72,6 +76,8 @@ def generate_solutions_discrete_domain(problem, portfolio_options, population_si
             solution_hashes.add(solution_hash)
             solutions.append(solution)
             Log.log(str(len(solution_hashes)) + " / " + str(population_size))
+    with open(GENERATED_SOLUTIONS_FILE, 'wb') as file:
+        dill.dump(file, solutions)
     return solutions
 
 

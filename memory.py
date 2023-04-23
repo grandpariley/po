@@ -16,7 +16,6 @@ def get_memory():
 
 def memory_limit(percentage: float):
     if platform.system() != "Linux":
-        print('Only works on linux!')
         return
     soft, hard = resource.getrlimit(resource.RLIMIT_AS)
     resource.setrlimit(resource.RLIMIT_AS, (floor(get_memory() * 1024 * percentage), hard))
@@ -29,7 +28,7 @@ def limit_memory(percentage=0.8):
             try:
                 return function(*args, **kwargs)
             except MemoryError:
-                sys.stderr.write('ERROR: Memory Exception')
+                sys.stderr.write('ERROR: Memory Exception\n')
                 sys.exit(1)
 
         return wrapper

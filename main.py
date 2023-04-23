@@ -19,8 +19,10 @@ def main():
     solutions = {
         'nsga2': nsga2_soln,
     }
+    Log.log("Solved! Showing results", "")
     plot = Plot(solutions, timer)
     plot.print()
+    plot.compare()
 
 
 if __name__ == '__main__':

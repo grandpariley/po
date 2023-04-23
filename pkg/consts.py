@@ -6,7 +6,7 @@ from pkg.log_level import LogLevel
 class Constants:
     BUDGET_UTILIZATION = 0.80
     BUDGET = 20000.00
-    NSGA2_NUM_INDIVIDUALS = 500
+    NSGA2_NUM_INDIVIDUALS = 300
     NSGA2_NUM_GENERATIONS = 10
     NSGA2_NUM_GENES_MUTATING = 0.20
 

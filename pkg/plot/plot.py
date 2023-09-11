@@ -8,17 +8,24 @@ class Plot:
         self.timer = timer
 
     def print(self):
-        i = 0
-        fig = plt.figure(figsize=(12, 12))
         for key in self.solutions:
-            i += 1
-            points = [[], [], []]
+            fig = plt.figure(figsize=(12, 12))
+            points = [[], []]
             for s in self.solutions[key]:
                 points[0].append(s.objective_values()[0])
                 points[1].append(s.objective_values()[1])
-                points[2].append(s.objective_values()[2])
+            subplot = fig.add_subplot(1, 1, projection='2d')
+            subplot.scatter(np.array(points[0]), np.array(points[1]))
+        plt.show()
+        for key in self.solutions:
+            fig = plt.figure(figsize=(12, 12))
+            points = [[], []]
+            for s in self.solutions[key]:
+                points[0].append(s.objective_values()[2])
+                points[1].append(s.objective_values()[3])
+                points[2].append(s.objective_values()[4])
             subplot = fig.add_subplot(1, 1, 1, projection='3d')
-            subplot.scatter(np.array(points[0]), np.array(points[1]), np.array(points[2]))
+            subplot.scatter(np.array(points[0]), np.array(points[1]), np.array(points[1]))
         plt.show()
 
     def compare(self):

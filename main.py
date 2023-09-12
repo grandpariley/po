@@ -1,6 +1,7 @@
 from memory import limit_memory
 from pkg.consts import Constants
 from pkg.log import Log
+from pkg.moead.moead import Moead
 from pkg.nsga2.nsga2 import Nsga2
 from pkg.plot.plot import Plot
 from pkg.problem.builder import default_portfolio_optimization_problem, generate_solutions_discrete_domain
@@ -16,8 +17,10 @@ def main():
                            "generate")
     Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
     nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    moead_soln = timer.time(Moead(solutions, pos).solve, "moead")
     solutions = {
         'nsga2': nsga2_soln,
+        'moead': moead_soln,
     }
     Log.log("Solved! Showing results", "")
     plot = Plot(solutions, timer)

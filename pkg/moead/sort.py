@@ -12,4 +12,4 @@ def euclidean_distance_mapping(individuals):
                 (j, euclidean_distance(individuals[i].get_objective_values(), individuals[j].get_objective_values())))
         b[i] = sort(b[i], 0, len(b[i]) - 1, default_partition(lambda k: k[1]))[
                :Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS]
-    return [[j[0] for j in b[i]] for i in range(len(b))]
+    return [[j[0] for j in b[i]] for i in range(len(b))][:Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS]

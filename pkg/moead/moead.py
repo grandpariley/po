@@ -1,6 +1,6 @@
 from pkg.consts import Constants
 from pkg.log import Log
-from pkg.moead.family import generate_children
+from pkg.moead.family import generate_child
 from pkg.moead.individual import Individual
 from pkg.moead.sort import euclidean_distance_mapping
 from pkg.problem.solver import Solver
@@ -25,28 +25,25 @@ def get_dominated(ep, l):
     return d
 
 
-def refresh_ep(ep, k):
-    dominated_by_k = get_dominated(ep, k)
-    for d in dominated_by_k:
+def refresh_ep(ep, y):
+    dominated_by_y = get_dominated(ep, y)
+    for d in dominated_by_y:
         ep.remove(d)
-    ep.add(k)
+    ep.add(y)
     for e in ep:
-        if e.does_dominate(k):
-            ep.remove(k)
+        if e.does_dominate(y):
+            ep.remove(y)
+            break
 
 
 def solve_helper(parent_population, data):
     ep = set()
-    b = euclidean_distance_mapping(parent_population)[:Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS]
-    z = get_best_value_all_objectives(parent_population)
+    b = euclidean_distance_mapping(parent_population)
     for t in range(Constants.NSGA2_NUM_GENERATIONS):
-        k, l = generate_children(parent_population, b, data)
-        parent_population.append(k)
-        parent_population.append(l)
+        y = generate_child(parent_population, b, data)
+        parent_population.append(y)
         b = euclidean_distance_mapping(parent_population)
-        refresh_ep(ep, k)
-        refresh_ep(ep, l)
-        z = get_best_value_all_objectives(parent_population)
+        refresh_ep(ep, y)
     return list(ep)
 
 

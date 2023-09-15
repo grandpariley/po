@@ -3,13 +3,9 @@ from pkg.moead.individual import Individual
 from pkg.random.random import Random
 
 
-def generate_children(parent_population, b, data):
-    children, mum, dad = [], None, None
-    while len(children) < len(parent_population):
-        mum, dad = get_parents(parent_population, b)
-        son, daughter = get_children(mum, dad, data)
-        children += [son, daughter]
-    return children
+def generate_child(parent_population, b, data):
+    mum, dad = get_parents(parent_population, b)
+    return get_child(mum, dad, data)
 
 
 def get_parents(parent_population, b):
@@ -17,10 +13,8 @@ def get_parents(parent_population, b):
             parent_population[Random.random_int_between_a_and_b(0, Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS)])
 
 
-def get_children(mum, dad, data):
-    daughter = Individual(individual=mum)
+def get_child(mum, dad, data):
     son = Individual(individual=dad)
     son.swap_half_genes(mum, data)
-    daughter.swap_half_genes(dad, data)
-    return son, daughter
+    return son
 

@@ -59,3 +59,6 @@ class Individual:
         else:
             new_value = DiscreteDomain(floor(Constants.BUDGET / data[random_variable].price), 0.00).get_random()
         return new_value
+
+    def get_objective_values(self):
+        return self.problem.objective_values()

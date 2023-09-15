@@ -1,4 +1,5 @@
 from pkg.consts import Constants
+from pkg.moead.individual import Individual
 from pkg.random.random import Random
 
 
@@ -17,4 +18,9 @@ def get_parents(parent_population, b):
 
 
 def get_children(mum, dad, data):
-    return mum, dad  # FIXME swap half genes
+    daughter = Individual(individual=mum)
+    son = Individual(individual=dad)
+    son.swap_half_genes(mum, data)
+    daughter.swap_half_genes(dad, data)
+    return son, daughter
+

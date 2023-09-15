@@ -6,17 +6,6 @@ from pkg.moead.sort import euclidean_distance_mapping
 from pkg.problem.solver import Solver
 
 
-def get_best_value_all_objectives(population):
-    z = []
-    for individual in population:
-        for o in range(len(individual.problem.objective_values())):
-            if not (0 <= o < len(z)):
-                z.append(0)
-            if z[o] < individual.problem.objective_values()[o]:
-                z[o] = individual.problem.objective_values()[o]
-    return z
-
-
 def get_dominated(ep, l):
     d = []
     for e in ep:

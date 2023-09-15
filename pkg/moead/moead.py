@@ -6,16 +6,11 @@ from pkg.moead.sort import euclidean_distance_mapping
 from pkg.problem.solver import Solver
 
 
-def get_dominated(ep, l):
-    d = []
-    for e in ep:
-        if l.does_dominate(e):
-            d.append(e)
-    return d
-
-
 def refresh_ep(ep, y):
-    dominated_by_y = get_dominated(ep, y)
+    dominated_by_y = []
+    for e in ep:
+        if y.does_dominate(e):
+            dominated_by_y.append(e)
     for d in dominated_by_y:
         ep.remove(d)
     ep.add(y)

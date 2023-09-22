@@ -23,7 +23,7 @@ def refresh_ep(ep, y):
 def solve_helper(parent_population, data):
     ep = set()
     b = euclidean_distance_mapping(parent_population)
-    for t in range(Constants.NSGA2_NUM_GENERATIONS):
+    for t in range(Constants.MOEAD_NUM_GENERATIONS):
         y = generate_child(parent_population, b, data)
         parent_population.append(y)
         b = euclidean_distance_mapping(parent_population)
@@ -34,7 +34,6 @@ def solve_helper(parent_population, data):
 class Moead(Solver):
 
     def solve(self):
-        Constants.MOEAD_NUM_INDIVIDUALS = len(self.problems)
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
         solutions = solve_helper(parent_population, self.data)

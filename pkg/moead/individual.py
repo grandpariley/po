@@ -1,3 +1,4 @@
+from pkg.log import Log
 from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
@@ -43,15 +44,13 @@ class Individual:
         variables = [Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1) for _ in
                      range(floor(len(self.problem.keys()) / 2))]
         for v in variables:
-            if self.problem.get_value(v) != other.problem.get_value(v):
-                original = self.problem.get_value(v)
-                self.problem.set_value(v, other.problem.get_value(v), data[v])
-                if not self.problem.consistent():
-                    self.problem.set_value(v, original)
-                original = other.problem.get_value(v)
-                other.problem.set_value(v, self.problem.get_value(v), data[v])
-                if not other.problem.consistent():
-                    other.problem.set_value(v, original)
+            if self.problem.get_value(v) == other.problem.get_value(v):
+                continue
+            Log.log("do we ever even get here")
+            original = self.problem.get_value(v)
+            self.problem.set_value(v, other.problem.get_value(v), data[v])
+            if not self.problem.consistent():
+                self.problem.set_value(v, original)
 
     def get_new_value(self, data, random_variable):
         if random_variable in self.problem.variables.keys():

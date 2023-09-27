@@ -23,11 +23,17 @@ def refresh_ep(ep, y):
 def solve_helper(parent_population, data):
     ep = set()
     b = euclidean_distance_mapping(parent_population)
+    p = set(parent_population)
+    previous_p = p
     for t in range(Constants.MOEAD_NUM_GENERATIONS):
-        y = generate_child(parent_population, b, data)
-        parent_population.append(y)
-        b = euclidean_distance_mapping(parent_population)
-        refresh_ep(ep, y)
+        Log.log("generation " + str(t) + " | " + str(len(b)) + " | " + str(len(parent_population)) + " | " + str(
+            previous_p == p))
+        for i in range(len(b)):
+            y = generate_child(list(p), b[i], data)
+            Log.log("---> str(y in p) " + str(y in p))
+            p.add(y)
+            b = euclidean_distance_mapping(list(p))
+            refresh_ep(ep, y)
     return list(ep)
 
 

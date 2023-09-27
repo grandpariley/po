@@ -14,7 +14,7 @@ class Plot:
             for s in self.solutions[key]:
                 points[0].append(s.objective_values()[0])
                 points[1].append(s.objective_values()[1])
-            subplot = fig.add_subplot(1, 1, projection='2d')
+            subplot = fig.add_subplot(1, 1, 1)
             subplot.scatter(np.array(points[0]), np.array(points[1]))
         plt.show()
         for key in self.solutions:

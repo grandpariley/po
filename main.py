@@ -13,19 +13,20 @@ def main():
     timer = Timer()
     problem, pos = default_portfolio_optimization_problem()
     Log.log("Begin generating solutions", "generate")
-    solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NSGA2_NUM_INDIVIDUALS),
+    solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NUM_INDIVIDUALS),
                            "generate")
-    Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
-    nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    # Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
+    # nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    Log.log("Solved! Starting to solve using MOEA/D", "moead")
     moead_soln = timer.time(Moead(solutions, pos).solve, "moead")
+    Log.log("Solved! Showing results", "")
     solutions = {
-        'nsga2': nsga2_soln,
+        # 'nsga2': nsga2_soln,
         'moead': moead_soln,
     }
-    Log.log("Solved! Showing results", "")
-    plot = Plot(solutions, timer)
-    plot.print()
-    plot.compare()
+    # plot = Plot(solutions, timer)
+    # plot.print()
+    # plot.compare()
 
 
 if __name__ == '__main__':

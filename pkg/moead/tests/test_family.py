@@ -12,8 +12,8 @@ class FamilyTest(unittest.TestCase):
         Random.begin_test()
         Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 2
         individuals = default_individuals()
-        Random.set_test_value_for("random_int_between_a_and_b", 0)
-        Random.set_test_value_for("random_int_between_a_and_b", 1)
+        Random.set_test_value_for("random_choice", 0)
+        Random.set_test_value_for("random_choice", 1)
         child = generate_child(individuals, default_b(), get_test_data())
         expected = default_individual()
         expected.problem.set_value('0', 0)
@@ -26,8 +26,8 @@ class FamilyTest(unittest.TestCase):
         Random.begin_test()
         Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 2
         individuals = default_individuals()
-        Random.set_test_value_for("random_int_between_a_and_b", 0)
-        Random.set_test_value_for("random_int_between_a_and_b", 1)
+        Random.set_test_value_for("random_choice", 0)
+        Random.set_test_value_for("random_choice", 1)
         mum, dad = get_parents(individuals, default_b())
         expected_mum = default_individual()
         expected_mum.problem.set_value('0', 1)

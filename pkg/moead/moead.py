@@ -30,7 +30,7 @@ def solve_helper(parent_population, data):
             previous_p == p))
         for i in range(len(b)):
             y = generate_child(list(p), b[i], data)
-            Log.log("---> str(y in p) " + str(y in p))
+            Log.log("---> str(y in p) " + str(y in p) + " | " + str(b[i]))
             p.add(y)
             b = euclidean_distance_mapping(list(p))
             refresh_ep(ep, y)

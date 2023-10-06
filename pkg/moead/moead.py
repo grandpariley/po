@@ -29,6 +29,7 @@ def solve_helper(parent_population, data):
         Log.log("generation " + str(t) + " | " + str(len(b)) + " | " + str(len(parent_population)) + " | " + str(
             previous_p == p))
         for i in range(len(b)):
+            previous_p = p
             y = generate_child(list(p), b[i], data)
             Log.log("---> str(y in p) " + str(y in p) + " | " + str(b[i]))
             p.add(y)

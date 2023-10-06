@@ -41,12 +41,12 @@ class Individual:
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
     def swap_half_genes(self, other, data):
-        variables = [Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1) for _ in
-                     range(floor(len(self.problem.keys()) / 2))]
+        variables = set()
+        while len(variables) < len(self.problem.keys()) / 2:
+            variables.add(Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1))
         for v in variables:
             if self.problem.get_value(v) == other.problem.get_value(v):
                 continue
-            Log.log("do we ever even get here")
             original = self.problem.get_value(v)
             self.problem.set_value(v, other.problem.get_value(v), data[v])
             if not self.problem.consistent():

@@ -10,8 +10,13 @@ class SortTest(unittest.TestCase):
     def test_euclidean_distance_mapping(self):
         Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 4
         individuals = default_individuals()
-        b = euclidean_distance_mapping(individuals)
+        input_b = []
+        for i in range(len(individuals)):
+            input_b.append([])
+            for _ in range(len(individuals[i].get_objective_values())):
+                input_b[i].append(1.00 / len(individuals[i].get_objective_values()))
+        b = euclidean_distance_mapping(input_b)
         self.assertEqual(
             b,
-            [[1, 2, 3, 0], [1, 3, 0, 2], [2, 0, 1, 3], [3, 2, 1, 0]]
+            [[3, 0, 1, 2], [3, 0, 1, 2], [3, 0, 1, 2], [3, 0, 1, 2]]
         )

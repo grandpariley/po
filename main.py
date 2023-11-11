@@ -24,9 +24,9 @@ def main():
         'nsga2': nsga2_soln,
         'moead': moead_soln,
     }
-    # plot = Plot(solutions, timer)
-    # plot.print()
-    # plot.compare()
+    plot = Plot(solutions, timer)
+    plot.print(range(len(solutions['nsga2'].objective_values())))
+    plot.compare()
 
 
 if __name__ == '__main__':

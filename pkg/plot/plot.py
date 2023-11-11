@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
-import numpy as np
+
+ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
 
 
 class Plot:
@@ -7,26 +8,20 @@ class Plot:
         self.solutions = solutions
         self.timer = timer
 
-    def print(self):
-        for key in self.solutions:
-            fig = plt.figure(figsize=(12, 12))
-            points = [[], []]
-            for s in self.solutions[key]:
-                points[0].append(s.objective_values()[0])
-                points[1].append(s.objective_values()[1])
-            subplot = fig.add_subplot(1, 1, 1)
-            subplot.scatter(np.array(points[0]), np.array(points[1]))
-        plt.show()
-        for key in self.solutions:
-            fig = plt.figure(figsize=(12, 12))
-            points = [[], []]
-            for s in self.solutions[key]:
-                points[0].append(s.objective_values()[2])
-                points[1].append(s.objective_values()[3])
-                points[2].append(s.objective_values()[4])
-            subplot = fig.add_subplot(1, 1, 1, projection='3d')
-            subplot.scatter(np.array(points[0]), np.array(points[1]), np.array(points[1]))
-        plt.show()
+    # FIXME TWO AND ONLY TWO
+    def print(self, objective_indexes):
+        for objective_index in objective_indexes:
+            for objective_index2 in objective_indexes:
+                if objective_index == objective_index2:
+                    continue
+                colour = iter(ORDER_OF_COLOURS)
+                for key in self.solutions:
+                    plt.plot([s.objective_values()[objective_index] for s in self.solutions[key]],
+                             [s.objective_values()[objective_index2] for s in self.solutions[key]], next(colour),
+                             label=key)
+                plt.xlabel(objective_index)
+                plt.ylabel(objective_index2)
+                plt.show()
 
     def compare(self):
         print(self.timer.get_times_as_formatted_str())

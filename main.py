@@ -15,13 +15,13 @@ def main():
     Log.log("Begin generating solutions", "generate")
     solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NUM_INDIVIDUALS),
                            "generate")
-    # Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
-    # nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
+    nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
     Log.log("Solved! Starting to solve using MOEA/D", "moead")
     moead_soln = timer.time(Moead(solutions, pos).solve, "moead")
     Log.log("Solved! Showing results", "")
     solutions = {
-        # 'nsga2': nsga2_soln,
+        'nsga2': nsga2_soln,
         'moead': moead_soln,
     }
     # plot = Plot(solutions, timer)

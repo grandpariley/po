@@ -68,6 +68,13 @@ def generate_solutions_discrete_domain(problem, portfolio_options, population_si
         with open(GENERATED_SOLUTIONS_FILE, 'rb') as file:
             Log.log("hit cache!")
             return dill.load(file)
+    solutions = get_solutions(population_size, portfolio_options, problem)
+    with open(GENERATED_SOLUTIONS_FILE, 'wb') as file:
+        dill.dump(solutions, file)
+    return solutions
+
+
+def get_solutions(population_size, portfolio_options, problem):
     solution_hashes = set()
     solutions = []
     while len(solution_hashes) < population_size:
@@ -77,8 +84,6 @@ def generate_solutions_discrete_domain(problem, portfolio_options, population_si
             solution_hashes.add(solution_hash)
             solutions.append(solution)
             Log.log(str(len(solution_hashes)) + " / " + str(population_size))
-    with open(GENERATED_SOLUTIONS_FILE, 'wb') as file:
-        dill.dump(solutions, file)
     return solutions
 
 

@@ -1,4 +1,3 @@
-from pkg.log import Log
 from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.random.random import Random
 from pkg.problem.compare import dominates

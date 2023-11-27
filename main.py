@@ -34,14 +34,36 @@ def get_cached_solutions(problem, pos, timer):
     return s
 
 
+def get_cached_nsga2(solutions, pos, timer):
+    if os.path.exists('nsga2-' + SOLUTIONS_FILE):
+        with open('nsga2-' + SOLUTIONS_FILE, 'rb') as file:
+            Log.log("Hit nsga2 cache!")
+            return dill.load(file)
+    nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    with open('nsga2-' + SOLUTIONS_FILE, 'wb') as file:
+        dill.dump(nsga2_soln, file)
+    return nsga2_soln
+
+
+def get_cached_moead(solutions, pos, timer):
+    if os.path.exists('moead-' + SOLUTIONS_FILE):
+        with open('moead-' + SOLUTIONS_FILE, 'rb') as file:
+            Log.log("Hit moead cache!")
+            return dill.load(file)
+    moead_soln = timer.time(Moead(solutions, pos).solve, "moead")
+    with open('moead-' + SOLUTIONS_FILE, 'wb') as file:
+        dill.dump(moead_soln, file)
+    return moead_soln
+
+
 def get_solutions(problem, pos, timer):
     Log.log("Begin generating solutions", "generate")
     solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NUM_INDIVIDUALS),
                            "generate")
     Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
-    nsga2_soln = timer.time(Nsga2(solutions, pos).solve, "nsga2")
+    nsga2_soln = get_cached_nsga2(solutions, pos, timer)
     Log.log("Solved! Starting to solve using MOEA/D", "moead")
-    moead_soln = timer.time(Moead(solutions, pos).solve, "moead")
+    moead_soln = get_cached_moead(solutions, pos, timer)
     Log.log("Solved! Showing results", "")
     return {
         'nsga2': nsga2_soln,

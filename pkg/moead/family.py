@@ -1,4 +1,3 @@
-from pkg.log import Log
 from pkg.moead.individual import Individual
 from pkg.random.random import Random
 
@@ -7,7 +6,6 @@ def generate_child(parent_population, bi, data):
     mum, dad = get_parents(parent_population, bi)
     son = Individual(individual=dad)
     son.swap_half_genes(mum, data)
-    Log.log("---> str(son == dad) " + str(son == dad))
     return son
 
 

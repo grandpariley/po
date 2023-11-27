@@ -33,14 +33,9 @@ def get_b(parent_population):
 def solve_helper(parent_population, data):
     ep = set()
     b = get_b(parent_population)
-    previous_p = parent_population
     for t in range(Constants.MOEAD_NUM_GENERATIONS):
-        Log.log("generation " + str(t) + " | " + str(len(b)) + " | " + str(len(parent_population)) + " | " + str(
-            previous_p == parent_population))
         for i in range(len(parent_population)):
-            previous_p = parent_population
             y = generate_child(parent_population, b[i], data)
-            Log.log("---> str(y in p) " + str(y in parent_population) + " | " + str(b[i]))
             parent_population.append(y)
             neighbourhood = [parent_population[index] for index in b[i]]
             for n in neighbourhood:

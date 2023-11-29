@@ -14,39 +14,9 @@ from pkg.random.random import Random
 GENERATED_SOLUTIONS_FILE = 'generated-solutions.pkl'
 
 
-def var_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.var for po in pos]
-    )
-
-
-def cvar_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.cvar for po in pos]
-    )
-
-
-def return_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.ret for po in pos]
-    )
-
-
-def environment_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.environment for po in pos]
-    )
-
-
-def governance_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.governance for po in pos]
-    )
-
-
-def social_objective(pos):
-    return sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info.social for po in pos]
+def get_objective_by_criteria(criteria):
+    return lambda pos: sum(
+        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info[criteria] for po in pos]
     )
 
 
@@ -61,16 +31,18 @@ def default_portfolio_optimization_problem():
     return Problem(
         {},
         [budget_constraint],
-        [var_objective, cvar_objective, return_objective, environment_objective, governance_objective, social_objective]
+        [
+            get_objective_by_criteria('var'),
+            get_objective_by_criteria('cvar'),
+            get_objective_by_criteria('return'),
+            get_objective_by_criteria('environment'),
+            get_objective_by_criteria('governance'),
+            get_objective_by_criteria('social')
+        ]
     ), portfolio_options
 
 
-@file_cache(filename='generated-solutions.pkl')
-def generate_solutions_discrete_domain(problem, portfolio_options, population_size):
-    return get_solutions(population_size, portfolio_options, problem)
-
-
-def get_solutions(population_size, portfolio_options, problem):
+def generate_solutions_discrete_domain(population_size, portfolio_options, problem):
     solution_hashes = set()
     solutions = []
     while len(solution_hashes) < population_size:

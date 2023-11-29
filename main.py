@@ -23,7 +23,6 @@ def plot_solutions(solutions, timer):
     plot.compare()
 
 
-@file_cache(filename='solutions.pkl')
 def get_cached_solutions(problem, pos, timer):
     return get_solutions(problem, pos, timer)
 
@@ -38,15 +37,20 @@ def get_cached_moead(solutions, pos, timer):
     return timer.time(Moead(solutions, pos).solve, "moead")
 
 
+@file_cache(filename='generated-solutions.pkl')
+def get_cached_generated_solutions(problem, pos, timer):
+    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, pos, problem),
+                      "generate")
+
+
 def get_solutions(problem, pos, timer):
-    Log.log("Begin generating solutions", "generate")
-    solutions = timer.time(lambda: generate_solutions_discrete_domain(problem, pos, Constants.NUM_INDIVIDUALS),
-                           "generate")
-    Log.log("Generated! Starting to solve using NSGA-II", "nsga2")
+    Log.log("Generating solutions", "generate")
+    solutions = get_cached_generated_solutions(problem, pos, timer)
+    Log.log("Starting to solve using NSGA-II", "nsga2")
     nsga2_soln = get_cached_nsga2(solutions, pos, timer)
-    Log.log("Solved! Starting to solve using MOEA/D", "moead")
+    Log.log("Starting to solve using MOEA/D", "moead")
     moead_soln = get_cached_moead(solutions, pos, timer)
-    Log.log("Solved! Showing results", "")
+    Log.log("Showing results", "results")
     return {
         'nsga2': nsga2_soln,
         'moead': moead_soln,

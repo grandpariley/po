@@ -1,18 +1,15 @@
 
 
 def sort_individuals(individuals, obj_index):
-    sorted(individuals, key=lambda i: i.get_objective_values()[obj_index])
-    return individuals
+    return sorted(individuals, key=lambda i: i.get_objective_values()[obj_index])
 
 
 def sort_by_crowding_distance(individuals):
-    sorted(individuals, key=lambda i: i.get_crowding_distance())
-    return individuals
+    return sorted(individuals, key=lambda i: i.get_crowding_distance())
 
 
 def sort_by_special_crowding_distance(individuals):
-    sorted(individuals, key=lambda i: i.get_special_crowding_distance())
-    return individuals
+    return sorted(individuals, key=lambda i: i.get_special_crowding_distance())
 
 
 def fast_non_dominated_sort(individuals):

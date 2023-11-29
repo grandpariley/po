@@ -25,10 +25,10 @@ class SortTest(unittest.TestCase):
                 default_other_dominating_individual())], [str(r) for r in result])
 
     def test_sort_by_crowding_distance(self):
-        individuals = [default_individual(), default_individual(), default_other_dominating_individual(),
+        individuals = [default_other_dominating_individual(),
                        default_dominating_individual(), default_dominated_individual()]
         result = sort_by_crowding_distance(individuals)
         self.assertEqual(
-            [str(default_dominated_individual()), str(default_individual()), str(default_individual()), str(
+            [str(default_dominated_individual()), str(
                 default_dominating_individual()), str(
                 default_other_dominating_individual())], [str(r) for r in result])

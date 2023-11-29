@@ -2,6 +2,8 @@ from copy import deepcopy
 from math import floor
 import dill
 import os
+
+from cache import file_cache
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.parse.parse import parse_from_importer
@@ -63,15 +65,9 @@ def default_portfolio_optimization_problem():
     ), portfolio_options
 
 
+@file_cache(filename='generated-solutions.pkl')
 def generate_solutions_discrete_domain(problem, portfolio_options, population_size):
-    if os.path.exists(GENERATED_SOLUTIONS_FILE):
-        with open(GENERATED_SOLUTIONS_FILE, 'rb') as file:
-            Log.log("hit cache!")
-            return dill.load(file)
-    solutions = get_solutions(population_size, portfolio_options, problem)
-    with open(GENERATED_SOLUTIONS_FILE, 'wb') as file:
-        dill.dump(solutions, file)
-    return solutions
+    return get_solutions(population_size, portfolio_options, problem)
 
 
 def get_solutions(population_size, portfolio_options, problem):

@@ -19,7 +19,7 @@ def main():
     problem, pos = default_portfolio_optimization_problem()
     solutions = get_cached_solutions(problem, pos, timer)
     plot = Plot(solutions, timer)
-    plot.print(range(len(solutions['nsga2'].objective_values())))
+    plot.print(range(len(solutions['nsga2'][0].objective_values())))
     plot.compare()
 
 

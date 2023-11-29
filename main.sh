@@ -9,7 +9,7 @@ case $i in
     ;;
     run)
 #        load-env
-        LOG_LEVEL='debug' GENERATE_ONLY='false' pipenv run python3 main.py
+        PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' GENERATE_ONLY='false' pipenv run python3 main.py
     ;;
 esac
 done

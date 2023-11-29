@@ -14,3 +14,19 @@ class PortfolioOption:
 
     def __repr__(self):
         return str(self)
+
+    def __getitem__(self, item):
+        if item == 'price':
+            return self.price
+        if item == 'return':
+            return self.ret
+        if item == 'var':
+            return self.var
+        if item == 'cvar':
+            return self.cvar
+        if item == 'environment':
+            return self.environment
+        if item == 'social':
+            return self.social
+        if item == 'governance':
+            return self.governance

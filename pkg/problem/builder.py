@@ -1,17 +1,12 @@
 from copy import deepcopy
 from math import floor
-import dill
-import os
 
-from cache import file_cache
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.parse.parse import parse_from_importer
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
 from pkg.random.random import Random
-
-GENERATED_SOLUTIONS_FILE = 'generated-solutions.pkl'
 
 
 def get_objective_by_criteria(criteria):

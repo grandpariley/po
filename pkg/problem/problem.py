@@ -17,11 +17,7 @@ class Problem:
             str([str(obj) for obj in self.objective_values()]) + "\n"
 
     def __repr__(self):
-        representation = ""
-        for v in self.variables:
-            if v.get_value():
-                representation += repr(v) + "; "
-        return representation
+        return str(self)
 
     def consistent(self):
         for constraint in self.constraints:

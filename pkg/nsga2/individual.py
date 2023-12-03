@@ -110,13 +110,9 @@ class Individual:
                 self.problem.set_value(v, other.problem.get_value(v), data[v])
                 if not self.problem.consistent():
                     self.problem.set_value(v, original)
-                original = other.problem.get_value(v)
-                other.problem.set_value(v, self.problem.get_value(v), data[v])
-                if not other.problem.consistent():
-                    other.problem.set_value(v, original)
 
     def emo_phase(self, data):
-        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.NSGA2_NUM_GENES_MUTATING * len(data.keys())))):
+        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.NUM_GENES_MUTATING * len(data.keys())))):
             random_variable = Random.random_choice(list(data.keys()))
             self.problem.set_value(random_variable, self.get_new_value(data, random_variable), data[random_variable])
 

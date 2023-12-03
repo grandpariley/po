@@ -1,3 +1,4 @@
+import json
 import math
 
 import matplotlib.pyplot as plt
@@ -40,6 +41,14 @@ class Plot:
                 axis_count_rows = (axis_count_rows + 1) % nrows
                 axis_count_cols = (axis_count_cols + 1) % ncols
         plt.show()
+
+    def dump(self):
+        print(self.solutions)
+        with open('solutions.json', 'w') as file:
+            json.dump([{
+                "objectiveValues": s.objective_values(),
+                "data": [v.objective_info for v in s.variables]
+            } for s in self.solutions['moead']], file)
 
     def compare(self):
         print(self.timer.get_times_as_formatted_str())

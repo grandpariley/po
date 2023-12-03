@@ -58,5 +58,10 @@ class Individual:
             new_value = DiscreteDomain(floor(Constants.BUDGET / data[random_variable].price), 0.00).get_random()
         return new_value
 
+    def emo_phase(self, data):
+        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.NUM_GENES_MUTATING * len(data.keys())))):
+            random_variable = Random.random_choice(list(data.keys()))
+            self.problem.set_value(random_variable, self.get_new_value(data, random_variable), data[random_variable])
+
     def get_objective_values(self):
         return self.problem.objective_values()

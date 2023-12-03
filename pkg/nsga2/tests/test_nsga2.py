@@ -9,7 +9,7 @@ from pkg.random.random import Random
 class Nsga2Test(unittest.TestCase):
 
     def test_solve(self):
-        Constants.NSGA2_NUM_GENERATIONS = 3
+        Constants.NUM_GENERATIONS = 3
         Constants.NSGA2_NUM_GENES_MUTATING = 1
         p1 = default_consistent_problem()
         p1.set_value("0", 0)

@@ -13,18 +13,15 @@ from pkg.timer.timer import Timer
 def main():
     timer = Timer()
     problem, pos = default_portfolio_optimization_problem()
-    solutions = get_cached_solutions(problem, pos, timer)
+    solutions = get_solutions(problem, pos, timer)
     plot_solutions(solutions, timer)
 
 
 def plot_solutions(solutions, timer):
     plot = Plot(solutions, timer)
     plot.compare()
-    plot.print(range(len(solutions['nsga2'][0].objective_values())), 3, 5)
-
-
-def get_cached_solutions(problem, pos, timer):
-    return get_solutions(problem, pos, timer)
+    # plot.print(range(len(solutions['nsga2'][0].objective_values())), 3, 5)
+    plot.dump()
 
 
 @file_cache(filename='nsga2-solutions.pkl')

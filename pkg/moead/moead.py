@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.moead.family import generate_child
@@ -11,8 +13,7 @@ def refresh_ep(ep, y):
     for e in ep:
         if y.does_dominate(e):
             dominated_by_y.append(e)
-    for d in dominated_by_y:
-        ep.remove(d)
+    ep = ep.difference(dominated_by_y)
     ep.add(y)
     for e in ep:
         if e.does_dominate(y):
@@ -20,31 +21,27 @@ def refresh_ep(ep, y):
             break
 
 
-def get_b(parent_population):
-    input_b = []
-    for i in range(len(parent_population)):
-        input_b.append([])
-        for _ in range(len(parent_population[i].get_objective_values())):
-            input_b[i].append(1.00 / len(parent_population[i].get_objective_values()))
-    b = euclidean_distance_mapping(input_b)
-    return b
-
-
 def solve_helper(parent_population, data):
     ep = set()
-    b = get_b(parent_population)
-    for t in range(Constants.MOEAD_NUM_GENERATIONS):
+    Log.log("timestamp")
+    b = euclidean_distance_mapping(parent_population)
+    Log.log("timestamp")
+    x = deepcopy(parent_population)
+    for t in range(Constants.NUM_GENERATIONS):
+        Log.log("Generation: " + str(t))
         for i in range(len(parent_population)):
-            y = generate_child(parent_population, b[i], data)
-            parent_population.append(y)
+            y = generate_child(parent_population, data)
+            x.append(y)
             neighbourhood = [parent_population[index] for index in b[i]]
             for n in neighbourhood:
+                if n not in x:
+                    continue
                 if y.does_dominate(n):
-                    parent_population.remove(n)
+                    x.remove(n)
                 elif n.does_dominate(y):
-                    parent_population.remove(y)
+                    x.remove(y)
                     break
-            b = get_b(parent_population)
+            x = list(set(x))
             refresh_ep(ep, y)
     return list(ep)
 

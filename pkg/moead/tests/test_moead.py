@@ -9,7 +9,7 @@ from pkg.problem.tests.default_problems import default_consistent_problem, get_t
 class MoeadTest(unittest.TestCase):
 
     def test_solve_helper(self):
-        Constants.MOEAD_NUM_GENERATIONS = 3
+        Constants.NUM_GENERATIONS = 3
         Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 2
         p1 = default_consistent_problem()
         p1.set_value("0", 0)

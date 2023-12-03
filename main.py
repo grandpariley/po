@@ -20,7 +20,7 @@ def main():
 def plot_solutions(solutions, timer):
     plot = Plot(solutions, timer)
     plot.compare()
-    # plot.print(range(len(solutions['nsga2'][0].objective_values())), 3, 5)
+    plot.print(range(len(solutions['nsga2'][0].objective_values())), 3, 5)
     plot.dump()
 
 

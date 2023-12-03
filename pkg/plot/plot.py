@@ -40,10 +40,11 @@ class Plot:
                     INDEX_TO_LABEL[objective_index] + " compared to " + INDEX_TO_LABEL[objective_index2])
                 axis_count_rows = (axis_count_rows + 1) % nrows
                 axis_count_cols = (axis_count_cols + 1) % ncols
+        plt.savefig('Figure_1.png')
         plt.show()
 
     def dump(self):
-        print(self.solutions)
+        # print(self.solutions)
         with open('solutions.json', 'w') as file:
             json.dump([{
                 "objectiveValues": s.objective_values(),

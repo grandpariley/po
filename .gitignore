@@ -146,8 +146,6 @@ dmypy.json
 #pycharm
 .idea/
 
-data.json
-solutions.json
-*solutions.pkl
-Figure_*.png
-times.txt
+*.json
+*.pkl
+*.png

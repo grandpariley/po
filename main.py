@@ -4,7 +4,7 @@ from pkg.consts import Constants
 from pkg.log import Log
 from pkg.moead.moead import Moead
 from pkg.nsga2.nsga2 import Nsga2
-from pkg.plot.plot import Plot
+from pkg.evaluation.evaluation import Evaluation, INDEX_TO_LABEL
 from pkg.problem.builder import default_portfolio_optimization_problem, generate_solutions_discrete_domain
 from pkg.timer.timer import Timer
 
@@ -14,14 +14,15 @@ def main():
     timer = Timer()
     problem, pos = default_portfolio_optimization_problem()
     solutions = get_solutions(problem, pos, timer)
-    plot_solutions(solutions, timer)
+    evaluate(solutions, timer)
 
 
-def plot_solutions(solutions, timer):
-    plot = Plot(solutions, timer)
-    plot.compare()
-    plot.print(range(len(solutions['nsga2'][0].objective_values())), 3, 5)
-    plot.dump()
+def evaluate(solutions, timer):
+    eval = Evaluation(solutions, timer)
+    eval.dump_solutions()
+    eval.dump_time()
+    eval.dump_metrics()
+    eval.dump_graph(range(len(INDEX_TO_LABEL)), 3, 5)  # hack circular dependency lmao
 
 
 @file_cache(filename='nsga2-solutions.pkl')

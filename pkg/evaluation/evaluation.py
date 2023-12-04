@@ -71,16 +71,17 @@ def get_c_metric(solutions):
 
 
 def get_all_solutions(solutions):
-    all_solutions = []
+    all_solutions = set()
+    dominated = set()
     for k in solutions:
-        all_solutions = all_solutions + solutions[k]
+        all_solutions = all_solutions.union(set(solutions[k]))
     for a in all_solutions:
         for b in all_solutions:
             if dominates(a.objective_values(), b.objective_values()):
-                all_solutions.remove(b)
+                dominated.add(b)
             if dominates(b.objective_values(), a.objective_values()):
-                all_solutions.remove(a)
-    return all_solutions
+                dominated.add(a)
+    return all_solutions.difference(dominated)
 
 
 def plot_one(solutions, axis, axis_count_cols, axis_count_rows, objective_index, objective_index2):

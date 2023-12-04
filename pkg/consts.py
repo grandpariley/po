@@ -4,6 +4,7 @@ from pkg.log_level import LogLevel
 
 
 class Constants:
+    NUM_RUNS = 10
     BUDGET_UTILIZATION = 0.80
     BUDGET = 100.00
     NUM_INDIVIDUALS = 100

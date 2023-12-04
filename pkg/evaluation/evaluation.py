@@ -114,7 +114,8 @@ def plot(solutions, axis, ncols, nrows, objective_indexes):
 
 
 class Evaluation:
-    def __init__(self, solutions, timer):
+    def __init__(self, prefix, solutions, timer):
+        self.prefix = str(prefix)
         self.solutions = solutions
         self.timer = timer
 
@@ -124,12 +125,12 @@ class Evaluation:
             ncols = int(math.comb(len(objective_indexes), 2) / 2)
         figure, axis = plt.subplots(nrows, ncols, figsize=(28, 12))
         plot(self.solutions, axis, ncols, nrows, objective_indexes)
-        # plt.savefig('Figure_1.png')
-        plt.show()
+        plt.savefig(self.prefix + '-Figure_1.png')
+        # plt.show()
 
     def dump_solutions(self):
         for key in self.solutions:
-            with open(key + '-solutions.json', 'w') as file:
+            with open(self.prefix + "-" + key + '-solutions.json', 'w') as file:
                 json.dump([{
                     "objectiveValues": s.objective_values(),
                     "variables": [{
@@ -140,11 +141,11 @@ class Evaluation:
 
     def dump_time(self):
         if len(self.timer.times) != 0:
-            with open('times.json', 'w') as file:
+            with open(self.prefix + '-times.json', 'w') as file:
                 json.dump(self.timer.times, file)
 
     def dump_metrics(self):
-        with open('metrics.json', 'w') as file:
+        with open(self.prefix + '-metrics.json', 'w') as file:
             json.dump({
                 "c_metric": get_c_metric(self.solutions),
                 "d_metric": get_d_metric(self.solutions)

@@ -24,9 +24,7 @@ def get_non_dominated(x):
 
 
 def solve_helper(parent_population, data):
-    Log.log("timestamp")
     b = euclidean_distance_mapping(parent_population)
-    Log.log("timestamp")
     for t in range(Constants.NUM_GENERATIONS):
         Log.log("Generation: " + str(t))
         for i in range(len(parent_population)):

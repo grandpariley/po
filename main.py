@@ -11,7 +11,7 @@ from pkg.timer.timer import Timer
 
 @limit_memory(percentage=0.9)
 def main():
-    for i in Constants.NUM_RUNS:
+    for i in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(i), "run")
         timer = Timer()
         problem, pos = default_portfolio_optimization_problem()

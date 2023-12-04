@@ -43,7 +43,9 @@ def find_closest_solution_distance(s, all_solutions):
 def get_euclidean_distance_to_nearest(solutions, all_solutions):
     d_metric = []
     for s in solutions:
-        d_metric.append(find_closest_solution_distance(s, all_solutions))
+        distance = find_closest_solution_distance(s, all_solutions)
+        if distance != 0:
+            d_metric.append(distance)
     return d_metric
 
 
@@ -51,10 +53,7 @@ def get_d_metric(solutions):
     all_solutions = get_all_solutions(solutions)
     d_metric = []
     for key in solutions:
-        ed = get_euclidean_distance_to_nearest(solutions[key], all_solutions)
-        if ed == 0:
-            continue
-        d_metric.append({key: ed})
+        d_metric.append({key: get_euclidean_distance_to_nearest(solutions[key], all_solutions)})
     return d_metric
 
 
@@ -140,8 +139,9 @@ class Evaluation:
                 } for s in self.solutions[key]], file)
 
     def dump_time(self):
-        with open('times.json', 'w') as file:
-            json.dump(self.timer.times, file)
+        if len(self.timer.times) != 0:
+            with open('times.json', 'w') as file:
+                json.dump(self.timer.times, file)
 
     def dump_metrics(self):
         with open('metrics.json', 'w') as file:

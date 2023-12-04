@@ -3,6 +3,8 @@ import math
 
 import matplotlib.pyplot as plt
 
+from pkg.problem.compare import dominates
+
 ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
 INDEX_TO_LABEL = ['VaR', 'CVaR', 'Return', 'Environment', 'Governance', 'Social']
 
@@ -15,15 +17,15 @@ def euclidean_distance(obj1, obj2):
     return math.sqrt(sum([pow(obj1[o] - obj2[o], 2) for o in range(len(obj1))]))
 
 
-def get_pairwise_domination_matrix(solutions1, solutions2):
-    dominated_in_1 = []
-    dominated_in_2 = []
+def get_pairwise_domination_counts(solutions1, solutions2):
+    dominated_in_1 = 0
+    dominated_in_2 = 0
     for s1 in solutions1:
         for s2 in solutions2:
-            if s1.does_dominate(s2):
-                dominated_in_2.append(s2)
-            if s2.does_dominate(s1):
-                dominated_in_1.append(s1)
+            if dominates(s1.objective_values(), s2.objective_values()):
+                dominated_in_2 += 1
+            if dominates(s2.objective_values(), s1.objective_values()):
+                dominated_in_1 += 1
     return dominated_in_1, dominated_in_2
 
 
@@ -42,13 +44,17 @@ def get_euclidean_distance_to_nearest(solutions, all_solutions):
     d_metric = []
     for s in solutions:
         d_metric.append(find_closest_solution_distance(s, all_solutions))
+    return d_metric
 
 
 def get_d_metric(solutions):
     all_solutions = get_all_solutions(solutions)
     d_metric = []
     for key in solutions:
-        d_metric.append(get_euclidean_distance_to_nearest(solutions[key], all_solutions))
+        ed = get_euclidean_distance_to_nearest(solutions[key], all_solutions)
+        if ed == 0:
+            continue
+        d_metric.append({key: ed})
     return d_metric
 
 
@@ -60,7 +66,8 @@ def get_c_metric(solutions):
             if key == key2 or (key, key2) in done or (key2, key) in done:
                 continue
             done.append((key, key2))
-            c_metric.append(get_pairwise_domination_matrix(solutions[key], solutions[key2]))
+            key2_dominates_key, key_dominates_key2 = get_pairwise_domination_counts(solutions[key], solutions[key2])
+            c_metric.append({key: key_dominates_key2, key2: key2_dominates_key})
     return c_metric
 
 
@@ -68,6 +75,12 @@ def get_all_solutions(solutions):
     all_solutions = []
     for k in solutions:
         all_solutions = all_solutions + solutions[k]
+    for a in all_solutions:
+        for b in all_solutions:
+            if dominates(a.objective_values(), b.objective_values()):
+                all_solutions.remove(b)
+            if dominates(b.objective_values(), a.objective_values()):
+                all_solutions.remove(a)
     return all_solutions
 
 

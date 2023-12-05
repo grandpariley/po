@@ -20,8 +20,14 @@ def get_d_metrics(key):
     for i in range(Constants.NUM_RUNS):
         with open('runs/' + str(i) + '-metrics.json') as json_file:
             data = json.load(json_file)
-            d = data['d_metric'][key]
-            d_metrics.append(sum(d) * 1.000 / len(d))
+            metrics = []
+            for d in range(len(data['d_metric'])):
+                if key in data['d_metric'][d].keys():
+                    metrics = data['d_metric'][d][key]
+            if len(metrics) > 0:
+                d_metrics.append(sum(metrics) * 1.000 / len(metrics))
+            else:
+                d_metrics.append(0)
     return d_metrics
 
 
@@ -36,11 +42,19 @@ def get_c_metrics():
     nsga2_c_metrics = []
     moead_c_metrics = []
     for i in range(Constants.NUM_RUNS):
+        moead_solutions_count = get_number_of_solutions_by_run_and_alg(i, 'moead')
+        nsga2_solutions_count = get_number_of_solutions_by_run_and_alg(i, 'nsga2')
         with open('runs/' + str(i) + '-metrics.json') as json_file:
             data = json.load(json_file)
-            nsga2_c_metrics.append(data['c_metric']['nsga2'])
-            moead_c_metrics.append(data['c_metric']['moead'])
+            # FIXME - I calculated this backwards
+            nsga2_c_metrics.append(data['c_metric'][0]['moead'] / nsga2_solutions_count)
+            moead_c_metrics.append(data['c_metric'][0]['nsga2'] / moead_solutions_count)
     return moead_c_metrics, nsga2_c_metrics
+
+
+def get_number_of_solutions_by_run_and_alg(i, alg):
+    with open('runs/' + str(i) + '-' + alg + '-solutions.json') as json_file:
+        return len(json.load(json_file))
 
 
 def show_c_metrics(moead_c_metric, nsga2_c_metric):

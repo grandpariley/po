@@ -1,3 +1,4 @@
+import csv
 import json
 import math
 
@@ -14,6 +15,8 @@ def args_parse():
     parser.add_argument("-d", "--Dmetric", help="D metric graph", action='store_true')
     parser.add_argument("-t", "--Times", help="Time graph graph", action='store_true')
     parser.add_argument("-w", "--Weights", help="Compute the portfolio for given weights", action='store_true')
+    parser.add_argument("-q", "--TableWeights", help="Take the computed weights and make a csv table", action='store_true')
+
     args = parser.parse_args()
     todo = []
     if args.Cmetric:
@@ -24,6 +27,9 @@ def args_parse():
         todo.append("d")
     if args.Weights:
         todo.append("w")
+    if args.TableWeights:
+        todo.append("q")
+
     return todo
 
 
@@ -42,6 +48,32 @@ def main():
         show_d_metrics(nsga2_d_metrics, 'ko')
     if 'w' in todo:
         print_best_portfolio_for_weights()
+    if 'q' in todo:
+        convert_weight_json_to_csv('Bob', 'moead')
+        convert_weight_json_to_csv('Alice', 'moead')
+        convert_weight_json_to_csv('Sam', 'moead')
+        convert_weight_json_to_csv('Sarah', 'moead')
+        convert_weight_json_to_csv('Bob', 'nsga2')
+        convert_weight_json_to_csv('Alice', 'nsga2')
+        convert_weight_json_to_csv('Sam', 'nsga2')
+        convert_weight_json_to_csv('Sarah', 'nsga2')
+
+
+def find_investors_best(data, investor):
+    for d in data:
+        if d['investor'] == investor:
+            return d['best']
+    return []
+
+
+def convert_weight_json_to_csv(investor, alg):
+    with open(alg + '-best_portfolios.json') as json_file:
+        data = json.load(json_file)
+        best = find_investors_best(data, investor)
+        with open(alg + '-' + investor + '.csv', 'w') as csv_file:
+            writer = csv.writer(csv_file, delimiter=',')
+            for b in best:
+                writer.writerow([b['ticker'], b['amount']])
 
 
 def get_all_solutions(alg):

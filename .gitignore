@@ -149,3 +149,4 @@ dmypy.json
 *.json
 *.pkl
 *.png
+*.csv

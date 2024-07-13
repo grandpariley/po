@@ -48,7 +48,7 @@ def get_solutions(problems, options, timer):
     solutions = []
     Log.log("Generating solutions for arch 1", "generate")
     solutions[0] = get_generated_solutions(problems[0], options, timer)
-    Log.log("Generating solutions for problem 2", "generate")
+    Log.log("Generating solutions for arch 2", "generate")
     solutions[1] = get_generated_solutions(problems[1], options, timer)
     Log.log("Starting to solve using MOEA/D for arch 1", "arch1")
     arch_1_solutions = get_arch1_solutions(solutions[0], options, timer)

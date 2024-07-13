@@ -9,67 +9,6 @@ ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
-def euclidean_distance(obj1, obj2):
-    if obj1 is obj2:
-        return 0
-    if len(obj1) != len(obj2):
-        return math.inf
-    return math.sqrt(sum([pow(obj1[o] - obj2[o], 2) for o in range(len(obj1))]))
-
-
-def get_pairwise_domination_counts(solutions1, solutions2):
-    dominated_in_1 = 0
-    dominated_in_2 = 0
-    for s1 in solutions1:
-        for s2 in solutions2:
-            if dominates(s1.objective_values(), s2.objective_values()):
-                dominated_in_2 += 1
-            if dominates(s2.objective_values(), s1.objective_values()):
-                dominated_in_1 += 1
-    return dominated_in_1, dominated_in_2
-
-
-def find_closest_solution_distance(s, all_solutions):
-    closest_distance = math.inf
-    for a in all_solutions:
-        if s.objective_values() == a.objective_values():
-            return 0
-        d = euclidean_distance(s.objective_values(), a.objective_values())
-        if d < closest_distance:
-            closest_distance = d
-    return closest_distance
-
-
-def get_euclidean_distance_to_nearest(solutions, all_solutions):
-    d_metric = []
-    for s in solutions:
-        distance = find_closest_solution_distance(s, all_solutions)
-        if distance != 0:
-            d_metric.append(distance)
-    return d_metric
-
-
-def get_d_metric(solutions):
-    all_solutions = get_all_solutions(solutions)
-    d_metric = []
-    for key in solutions:
-        d_metric.append({key: get_euclidean_distance_to_nearest(solutions[key], all_solutions)})
-    return d_metric
-
-
-def get_c_metric(solutions):
-    c_metric = []
-    done = []
-    for key in solutions:
-        for key2 in solutions:
-            if key == key2 or (key, key2) in done or (key2, key) in done:
-                continue
-            done.append((key, key2))
-            key2_dominates_key, key_dominates_key2 = get_pairwise_domination_counts(solutions[key], solutions[key2])
-            c_metric.append({key: key_dominates_key2, key2: key2_dominates_key})
-    return c_metric
-
-
 def get_all_solutions(solutions):
     all_solutions = set()
     dominated = set()
@@ -144,10 +83,3 @@ class Evaluation:
         if len(self.timer.times) != 0:
             with open(self.prefix + '-times.json', 'w') as file:
                 json.dump(self.timer.times, file)
-
-    def dump_metrics(self):
-        with open(self.prefix + '-metrics.json', 'w') as file:
-            json.dump({
-                "c_metric": get_c_metric(self.solutions),
-                "d_metric": get_d_metric(self.solutions)
-            }, file)

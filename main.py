@@ -24,7 +24,6 @@ def evaluate(i, solutions, timer):
     result = Evaluation(i, solutions, timer)
     result.dump_solutions()
     result.dump_time()
-    result.dump_metrics()
     result.dump_graph(range(len(INDEX_TO_LABEL)), 3, 5)  # hack circular dependency lmao
 
 

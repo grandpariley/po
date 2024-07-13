@@ -5,7 +5,8 @@ from pkg.log import Log
 from pkg.moead.moead import Moead
 from pkg.evaluation.evaluation import Evaluation, INDEX_TO_LABEL
 from pkg.parse.parse import parse_from_importer
-from pkg.problem.builder import default_portfolio_optimization_problem_arch_2, generate_solutions_discrete_domain
+from pkg.problem.builder import default_portfolio_optimization_problem_arch_2, generate_solutions_discrete_domain, \
+    default_portfolio_optimization_problem_arch_1
 from pkg.timer.timer import Timer
 
 
@@ -15,8 +16,8 @@ def main():
         Log.log("Run: " + str(i), "run")
         timer = Timer()
         options = parse_from_importer()
-        problem = default_portfolio_optimization_problem_arch_2()
-        solutions = get_solutions(problem, options, timer)
+        problems = [default_portfolio_optimization_problem_arch_1(), default_portfolio_optimization_problem_arch_2()]
+        solutions = get_solutions(problems, options, timer)
         evaluate(i, solutions, timer)
 
 
@@ -38,14 +39,20 @@ def get_generated_solutions(problem, options, timer):
                       "generate")
 
 
-def get_solutions(problem, options, timer):
-    Log.log("Generating solutions", "generate")
-    solutions = get_generated_solutions(problem, options, timer)
-    Log.log("Starting to solve using MOEA/D", "moead")
-    moead_solutions = get_moead_solutions(solutions, options, timer)
+def get_solutions(problems, options, timer):
+    solutions = []
+    Log.log("Generating solutions for arch 1", "generate")
+    solutions[0] = get_generated_solutions(problems[0], options, timer)
+    Log.log("Generating solutions for problem 2", "generate")
+    solutions[1] = get_generated_solutions(problems[1], options, timer)
+    Log.log("Starting to solve using MOEA/D for arch 1", "arch1")
+    arch_1_solutions = get_moead_solutions(solutions[0], options, timer)
+    Log.log("Starting to solve using MOEA/D for arch 2", "arch2")
+    arch_2_solutions = get_moead_solutions(solutions[1], options, timer)
     Log.log("Showing results", "results")
     return {
-        'moead': moead_solutions,
+        'arch1': arch_1_solutions,
+        'arch2': arch_2_solutions
     }
 
 

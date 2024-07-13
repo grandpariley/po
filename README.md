@@ -6,7 +6,6 @@ The purpose of this project is a clear, readable representation of multi-objecti
 Currently this is not available for use through `pip`, but that is a future state I would like to get to.
 Included in this library is also an implementation for each of the following algorithms:
  
- - NSGA-2
  - MOEA/D
  
 In order to run this code, there are two environment variables that need to be set (I do it from a `.env` file in the root directory)

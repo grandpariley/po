@@ -1,40 +1,44 @@
 from copy import deepcopy
 from math import floor
 
+from cache import file_cache
 from pkg.consts import Constants
 from pkg.log import Log
-from pkg.parse.parse import parse_from_importer
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
 
-def get_objective_by_criteria(criteria):
-    return lambda pos: sum(
-        [(0.0 if not pos[po].get_value() else pos[po].get_value()) * pos[po].objective_info[criteria] for po in pos]
-    )
-
-
+@file_cache('problem.pkl')
 def default_portfolio_optimization_problem():
-    portfolio_options = parse_from_importer()
-    budget_constraint = Constraint(
-        None,
-        lambda variables: Constants.BUDGET > sum(
-            [(0.0 if variable.get_value() is None else variable.get_value()) * variable.objective_info.price for
-             variable in variables.values()]
-        ))
     return Problem(
         {},
-        [budget_constraint],
         [
-            # FIXME use CVaR
+            Constraint(
+                None,
+                lambda variables: Constants.BUDGET > sum(
+                    [(0.0 if not variable.get_value() else
+                      (variable.get_value()) * variable.objective_info['price'])
+                     for variable in variables.values()]
+                ))
+        ],
+        [
+            get_objective_by_criteria('cvar'),
             get_objective_by_criteria('var'),
             get_objective_by_criteria('return'),
             get_objective_by_criteria('environment'),
             get_objective_by_criteria('governance'),
             get_objective_by_criteria('social')
         ]
-    ), portfolio_options
+    )
+
+
+def get_objective_by_criteria(criteria):
+    return lambda options: sum(
+        [(0.0 if not options[option].get_value() else
+          (options[option].get_value()) * options[option].objective_info[criteria])
+         for option in options]
+    )
 
 
 def generate_solutions_discrete_domain(population_size, portfolio_options, problem):
@@ -50,17 +54,17 @@ def generate_solutions_discrete_domain(population_size, portfolio_options, probl
     return solutions
 
 
-def get_new_solution(portfolio_options, problem):
+def get_new_solution(options, problem):
     solution = deepcopy(problem)
     current_budget = Constants.BUDGET
-    possible_variables = list(portfolio_options.keys())
+    possible_variables = list(options.keys())
     while len(possible_variables) > 0:
-        domain, rand_variable_index = get_potential_variable_data(current_budget, portfolio_options, possible_variables)
+        domain, rand_variable_index = get_potential_variable_data(current_budget, options, possible_variables)
         if len(domain) == 0:
             continue
         new_value = Random.random_normal(domain)
-        current_budget -= new_value * portfolio_options[rand_variable_index].price
-        solution.set_value(rand_variable_index, new_value, portfolio_options[rand_variable_index])
+        current_budget -= new_value * options[rand_variable_index].price
+        solution.set_value(rand_variable_index, new_value, options[rand_variable_index])
         if current_budget / Constants.BUDGET > Constants.BUDGET_UTILIZATION:
             break
     return solution

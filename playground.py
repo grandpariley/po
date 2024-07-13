@@ -8,6 +8,9 @@ from pkg.consts import Constants
 from pkg.evaluation.evaluation import INDEX_TO_LABEL
 from pkg.problem.compare import dominates
 
+WEIGHTS_FILE = 'response.json'
+BUCKETS_FILE = 'buckets.json'
+
 
 def args_parse():
     parser = argparse.ArgumentParser()
@@ -96,17 +99,17 @@ def print_best_portfolio_for_weights():
 def get_best_solutions_by_weights():
     nsga2_solutions = []
     moead_solutions = []
-    with open('weights.json') as json_file:
+    with open(WEIGHTS_FILE) as json_file:
         investors = json.load(json_file)
         for investor in investors:
-            moead_best, moead_best_value = get_best_solution_for_weight(investor['weights'], 'moead')
+            moead_best, moead_best_value = get_best_solution_for_weight(investor, 'moead')
             moead_solutions.append({
                 "investor": investor['person'],
                 "investor_description": investor['description'],
                 "best": moead_best,
                 "best_value": moead_best_value
             })
-            nsga2_best, nsga2_best_value = get_best_solution_for_weight(investor['weights'], 'nsga2')
+            nsga2_best, nsga2_best_value = get_best_solution_for_weight(investor, 'nsga2')
             nsga2_solutions.append({
                 "investor": investor['person'],
                 "investor_description": investor['description'],

@@ -27,8 +27,8 @@ def default_portfolio_optimization_problem():
         {},
         [budget_constraint],
         [
+            # FIXME use CVaR
             get_objective_by_criteria('var'),
-            get_objective_by_criteria('cvar'),
             get_objective_by_criteria('return'),
             get_objective_by_criteria('environment'),
             get_objective_by_criteria('governance'),

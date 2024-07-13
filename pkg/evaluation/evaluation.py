@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from pkg.problem.compare import dominates
 
 ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
-INDEX_TO_LABEL = ['VaR', 'CVaR', 'Return', 'Environment', 'Governance', 'Social']
+INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
 def euclidean_distance(obj1, obj2):

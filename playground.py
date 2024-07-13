@@ -113,29 +113,6 @@ def get_best_solution_for_weight(weights, alg):
     return remove_zero_amounts(best), best_value
 
 
-def get_d_metrics(key):
-    d_metrics = []
-    for i in range(Constants.NUM_RUNS):
-        with open('runs/' + str(i) + '-metrics.json') as json_file:
-            data = json.load(json_file)
-            metrics = []
-            for d in range(len(data['d_metric'])):
-                if key in data['d_metric'][d].keys():
-                    metrics = data['d_metric'][d][key]
-            if len(metrics) > 0:
-                d_metrics.append(sum(metrics) * 1.000 / len(metrics))
-            else:
-                d_metrics.append(0)
-    return d_metrics
-
-
-def show_d_metrics(d_metrics, colour):
-    plt.plot([i for i in range(Constants.NUM_RUNS)], d_metrics, colour)
-    plt.xlabel("Generation")
-    plt.ylabel("Average euclidean distance from approximated Pareto front")
-    plt.show()
-
-
 def get_number_of_solutions_by_run_and_alg(i, alg):
     with open('runs/' + str(i) + '-' + alg + '-solutions.json') as json_file:
         return len(json.load(json_file))

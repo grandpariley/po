@@ -11,7 +11,7 @@ from pkg.random.random import Random
 
 
 @file_cache('problem-arch-2.pkl')
-def default_portfolio_optimization_problem_arch_1():
+def default_portfolio_optimization_problem_arch_2():
     return Problem(
         {},
         [
@@ -34,8 +34,8 @@ def default_portfolio_optimization_problem_arch_1():
     )
 
 
-@file_cache('problem-arch-2.pkl')
-def default_portfolio_optimization_problem_arch_2(investor):
+@file_cache('problem-arch-1.pkl')
+def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},
         [

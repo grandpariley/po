@@ -5,7 +5,7 @@ from pkg.log import Log
 from pkg.moead.moead import Moead
 from pkg.evaluation.evaluation import Evaluation, INDEX_TO_LABEL
 from pkg.parse.parse import parse_from_importer
-from pkg.problem.builder import default_portfolio_optimization_problem, generate_solutions_discrete_domain
+from pkg.problem.builder import default_portfolio_optimization_problem_arch_1, generate_solutions_discrete_domain
 from pkg.timer.timer import Timer
 
 
@@ -15,7 +15,7 @@ def main():
         Log.log("Run: " + str(i), "run")
         timer = Timer()
         options = parse_from_importer()
-        problem = default_portfolio_optimization_problem()
+        problem = default_portfolio_optimization_problem_arch_1()
         solutions = get_solutions(problem, options, timer)
         evaluate(i, solutions, timer)
 

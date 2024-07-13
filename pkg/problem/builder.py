@@ -1,3 +1,4 @@
+import json
 from copy import deepcopy
 from math import floor
 
@@ -9,8 +10,8 @@ from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
 
-@file_cache('problem.pkl')
-def default_portfolio_optimization_problem():
+@file_cache('problem-arch-2.pkl')
+def default_portfolio_optimization_problem_arch_1():
     return Problem(
         {},
         [
@@ -31,6 +32,43 @@ def default_portfolio_optimization_problem():
             get_objective_by_criteria('social')
         ]
     )
+
+
+@file_cache('problem-arch-2.pkl')
+def default_portfolio_optimization_problem_arch_2(investor):
+    return Problem(
+        {},
+        [
+            Constraint(
+                None,
+                lambda variables: Constants.BUDGET > sum(
+                    [(0.0 if not variable.get_value() else
+                      (variable.get_value()) * variable.objective_info['price'])
+                     for variable in variables.values()]
+                ))
+        ],
+        [
+            get_weight_sensitive_objective(investor)
+        ]
+    )
+
+
+def weight(investor, criteria):
+    for i in Constants.INVESTORS:
+        if i['person'] == investor:
+            return i['weights'][criteria]
+    return 0
+
+
+def get_weight_sensitive_objective(investor):
+    return lambda options: sum([
+        get_objective_by_criteria('cvar')(options) * weight(investor, 'cvar'),
+        get_objective_by_criteria('var')(options) * weight(investor, 'var'),
+        get_objective_by_criteria('return')(options) * weight(investor, 'return'),
+        get_objective_by_criteria('environment')(options) * weight(investor, 'environment'),
+        get_objective_by_criteria('governance')(options) * weight(investor, 'governance'),
+        get_objective_by_criteria('social')(options) * weight(investor, 'social')
+    ])
 
 
 def get_objective_by_criteria(criteria):

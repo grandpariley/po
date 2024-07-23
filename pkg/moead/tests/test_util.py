@@ -8,12 +8,7 @@ def default_individual():
 
 
 def default_b():
-    input_b = []
-    for i in range(len(default_individuals())):
-        input_b.append([])
-        for _ in range(len(default_individuals()[i].get_objective_values())):
-            input_b[i].append(1.00 / len(default_individuals()[i].get_objective_values()))
-    return euclidean_distance_mapping(input_b)
+    return euclidean_distance_mapping(default_individuals())
 
 
 def default_individuals():

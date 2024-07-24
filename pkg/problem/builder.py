@@ -9,7 +9,7 @@ from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
 
-@file_cache('problem-arch-2.pkl')
+# @file_cache('arch-2-problem.pkl')
 def default_portfolio_optimization_problem_arch_2():
     return Problem(
         {},
@@ -33,7 +33,7 @@ def default_portfolio_optimization_problem_arch_2():
     )
 
 
-@file_cache('problem-arch-1.pkl')
+# @file_cache('arch-1-problem.pkl')
 def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},

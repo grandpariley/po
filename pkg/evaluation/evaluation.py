@@ -1,5 +1,6 @@
 import json
 import math
+import os.path
 
 import matplotlib.pyplot as plt
 
@@ -7,6 +8,15 @@ from pkg.problem.compare import dominates
 
 ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
+
+
+def plot_singleton(solutions, axis, investor):
+    axis[0, 0].plot(
+        [i for i in range(len(solutions))],
+        [s.objective_values()[0] for s in solutions['arch1']],
+        ORDER_OF_COLOURS[0],
+        label=investor
+    )
 
 
 def get_all_solutions(solutions):
@@ -59,18 +69,26 @@ class Evaluation:
         self.solutions = solutions
         self.timer = timer
 
-    def dump_graph(self, objective_indexes, nrows=None, ncols=None):
-        if nrows is None or ncols is None:
-            nrows = 2
-            ncols = int(math.comb(len(objective_indexes), 2) / 2)
-        figure, axis = plt.subplots(nrows, ncols, figsize=(28, 12))
-        plot(self.solutions, axis, ncols, nrows, objective_indexes)
-        plt.savefig(self.prefix + '-Figure_1.png')
-        # plt.show()
+    def dump_graph(self, objective_indexes_dict, nrows=None, ncols=None):
+        for objective_indexes_key in objective_indexes_dict:
+            if nrows is None or ncols is None:
+                nrows = 2
+                ncols = int(math.comb(len(objective_indexes_dict[objective_indexes_key]), 2) / 2)
+            figure, axis = plt.subplots(nrows, ncols, figsize=(28, 12))
+            if len(objective_indexes_dict[objective_indexes_key]) > 1:
+                plot(self.solutions, axis, ncols, nrows, objective_indexes_dict[objective_indexes_key])
+            # else:
+            #     plot_singleton(self.solutions, axis, 'sam')
+            if not os.path.exists(objective_indexes_key):
+                os.mkdir(objective_indexes_key)
+            plt.savefig(objective_indexes_key + '/' + self.prefix + '-Figure_1.png')
+            # plt.show()
 
     def dump_solutions(self):
         for key in self.solutions:
-            with open(self.prefix + "-" + key + '-solutions.json', 'w') as file:
+            if not os.path.exists(key):
+                os.mkdir(key)
+            with open(key + '/' + self.prefix + '-solutions.json', 'w') as file:
                 json.dump([{
                     "objectiveValues": s.objective_values(),
                     "variables": [{

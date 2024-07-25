@@ -12,15 +12,15 @@ def investors():
     if not os.path.exists('weights.json'):
         _investors = [
             {
-                "person": "Sam",
-                "description": "Balanced; wants to buy a house in 10 years; strong Environmental concerns",
+                "person": "Alice",
+                "description": "Risk tolerant; long time horizon; strong ESG preferences",
                 "weights": {
-                    "VaR": 0.2,
-                    "CVaR": 0.2,
-                    "Return": 0.2,
-                    "Environment": 0.4,
-                    "Governance": 0.0,
-                    "Social": 0.0
+                    "var": 0.05,
+                    "cvar": 0.05,
+                    "return": 0.05,
+                    "environment": 0.3,
+                    "governance": 0.25,
+                    "social": 0.3
                 }
             }
         ]
@@ -31,7 +31,7 @@ def investors():
 
 
 class Constants:
-    NUM_RUNS = 10
+    NUM_RUNS = 1
     BUDGET_UTILIZATION = 0.80
     BUDGET = 2000.00
     NUM_INDIVIDUALS = 200

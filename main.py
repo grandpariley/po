@@ -17,7 +17,7 @@ def main():
         timer = Timer()
         options = parse_from_importer()
         problems = [
-            default_portfolio_optimization_problem_arch_1('Sam'),
+            default_portfolio_optimization_problem_arch_1('Alice'),
             default_portfolio_optimization_problem_arch_2()
         ]
         solutions = get_solutions(problems, options, timer)
@@ -56,6 +56,7 @@ def get_generated_solutions_arch2(problem, options, timer):
                       "generate")
 
 
+@file_cache(filename='get-solutions.pkl')
 def get_solutions(problems, options, timer):
     solutions = []
     Log.log("Generating solutions for arch 1", "generate")

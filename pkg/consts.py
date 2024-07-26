@@ -33,7 +33,7 @@ def investors():
 class Constants:
     NUM_RUNS = 1
     BUDGET_UTILIZATION = 0.80
-    BUDGET = 2000.00
+    BUDGET = 22608.04
     NUM_INDIVIDUALS = 200
     NUM_GENERATIONS = 10
     NUM_GENES_MUTATING = 0.20

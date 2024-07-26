@@ -31,7 +31,7 @@ def evaluate(i, solutions, timer):
     result.dump_graph({
         "arch1": ['objectives'],
         "arch2": range(len(INDEX_TO_LABEL))
-    }, 2, 5)
+    }, 2, 5, 'Alice')
 
 
 # @file_cache(filename='arch1-solutions.pkl')

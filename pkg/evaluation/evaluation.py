@@ -4,11 +4,25 @@ import math
 import os.path
 
 import matplotlib.pyplot as plt
+from numpy import floor
 
+from pkg.consts import Constants
+from pkg.parse.portfolio_option import PortfolioOption
+from pkg.problem.builder import default_portfolio_optimization_problem_arch_1
 from pkg.problem.compare import dominates
 
 ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
+
+
+def get_index_expected_return(investor):
+    if not investor:
+        raise ValueError
+    with open('index-data.json', 'r') as json_file:
+        index_data = json.load(json_file)['^GSPTSE']
+        problem = default_portfolio_optimization_problem_arch_1(investor)
+        problem.set_value('^GSPTSE', floor(Constants.BUDGET / index_data['price']), info=PortfolioOption(index_data))
+        return problem.objective_values()[0]
 
 
 def get_all_solutions(solutions):
@@ -60,7 +74,7 @@ class Evaluation:
         self.solutions = solutions
         self.timer = timer
 
-    def dump_graph(self, objective_indexes_dict, rows=None, cols=None):
+    def dump_graph(self, objective_indexes_dict, rows=None, cols=None, investor=None):
         for objective_indexes_key in objective_indexes_dict:
             if len(objective_indexes_dict[objective_indexes_key]) > 1:
                 if rows is None or cols is None:
@@ -72,7 +86,7 @@ class Evaluation:
                     os.mkdir(objective_indexes_key)
             else:
                 plt.bar([objective_indexes_key, 'benchmark'],
-                        [self.solutions['arch1'][0].objective_values()[0], 1.00])
+                        [self.solutions['arch1'][0].objective_values()[0], get_index_expected_return(investor)])
             plt.savefig(objective_indexes_key + '/' + self.prefix + '-figure.png')
         # plt.show()
 

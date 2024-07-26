@@ -38,18 +38,22 @@ def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},
         [
-            Constraint(
-                None,
-                lambda variables: Constants.BUDGET > sum(
-                    [(0.0 if not variable.get_value() else
-                      (variable.get_value()) * variable.objective_info['price'])
-                     for variable in variables.values()]
-                ))
+            default_budget_constraint()
         ],
         [
             get_weight_sensitive_objective(investor)
         ]
     )
+
+
+def default_budget_constraint():
+    return Constraint(
+        None,
+        lambda variables: Constants.BUDGET > sum(
+            [(0.0 if not variable.get_value() else
+              (variable.get_value()) * variable.objective_info['price'])
+             for variable in variables.values()]
+        ))
 
 
 def weight(investor, criteria):

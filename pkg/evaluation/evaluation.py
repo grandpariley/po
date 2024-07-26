@@ -1,3 +1,4 @@
+from itertools import cycle
 import json
 import math
 import os.path
@@ -6,7 +7,7 @@ import matplotlib.pyplot as plt
 
 from pkg.problem.compare import dominates
 
-ORDER_OF_COLOURS = ['ko', 'ro', 'bo']
+ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
@@ -24,19 +25,20 @@ def get_all_solutions(solutions):
     return all_solutions.difference(dominated)
 
 
-def plot_one(solutions, axis, axis_count_cols, axis_count_rows, objective_index, objective_index2):
-    colour = iter(ORDER_OF_COLOURS)
-    axis[axis_count_rows, axis_count_cols].plot(
-        [s.objective_values()[objective_index] for s in solutions],
-        [s.objective_values()[objective_index2] for s in solutions],
-        next(colour),
-    )
-    axis[axis_count_rows, axis_count_cols].set_title(
+def plot_one(solutions, axis, objective_index, objective_index2):
+    colour = iter(cycle(ORDER_OF_COLOURS))
+    for s in solutions:
+        axis.scatter(
+            s.objective_values()[objective_index],
+            s.objective_values()[objective_index2],
+            c=next(colour)
+        )
+    axis.set_title(
         INDEX_TO_LABEL[objective_index] + " compared to " + INDEX_TO_LABEL[objective_index2]
     )
 
 
-def plot(solutions, axis, ncols, nrows, objective_indexes):
+def plot(solutions, axis, cols, rows, objective_indexes):
     done = []
     axis_count_rows = 0
     axis_count_cols = 0
@@ -47,9 +49,9 @@ def plot(solutions, axis, ncols, nrows, objective_indexes):
                     (objective_index2, objective_index) in done):
                 continue
             done.append((objective_index, objective_index2))
-            plot_one(solutions, axis, axis_count_cols, axis_count_rows, objective_index, objective_index2)
-            axis_count_rows = (axis_count_rows + 1) % nrows
-            axis_count_cols = (axis_count_cols + 1) % ncols
+            plot_one(solutions, axis[axis_count_rows][axis_count_cols], objective_index, objective_index2)
+            axis_count_rows = (axis_count_rows + 1) % rows
+            axis_count_cols = (axis_count_cols + 1) % cols
 
 
 class Evaluation:
@@ -58,14 +60,14 @@ class Evaluation:
         self.solutions = solutions
         self.timer = timer
 
-    def dump_graph(self, objective_indexes_dict, nrows=None, ncols=None):
+    def dump_graph(self, objective_indexes_dict, rows=None, cols=None):
         for objective_indexes_key in objective_indexes_dict:
             if len(objective_indexes_dict[objective_indexes_key]) > 1:
-                if nrows is None or ncols is None:
-                    nrows = 2
-                    ncols = int(math.comb(len(objective_indexes_dict[objective_indexes_key]), 2) / 2)
-                figure, axis = plt.subplots(nrows, ncols, figsize=(28, 12))
-                plot(self.solutions['arch2'], axis, ncols, nrows, objective_indexes_dict[objective_indexes_key])
+                if rows is None or cols is None:
+                    rows = 2
+                    cols = int(math.comb(len(objective_indexes_dict[objective_indexes_key]), 2) / 2)
+                figure, axis = plt.subplots(rows, cols, figsize=(28, 12))
+                plot(self.solutions['arch2'], axis, cols, rows, objective_indexes_dict[objective_indexes_key])
                 if not os.path.exists(objective_indexes_key):
                     os.mkdir(objective_indexes_key)
             else:

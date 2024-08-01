@@ -56,7 +56,7 @@ def get_generated_solutions_arch2(problem, options, timer):
                       "generate")
 
 
-@file_cache(filename='get-solutions.pkl')
+# @file_cache(filename='get-solutions.pkl')
 def get_solutions(problems, options, timer):
     solutions = []
     Log.log("Generating solutions for arch 1", "generate")
@@ -67,7 +67,6 @@ def get_solutions(problems, options, timer):
     arch_1_solutions = get_arch1_solutions(solutions[0], options, timer)
     Log.log("Starting to solve using MOEA/D for arch 2", "arch2")
     arch_2_solutions = get_arch2_solutions(solutions[1], options, timer)
-    Log.log("Showing results", "results")
     return {
         'arch1': arch_1_solutions,
         'arch2': arch_2_solutions

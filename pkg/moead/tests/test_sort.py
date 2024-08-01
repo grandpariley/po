@@ -8,7 +8,7 @@ from pkg.moead.tests.test_util import default_individuals
 class SortTest(unittest.TestCase):
 
     def test_euclidean_distance_mapping(self):
-        Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 4
+        Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 4
         b = euclidean_distance_mapping(default_individuals())
         self.assertEqual(
             b,

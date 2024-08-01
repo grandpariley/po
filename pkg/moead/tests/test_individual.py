@@ -13,6 +13,7 @@ class IndividualTest(unittest.TestCase):
 
     def test_swap_half_genes(self):
         Random.begin_test()
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
         Random.set_test_value_for("random_int_between_a_and_b", 2)
         parent = default_dominating_individual()
         child = default_other_dominating_individual()

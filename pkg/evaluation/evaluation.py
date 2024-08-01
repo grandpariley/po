@@ -88,6 +88,7 @@ class Evaluation:
                 plt.bar([objective_indexes_key, 'benchmark'],
                         [self.solutions['arch1'][0].objective_values()[0], get_index_expected_return(investor)])
             plt.savefig(objective_indexes_key + '/' + self.prefix + '-figure.png')
+            plt.clf()
         # plt.show()
 
     def dump_solutions(self):

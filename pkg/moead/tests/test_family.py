@@ -10,10 +10,15 @@ from pkg.random.random import Random
 class FamilyTest(unittest.TestCase):
     def test_generate_child(self):
         Random.begin_test()
-        Constants.MOEAD_NUM_CLOSEST_WEIGHT_VECTORS = 2
+        Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 2
         individuals = default_individuals()
         Random.set_test_value_for("random_choice", 0)
         Random.set_test_value_for("random_choice", 1)
+        Random.set_test_value_for("random_int_between_a_and_b", 0)
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
+        Random.set_test_value_for("random_int_between_a_and_b", 2)
+        Random.set_test_value_for("random_int_between_a_and_b", 0)
+        Random.set_test_value_for("random_int_between_a_and_b", 1)
         child = generate_child(individuals, get_test_data())
         expected = default_individual()
         expected.problem.set_value('0', 0)

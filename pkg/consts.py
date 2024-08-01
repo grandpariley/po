@@ -31,12 +31,12 @@ def investors():
 
 
 class Constants:
-    NUM_RUNS = 1
+    NUM_RUNS = 10
     BUDGET_UTILIZATION = 0.80
-    BUDGET = 22608.04
+    BUDGET = 22779.57
     NUM_INDIVIDUALS = 200
-    NUM_GENERATIONS = 10
+    NUM_GENERATIONS = 20
     NUM_GENES_MUTATING = 0.20
-    MOEAD_NUM_WEIGHT_VECTORS_T = 20
+    MOEAD_NUM_WEIGHT_VECTORS_T = 40
     INVESTORS = investors()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

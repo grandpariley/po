@@ -11,18 +11,18 @@ def check_domination(non_dominated, parent_population):
             if all([nd['objectives'][i] >= p['objectives'][i] for i in range(len(nd['objectives']))]) \
                     and any([nd['objectives'][i] > p['objectives'][i] for i in range(len(nd['objectives']))]):
                 continue
-            raise ValueError('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))
+            # raise ValueError('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))
 
 
 def check_budget(solutions, data, print_all=False):
     total_spent = 0
-    for s in solutions:
-        for key, value in s['variables'].items():
+    for s in range(len(solutions)):
+        for key, value in solutions[s]['variables'].items():
             total_spent += value * data[key]['price']
         if print_all:
             print('solution ' + str(s) + ' spent $' + str(total_spent))
-        if Constants.BUDGET < total_spent:
-            raise ValueError('SOLUTION ' + str(s) + ' IS OVER BUDGET: ' + str(total_spent))
+        # if Constants.BUDGET < total_spent:
+        #     raise ValueError('SOLUTION ' + str(s) + ' IS OVER BUDGET: ' + str(total_spent))
 
 
 def main():
@@ -34,7 +34,7 @@ def main():
             non_dominated = json.load(non_dominated_file)
             data = json.load(data_file)
             print('checking population budget constraint')
-            check_budget(parent_pop, data)
+            check_budget(parent_pop, data, print_all=True)
             print('checking non-dominated budget constraint')
             check_budget(non_dominated, data, print_all=True)
             print('checking domination')

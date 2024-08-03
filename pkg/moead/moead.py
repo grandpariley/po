@@ -32,6 +32,11 @@ def solve_helper(parent_population, data):
             neighbourhood = [parent_population[index] for index in b[i]]
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
+        Log.log("length of non dominated: " + str(len(get_non_dominated(parent_population))))
+        Log.log("---------- PARENT POPULATION ---------------")
+        Log.log(parent_population)
+        Log.log("---------- NON-DOMINATED POPULATION ---------------")
+        Log.log(get_non_dominated(parent_population))
     return get_non_dominated(parent_population)
 
 

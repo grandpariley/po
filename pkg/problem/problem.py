@@ -1,8 +1,20 @@
+import json.encoder
 from math import floor
 
 from pkg.consts import Constants
+from pkg.problem.constraint import constraint_encoder_fn
 from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.problem.variable import Variable
+from pkg.problem.variable import Variable, variable_encoder_fn
+
+
+def problem_encoder_fn(obj):
+    if not isinstance(obj, Problem):
+        return obj
+    return {
+        "variables": json.JSONDecoder().decode(json.JSONEncoder(default=variable_encoder_fn).encode(obj.variables)),
+        "constraints": json.JSONDecoder().decode(json.JSONEncoder(default=constraint_encoder_fn).encode(obj.constraints)),
+        "objectives": list(obj.objective_values())
+    }
 
 
 class Problem:
@@ -12,9 +24,7 @@ class Problem:
         self.objective_funcs = objective_funcs
 
     def __str__(self):
-        return "Problem: \n\tvariables: " + str([str(var) for var in self.variables]) + "\n\tconstraints: " + \
-            str([str(con) for con in self.constraints]) + "\n\tobjective values: " + \
-            str([str(obj) for obj in self.objective_values()]) + "\n"
+        return str(problem_encoder_fn(self))
 
     def __repr__(self):
         return str(self)

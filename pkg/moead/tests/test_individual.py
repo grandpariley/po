@@ -25,3 +25,9 @@ class IndividualTest(unittest.TestCase):
     def test_eq(self):
         self.assertTrue(default_individual() == default_individual())
         self.assertFalse(default_individual() == default_dominating_individual())
+
+    def test_str(self):
+        self.assertEqual(
+            "{'variables': {'0': {'value': 2}, '1': {'value': 1}, '2': {'value': 2}}, 'constraints': [{'variables': ['0', '1']}, {'variables': ['2']}], 'objectives': [2, 1, 2]}",
+            str(default_individual())
+        )

@@ -1,3 +1,11 @@
+def variable_encoder_fn(obj):
+    if not isinstance(obj, Variable):
+        return obj
+    return {
+        "value": obj.value
+    }
+
+
 class Variable:
     def __init__(self, domain, objective_info):
         self.domain = domain
@@ -8,7 +16,7 @@ class Variable:
         return str(self.domain) + " {" + str(self.value) + "}"
 
     def __repr__(self):
-        return "{" + str(self.value) + "}"
+        return str(self.value)
 
     def set_value(self, value):
         if value in self.domain:

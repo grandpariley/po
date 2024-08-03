@@ -1,8 +1,17 @@
+import json
+
 from pkg.problem.discrete_domain import DiscreteDomain
+from pkg.problem.problem import problem_encoder_fn
 from pkg.random.random import Random
 from pkg.problem.compare import dominates
 from pkg.consts import Constants
 from math import floor
+
+
+def individual_encoder_fn(obj):
+    if not isinstance(obj, Individual):
+        return obj
+    return json.JSONDecoder().decode(json.JSONEncoder(default=problem_encoder_fn).encode(obj.problem))
 
 
 class Individual:
@@ -17,7 +26,7 @@ class Individual:
             self.problem = individual.problem
 
     def __str__(self):
-        return str(self.problem) + "\n"
+        return str(individual_encoder_fn(self))
 
     def __repr__(self):
         return str(self)

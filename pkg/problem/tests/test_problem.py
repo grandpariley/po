@@ -1,4 +1,5 @@
 import unittest
+
 from pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem, \
     default_inconsistent_problem_set_values, default_multi_objective_problem_set_values
 
@@ -29,3 +30,9 @@ class ProblemTest(unittest.TestCase):
 
     def test_keys(self):
         self.assertEqual(["0", "1", "2"], default_consistent_problem().keys())
+
+    def test_str(self):
+        self.assertEqual(
+            "{'variables': {'0': {'value': 2}, '1': {'value': 1}, '2': {'value': 2}}, 'constraints': [{'variables': ['0', '1']}, {'variables': ['2']}], 'objectives': [2, 1, 2]}",
+            str(default_consistent_problem_set_values())
+        )

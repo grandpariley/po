@@ -1,9 +1,7 @@
 def variable_encoder_fn(obj):
     if not isinstance(obj, Variable):
         return obj
-    return {
-        "value": obj.value
-    }
+    return obj.value
 
 
 class Variable:

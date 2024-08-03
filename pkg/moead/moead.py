@@ -1,11 +1,16 @@
+import datetime
+import json
+import os
 from copy import deepcopy
 
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.moead.family import generate_child
-from pkg.moead.individual import Individual
+from pkg.moead.individual import Individual, individual_encoder_fn
 from pkg.moead.sort import euclidean_distance_mapping
 from pkg.problem.solver import Solver
+
+FOLDER = 'run-' + str(datetime.datetime.now())
 
 
 def is_non_dominated(y, neighbourhood):
@@ -33,16 +38,17 @@ def solve_helper(parent_population, data):
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
         Log.log("length of non dominated: " + str(len(get_non_dominated(parent_population))))
-        Log.log("---------- PARENT POPULATION ---------------")
-        Log.log(parent_population)
-        Log.log("---------- NON-DOMINATED POPULATION ---------------")
-        Log.log(get_non_dominated(parent_population))
+        with open(FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'w') as json_file:
+            json.dump(parent_population, json_file, default=individual_encoder_fn)
+        with open(FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'w') as json_file:
+            json.dump(get_non_dominated(parent_population), json_file, default=individual_encoder_fn)
     return get_non_dominated(parent_population)
 
 
 class Moead(Solver):
 
     def solve(self):
+        os.mkdir(FOLDER)
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
         solutions = solve_helper(parent_population, self.data)

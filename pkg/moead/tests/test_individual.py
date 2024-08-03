@@ -28,6 +28,6 @@ class IndividualTest(unittest.TestCase):
 
     def test_str(self):
         self.assertEqual(
-            "{'variables': {'0': {'value': 2}, '1': {'value': 1}, '2': {'value': 2}}, 'constraints': [{'variables': ['0', '1']}, {'variables': ['2']}], 'objectives': [2, 1, 2]}",
+            "{'variables': {'0': 2, '1': 1, '2': 2}, 'constraints': [{'variables': ['0', '1']}, {'variables': ['2']}], 'objectives': [2, 1, 2]}",
             str(default_individual())
         )

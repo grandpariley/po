@@ -1,7 +1,6 @@
 from copy import deepcopy
 from math import floor
 
-from cache import file_cache
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.problem.constraint import Constraint
@@ -9,19 +8,10 @@ from pkg.problem.problem import Problem
 from pkg.random.random import Random
 
 
-# @file_cache('arch-2-problem.pkl')
 def default_portfolio_optimization_problem_arch_2():
     return Problem(
         {},
-        [
-            Constraint(
-                None,
-                lambda variables: Constants.BUDGET > sum(
-                    [(0.0 if not variable.get_value() else
-                      (variable.get_value()) * variable.objective_info['price'])
-                     for variable in variables.values()]
-                ))
-        ],
+        [Constraint(under_budget)],
         [
             get_objective_by_criteria('cvar'),
             get_objective_by_criteria('var'),
@@ -33,27 +23,19 @@ def default_portfolio_optimization_problem_arch_2():
     )
 
 
-# @file_cache('arch-1-problem.pkl')
 def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},
-        [
-            default_budget_constraint()
-        ],
-        [
-            get_weight_sensitive_objective(investor)
-        ]
+        [Constraint(under_budget)],
+        [get_weight_sensitive_objective(investor)]
     )
 
 
-def default_budget_constraint():
-    return Constraint(
-        None,
-        lambda variables: Constants.BUDGET > sum(
-            [(0.0 if not variable.get_value() else
-              (variable.get_value()) * variable.objective_info['price'])
-             for variable in variables.values()]
-        ))
+def under_budget(variables):
+    total_spent = 0
+    for key, value in variables.items():
+        total_spent += value * value.objective_info[key]['price']
+    return total_spent <= Constants.BUDGET
 
 
 def weight(investor, criteria):
@@ -75,11 +57,14 @@ def get_weight_sensitive_objective(investor):
 
 
 def get_objective_by_criteria(criteria):
-    return lambda options: sum(
-        [(0.0 if not options[option].get_value() else
-          (options[option].get_value()) * options[option].objective_info[criteria])
-         for option in options]
-    )
+    return lambda variables: objective_value(variables, criteria)
+
+
+def objective_value(variables, criteria):
+    total = 0
+    for key, value in variables.items():
+        total += value.get_value() * value.objective_info[criteria]
+    return total
 
 
 def generate_solutions_discrete_domain(population_size, portfolio_options, problem):

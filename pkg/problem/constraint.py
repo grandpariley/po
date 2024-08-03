@@ -11,7 +11,7 @@ def constraint_encoder_fn(obj):
 
 
 class Constraint:
-    def __init__(self, variables, func):
+    def __init__(self, func, variables=None):
         self.variables = variables
         self.func = func
 

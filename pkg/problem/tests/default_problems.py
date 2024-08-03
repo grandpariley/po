@@ -16,8 +16,8 @@ def default_consistent_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(("0", "1"), lambda v: v["0"].get_value() != v["1"].get_value()),
-            Constraint(tuple(["2"]), lambda v: v["2"].get_value() > 0),
+            Constraint(lambda v: v["0"].get_value() != v["1"].get_value(), ("0", "1")),
+            Constraint(lambda v: v["2"].get_value() > 0, tuple(["2"])),
         ],
         [lambda v: v["0"].get_value(), lambda v: v["1"].get_value(), lambda v: v["2"].get_value()]
     )
@@ -35,7 +35,7 @@ def default_inconsistent_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(("0", "2"), lambda v: False),
+            Constraint(lambda v: False, ("0", "2")),
         ],
         [lambda v: v["0"].get_value(), lambda v: v["1"].get_value(), lambda v: v["2"].get_value()]
     )
@@ -53,9 +53,9 @@ def default_multi_objective_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(("0", "2"), lambda v: v["0"] == v["1"]),
-            Constraint(tuple(["1"]), lambda v: v["0"] == "1"),
-            Constraint(tuple(["2"]), lambda v: v["0"] > 0)
+            Constraint(lambda v: v["0"] == v["1"], ("0", "2")),
+            Constraint(lambda v: v["0"] == "1", tuple(["1"])),
+            Constraint(lambda v: v["0"] > 0, tuple(["2"]))
         ],
         [lambda v: sum([v[var].get_value() for var in v]), lambda v: -sum(v[var].get_value() for var in v)]
     )

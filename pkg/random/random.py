@@ -6,10 +6,9 @@ class Random:
     @classmethod
     def begin_test(cls):
         cls.non_random_values = {
-            "random_float_between_0_and_1": [],
             "random_int_between_a_and_b": [],
-            "random_float_between_a_and_b": [],
-            "random_choice": []
+            "random_choice": [],
+            "random_normal": []
         }
 
     @classmethod

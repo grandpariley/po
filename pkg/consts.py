@@ -44,10 +44,10 @@ def data():
 class Constants:
     NUM_RUNS = 1
     BUDGET = 22779.57
-    NUM_INDIVIDUALS = 10
-    NUM_GENERATIONS = 5
+    NUM_INDIVIDUALS = 200
+    NUM_GENERATIONS = 10
     GENES_MUTATING = 0.10
-    MOEAD_NUM_WEIGHT_VECTORS_T = 5
+    MOEAD_NUM_WEIGHT_VECTORS_T = 20
     INVESTORS = investors()
     DATA = data()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

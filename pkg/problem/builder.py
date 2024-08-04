@@ -1,5 +1,5 @@
 from copy import deepcopy
-from math import floor
+from math import ceil
 
 from pkg.consts import Constants
 from pkg.log import Log
@@ -33,8 +33,8 @@ def default_portfolio_optimization_problem_arch_1(investor):
 
 def under_budget(variables):
     total_spent = 0
-    for key, value in variables.items():
-        total_spent += value * value.objective_info[key]['price']
+    for key, variable in variables.items():
+        total_spent += variable.get_value() * variable.objective_info['price']
     return total_spent <= Constants.BUDGET
 
 
@@ -68,26 +68,20 @@ def objective_value(variables, criteria):
 
 
 def generate_solutions_discrete_domain(population_size, problem):
-    solution_hashes = set()
     solutions = []
-    while len(solution_hashes) < population_size:
-        solution = get_new_solution(problem)
-        solution_hash = hash(solution)
-        if solution_hash not in solution_hashes:
-            solution_hashes.add(solution_hash)
-            solutions.append(solution)
-            Log.log(str(len(solution_hashes)) + " / " + str(population_size))
+    while len(solutions) < population_size:
+        solutions.append(get_new_solution(deepcopy(problem)))
+        Log.log(str(len(solutions)) + " / " + str(population_size))
     return solutions
 
 
-def get_new_solution(problem):
-    solution = deepcopy(problem)
+def get_new_solution(solution):
     current_budget = Constants.BUDGET
     possible_variables = list(Constants.DATA.keys())
     while len(possible_variables) > 0:
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
-        domain = [i for i in range(floor(current_budget / Constants.DATA[rand_variable_index]['price']))]
+        domain = [i for i in range(1, ceil(current_budget / Constants.DATA[rand_variable_index]['price']))]
         if len(domain) == 0:
             continue
         new_value = Random.random_choice(domain)

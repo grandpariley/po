@@ -55,25 +55,34 @@ class Individual:
         for v in variables:
             if self.problem.get_value(v) == other.problem.get_value(v):
                 continue
-            self.maybe_set_value(v, other.problem.get_value(v))
+            self.safe_set_value(v, other.problem.get_value(v))
 
-    def maybe_set_value(self, v, new_value):
+    def safe_set_value(self, v, new_value):
+        if not new_value:
+            return
         original = self.problem.get_value(v)
         self.problem.set_value(v, new_value, Constants.DATA[v])
         if not self.problem.consistent():
-            self.problem.set_value(v, original)
+            if original:
+                self.problem.set_value(v, original)
+            else:
+                self.problem.reset_value(v)
 
     def get_new_value(self, random_variable):
         if random_variable in self.problem.variables.keys():
             new_value = self.problem.variables[random_variable].domain.get_random()
         else:
-            new_value = DiscreteDomain(floor(Constants.BUDGET / Constants.DATA[random_variable]['price']), 0.00).get_random()
+            new_value = DiscreteDomain(
+                floor(Constants.BUDGET / Constants.DATA[random_variable]['price']),
+                1
+            ).get_random()
         return new_value
 
     def emo_phase(self):
-        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * len(Constants.DATA.keys())))):
+        for _ in range(
+                Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * len(Constants.DATA.keys())))):
             random_variable = Random.random_choice(list(Constants.DATA.keys()))
-            self.maybe_set_value(random_variable, self.get_new_value(random_variable))
+            self.safe_set_value(random_variable, self.get_new_value(random_variable))
 
     def get_objective_values(self):
         return self.problem.objective_values()

@@ -12,7 +12,8 @@ def problem_encoder_fn(obj):
         return obj
     return {
         "variables": json.JSONDecoder().decode(json.JSONEncoder(default=variable_encoder_fn).encode(obj.variables)),
-        "constraints": json.JSONDecoder().decode(json.JSONEncoder(default=constraint_encoder_fn).encode(obj.constraints)),
+        "constraints": json.JSONDecoder().decode(
+            json.JSONEncoder(default=constraint_encoder_fn).encode(obj.constraints)),
         "objectives": list(obj.objective_values())
     }
 
@@ -38,8 +39,13 @@ class Problem:
     def set_value(self, variable_index, value, info=None):
         if variable_index not in self.variables.keys() and info is not None:
             self.variables[variable_index] = Variable(
-                DiscreteDomain(floor(Constants.BUDGET / info.price), 0.00), info)
+                DiscreteDomain(floor(Constants.BUDGET / info['price']), 0.00),
+                info
+            )
         self.variables[variable_index].set_value(value)
+
+    def reset_value(self, variable_index):
+        self.variables.pop(variable_index)
 
     def get_value(self, variable_index):
         if variable_index in self.keys():

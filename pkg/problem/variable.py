@@ -17,7 +17,9 @@ class Variable:
         return str(self.value)
 
     def set_value(self, value):
-        if value in self.domain:
+        if not value:
+            raise ValueError("not a value: " + str(value))
+        if value and value in self.domain:
             self.value = value
 
     def get_value(self):

@@ -10,6 +10,7 @@ from pkg.consts import Constants
 from pkg.parse.portfolio_option import PortfolioOption
 from pkg.problem.builder import default_portfolio_optimization_problem_arch_1
 from pkg.problem.compare import dominates
+from pkg.problem.problem import problem_encoder_fn
 
 ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
@@ -95,14 +96,8 @@ class Evaluation:
         for key in self.solutions:
             if not os.path.exists(key):
                 os.mkdir(key)
-            with open(key + '/' + self.prefix + '-solutions.json', 'w') as file:
-                json.dump([{
-                    "objectiveValues": s.objective_values(),
-                    "variables": [{
-                        "ticker": v,
-                        "amount": s.variables[v].get_value()
-                    } for v in s.variables]
-                } for s in self.solutions[key]], file)
+            with open(key + '/' + self.prefix + '-solutions.json', 'w') as json_file:
+                json.dump(self.solutions[key], json_file, default=problem_encoder_fn)
 
     def dump_time(self):
         if len(self.timer.times) != 0:

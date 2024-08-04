@@ -15,12 +15,11 @@ def main():
     for i in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(i), "run")
         timer = Timer()
-        options = parse_from_importer('data.json')
         problems = [
             # default_portfolio_optimization_problem_arch_1('Alice'),
             default_portfolio_optimization_problem_arch_2()
         ]
-        solutions = get_solutions(problems, options, timer)
+        solutions = get_solutions(problems, timer)
         evaluate(i, solutions, timer)
 
 
@@ -40,33 +39,33 @@ def get_arch1_solutions(solutions, options, timer):
 
 
 # @file_cache(filename='arch2-solutions.pkl')
-def get_arch2_solutions(solutions, options, timer):
-    return timer.time(Moead(solutions, options).solve, "arch2")
+def get_arch2_solutions(solutions, timer):
+    return timer.time(Moead(solutions).solve, "arch2")
 
 
 # @file_cache(filename='arch1-generated-solutions.pkl')
-def get_generated_solutions_arch1(problem, options, timer):
-    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, options, problem),
+def get_generated_solutions_arch1(problem, timer):
+    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, problem),
                       "generate")
 
 
 # @file_cache(filename='arch2-generated-solutions.pkl')
-def get_generated_solutions_arch2(problem, options, timer):
-    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, options, problem),
+def get_generated_solutions_arch2(problem, timer):
+    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, problem),
                       "generate")
 
 
 # @file_cache(filename='get-solutions.pkl')
-def get_solutions(problems, options, timer):
+def get_solutions(problems, timer):
     solutions = []
     # Log.log("Generating solutions for arch 1", "generate")
     # solutions.append(get_generated_solutions_arch1(problems[0], options, timer))
     Log.log("Generating solutions for arch 2", "generate")
-    solutions.append(get_generated_solutions_arch2(problems[0], options, timer))
+    solutions.append(get_generated_solutions_arch2(problems[0], timer))
     # Log.log("Starting to solve using MOEA/D for arch 1", "arch1")
     # arch_1_solutions = get_arch1_solutions(solutions[0], options, timer)
     Log.log("Starting to solve using MOEA/D for arch 2", "arch2")
-    arch_2_solutions = get_arch2_solutions(solutions[0], options, timer)
+    arch_2_solutions = get_arch2_solutions(solutions[0], timer)
     return {
         # 'arch1': arch_1_solutions,
         'arch2': arch_2_solutions

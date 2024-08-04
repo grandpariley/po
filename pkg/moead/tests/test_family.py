@@ -11,6 +11,7 @@ class FamilyTest(unittest.TestCase):
     def test_generate_child(self):
         Random.begin_test()
         Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 2
+        Constants.DATA = get_test_data()
         individuals = default_individuals()
         Random.set_test_value_for("random_choice", 0)
         Random.set_test_value_for("random_choice", 1)
@@ -19,7 +20,7 @@ class FamilyTest(unittest.TestCase):
         Random.set_test_value_for("random_int_between_a_and_b", 2)
         Random.set_test_value_for("random_int_between_a_and_b", 0)
         Random.set_test_value_for("random_int_between_a_and_b", 1)
-        child = generate_child(individuals, get_test_data())
+        child = generate_child(individuals)
         expected = default_individual()
         expected.problem.set_value('0', 0)
         expected.problem.set_value('1', 1)

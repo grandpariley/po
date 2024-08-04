@@ -48,29 +48,32 @@ class Individual:
     def does_dominate(self, q):
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
-    def swap_half_genes(self, other, data):
+    def swap_half_genes(self, other):
         variables = set()
         while len(variables) < len(self.problem.keys()) / 2:
             variables.add(Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1))
         for v in variables:
             if self.problem.get_value(v) == other.problem.get_value(v):
                 continue
-            original = self.problem.get_value(v)
-            self.problem.set_value(v, other.problem.get_value(v), data[v])
-            if not self.problem.consistent():
-                self.problem.set_value(v, original)
+            self.maybe_set_value(v, other.problem.get_value(v))
 
-    def get_new_value(self, data, random_variable):
+    def maybe_set_value(self, v, new_value):
+        original = self.problem.get_value(v)
+        self.problem.set_value(v, new_value, Constants.DATA[v])
+        if not self.problem.consistent():
+            self.problem.set_value(v, original)
+
+    def get_new_value(self, random_variable):
         if random_variable in self.problem.variables.keys():
             new_value = self.problem.variables[random_variable].domain.get_random()
         else:
-            new_value = DiscreteDomain(floor(Constants.BUDGET / data[random_variable].price), 0.00).get_random()
+            new_value = DiscreteDomain(floor(Constants.BUDGET / Constants.DATA[random_variable]['price']), 0.00).get_random()
         return new_value
 
-    def emo_phase(self, data):
-        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.NUM_GENES_MUTATING * len(data.keys())))):
-            random_variable = Random.random_choice(list(data.keys()))
-            self.problem.set_value(random_variable, self.get_new_value(data, random_variable), data[random_variable])
+    def emo_phase(self):
+        for _ in range(Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * len(Constants.DATA.keys())))):
+            random_variable = Random.random_choice(list(Constants.DATA.keys()))
+            self.maybe_set_value(random_variable, self.get_new_value(random_variable))
 
     def get_objective_values(self):
         return self.problem.objective_values()

@@ -3,8 +3,10 @@ import os.path
 from os import getenv
 
 from pkg.log_level import LogLevel
+from pkg.parse.parse import parse_from_importer
 
 _investors = []
+_data = {}
 
 
 def investors():
@@ -30,12 +32,22 @@ def investors():
     return _investors
 
 
+def data():
+    global _data
+    if not os.path.exists('data.json'):
+        _data = {}
+    if len(_data) == 0:
+        _data = parse_from_importer('data.json')
+    return _data
+
+
 class Constants:
     NUM_RUNS = 1
     BUDGET = 22779.57
     NUM_INDIVIDUALS = 10
-    NUM_GENERATIONS = 1
-    NUM_GENES_MUTATING = 0.10
+    NUM_GENERATIONS = 5
+    GENES_MUTATING = 0.10
     MOEAD_NUM_WEIGHT_VECTORS_T = 5
     INVESTORS = investors()
+    DATA = data()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

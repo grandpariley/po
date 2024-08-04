@@ -67,11 +67,11 @@ def objective_value(variables, criteria):
     return total
 
 
-def generate_solutions_discrete_domain(population_size, portfolio_options, problem):
+def generate_solutions_discrete_domain(population_size, problem):
     solution_hashes = set()
     solutions = []
     while len(solution_hashes) < population_size:
-        solution = get_new_solution(portfolio_options, problem)
+        solution = get_new_solution(problem)
         solution_hash = hash(solution)
         if solution_hash not in solution_hashes:
             solution_hashes.add(solution_hash)
@@ -80,17 +80,17 @@ def generate_solutions_discrete_domain(population_size, portfolio_options, probl
     return solutions
 
 
-def get_new_solution(data, problem):
+def get_new_solution(problem):
     solution = deepcopy(problem)
     current_budget = Constants.BUDGET
-    possible_variables = list(data.keys())
+    possible_variables = list(Constants.DATA.keys())
     while len(possible_variables) > 0:
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
-        domain = [i for i in range(floor(current_budget / data[rand_variable_index]['price']))]
+        domain = [i for i in range(floor(current_budget / Constants.DATA[rand_variable_index]['price']))]
         if len(domain) == 0:
             continue
         new_value = Random.random_choice(domain)
-        current_budget -= new_value * data[rand_variable_index]['price']
-        solution.set_value(rand_variable_index, new_value, data[rand_variable_index])
+        current_budget -= new_value * Constants.DATA[rand_variable_index]['price']
+        solution.set_value(rand_variable_index, new_value, info=Constants.DATA[rand_variable_index])
     return solution

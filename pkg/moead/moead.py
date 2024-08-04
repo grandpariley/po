@@ -28,12 +28,12 @@ def get_non_dominated(x):
     return list(nd)
 
 
-def solve_helper(parent_population, data):
+def solve_helper(parent_population):
     b = euclidean_distance_mapping(parent_population)
     for t in range(Constants.NUM_GENERATIONS):
         Log.log("Generation: " + str(t))
         for i in range(len(parent_population)):
-            y = generate_child([parent_population[i] for i in b[i]], data)
+            y = generate_child([parent_population[i] for i in b[i]])
             neighbourhood = [parent_population[index] for index in b[i]]
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
@@ -51,6 +51,6 @@ class Moead(Solver):
         os.mkdir(FOLDER)
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
-        solutions = solve_helper(parent_population, self.data)
+        solutions = solve_helper(parent_population)
         Log.end_debug()
         return [s.problem for s in solutions]

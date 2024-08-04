@@ -2,11 +2,11 @@ from pkg.moead.individual import Individual
 from pkg.random.random import Random
 
 
-def generate_child(dating_pool, data):
+def generate_child(dating_pool):
     mum, dad = get_parents(dating_pool)
     son = Individual(individual=dad)
-    son.swap_half_genes(mum, data)
-    son.emo_phase(data)
+    son.swap_half_genes(mum)
+    son.emo_phase()
     return son
 
 

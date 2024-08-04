@@ -116,7 +116,8 @@ class MoeadTest(unittest.TestCase):
     def test_solve_helper(self):
         Constants.NUM_GENERATIONS = 3
         Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 2
-        Constants.NUM_GENES_MUTATING = 0.4
+        Constants.GENES_MUTATING = 0.4
+        Constants.DATA = get_test_data()
         Random.begin_test()
         set_random_test_values_a_b()
         set_random_test_values_choice()
@@ -141,7 +142,7 @@ class MoeadTest(unittest.TestCase):
         p5.set_value("0", 1)
         p5.set_value("1", 3)
         p5.set_value("2", 1)
-        moead = Moead([p1, p2, p3, p4, p5], get_test_data())
+        moead = Moead([p1, p2, p3, p4, p5])
         actual_solution = moead.solve()
         self.assertEqual((5, 3, 5), actual_solution[0].objective_values())
         Random.end_test()

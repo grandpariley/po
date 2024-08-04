@@ -1,5 +1,6 @@
 import unittest
 
+from pkg.consts import Constants
 from pkg.parse.parse import get_portfolio_option_from_data
 from pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_2
 from pkg.random.random import Random
@@ -247,11 +248,11 @@ def set_random_test_values():
 
 class BuilderTest(unittest.TestCase):
     def test_generate_solutions_discrete_domain(self):
+        Constants.DATA = get_portfolio_option_from_data(get_default_data())
         Random.begin_test()
         set_random_test_values()
         solutions = generate_solutions_discrete_domain(
             1,
-            get_portfolio_option_from_data(get_default_data()),
             default_portfolio_optimization_problem_arch_2()
         )
         Random.end_test()

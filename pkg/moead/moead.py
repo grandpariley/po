@@ -24,13 +24,17 @@ def get_non_dominated(population):
     return list(nd)
 
 
+def get_neighbourhood(parent_population, neighbourhood_indexes):
+    return [parent_population[index] for index in neighbourhood_indexes]
+
+
 def solve_helper(parent_population):
     b = euclidean_distance_mapping(parent_population)
     for t in range(Constants.NUM_GENERATIONS):
         Log.log("Generation: " + str(t))
         for i in range(len(parent_population)):
-            y = generate_child([parent_population[i] for i in b[i]])
-            neighbourhood = [parent_population[index] for index in b[i]]
+            neighbourhood = get_neighbourhood(parent_population, b[i])
+            y = generate_child(neighbourhood)
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
         Log.log("length of non dominated: " + str(len(get_non_dominated(parent_population))))
@@ -48,6 +52,8 @@ class Moead(Solver):
             os.mkdir(Constants.RUN_FOLDER)
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
+        with open('generated-solutions-nd.json', 'w') as json_file:
+            json.dump(get_non_dominated(parent_population), json_file, default=individual_encoder_fn)
         solutions = solve_helper(parent_population)
         Log.end_debug()
         return [s.problem for s in solutions]

@@ -4,7 +4,7 @@ from cache import file_cache
 from memory import limit_memory
 from pkg.consts import Constants
 from pkg.log import Log
-from pkg.moead.moead import Moead
+from pkg.moead.moead import Moead, get_non_dominated
 from pkg.evaluation.evaluation import Evaluation, INDEX_TO_LABEL
 from pkg.parse.parse import parse_from_importer
 from pkg.problem.builder import default_portfolio_optimization_problem_arch_2, generate_solutions_discrete_domain, \

@@ -2,18 +2,20 @@ import json
 from math import ceil
 
 from pkg.consts import Constants
+from pkg.problem.compare import dominates
+
+
+def is_dominated(x, population):
+    for individual in population:
+        if dominates(individual['objectives'], x['objectives']):
+            return True
+    return False
+
 
 def check_domination(non_dominated, parent_population):
-    for nd in range(len(non_dominated)):
-        for p in range(len(parent_population)):
-            if non_dominated[nd]['objectives'] == parent_population[p]['objectives']:
-                continue
-            if all([non_dominated[nd]['objectives'][i] >= parent_population[p]['objectives'][i] for i in
-                    range(len(non_dominated[nd]['objectives']))]) \
-                    and any([non_dominated[nd]['objectives'][i] > parent_population[p]['objectives'][i] for i in
-                             range(len(non_dominated[nd]['objectives']))]):
-                continue
-            print('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))
+    for nd in non_dominated:
+        if is_dominated(nd, parent_population):
+            raise ValueError("non-dominated solution is dominated!")
 
 
 def check_budget(solutions):
@@ -26,15 +28,19 @@ def check_budget(solutions):
 
 
 def main():
+    with (open('generated-solutions.json', 'r') as solutions_file,
+          open('generated-solutions-nd.json', 'r') as non_dominated_file):
+        solutions = json.load(solutions_file)
+        non_dominated = json.load(non_dominated_file)
+        check_domination(non_dominated, solutions)
     for t in range(Constants.NUM_GENERATIONS):
         with (open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
               open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file):
             parent_pop = json.load(parent_pop_file)
             non_dominated = json.load(non_dominated_file)
-            print('checking population budget constraint')
             check_budget(parent_pop)
-            print('checking domination')
             check_domination(non_dominated, parent_pop)
+    print('passes validation!!')
 
 
 if __name__ == '__main__':

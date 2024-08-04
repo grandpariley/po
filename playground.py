@@ -3,7 +3,7 @@ from math import ceil
 
 from pkg.consts import Constants
 
-FOLDER = 'run-2024-08-03 19:48:59.765733'
+FOLDER = 'run-2024-08-04 12:16:58.297320'
 
 
 def check_domination(non_dominated, parent_population):
@@ -11,9 +11,9 @@ def check_domination(non_dominated, parent_population):
         for p in range(len(parent_population)):
             if non_dominated[nd]['objectives'] == parent_population[p]['objectives']:
                 continue
-            if all([non_dominated[nd]['objectives'][i] <= parent_population[p]['objectives'][i] for i in
+            if all([non_dominated[nd]['objectives'][i] >= parent_population[p]['objectives'][i] for i in
                     range(len(non_dominated[nd]['objectives']))]) \
-                    and any([non_dominated[nd]['objectives'][i] < parent_population[p]['objectives'][i] for i in
+                    and any([non_dominated[nd]['objectives'][i] > parent_population[p]['objectives'][i] for i in
                              range(len(non_dominated[nd]['objectives']))]):
                 continue
             print('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))

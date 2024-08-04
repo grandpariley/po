@@ -80,37 +80,17 @@ def generate_solutions_discrete_domain(population_size, portfolio_options, probl
     return solutions
 
 
-def get_new_solution(options, problem):
+def get_new_solution(data, problem):
     solution = deepcopy(problem)
     current_budget = Constants.BUDGET
-    possible_variables = list(options.keys())
+    possible_variables = list(data.keys())
     while len(possible_variables) > 0:
-        domain, rand_variable_index = get_potential_variable_data(current_budget, options, possible_variables)
+        rand_variable_index = Random.random_choice(possible_variables)
+        possible_variables.remove(rand_variable_index)
+        domain = [i for i in range(floor(current_budget / data[rand_variable_index]['price']))]
         if len(domain) == 0:
             continue
-        new_value = Random.random_normal(domain)
-        current_budget -= new_value * options[rand_variable_index].price
-        solution.set_value(rand_variable_index, new_value, options[rand_variable_index])
-        if current_budget / Constants.BUDGET > Constants.BUDGET_UTILIZATION:
-            break
+        new_value = Random.random_choice(domain)
+        current_budget -= new_value * data[rand_variable_index]['price']
+        solution.set_value(rand_variable_index, new_value, data[rand_variable_index])
     return solution
-
-
-def get_potential_variable_data(current_budget, portfolio_options, possible_variables):
-    rand_variable_index = Random.random_choice(possible_variables)
-    possible_variables.remove(rand_variable_index)
-    price = portfolio_options[rand_variable_index].price
-    domain = get_max_domain(
-        [i for i in range(floor(Constants.BUDGET / price))],
-        price,
-        current_budget
-    )
-    return domain, rand_variable_index
-
-
-def get_max_domain(domain, price, budget_remaining):
-    new_domain = []
-    for d in domain:
-        if d != 0 and (d * price) < budget_remaining:
-            new_domain.append(d)
-    return new_domain

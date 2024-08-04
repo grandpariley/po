@@ -7,8 +7,7 @@ class Random:
     def begin_test(cls):
         cls.non_random_values = {
             "random_int_between_a_and_b": [],
-            "random_choice": [],
-            "random_normal": []
+            "random_choice": []
         }
 
     @classmethod
@@ -31,12 +30,4 @@ class Random:
             return cls.non_random_values["random_choice"].pop()
         if len(lst) > 0:
             return random.choice(lst)
-        raise ValueError("no choice in list: " + str(lst))
-
-    @classmethod
-    def random_normal(cls, lst):
-        if hasattr(cls, "non_random_values") and cls.non_random_values["random_normal"]:
-            return cls.non_random_values["random_normal"].pop()
-        if len(lst) > 0:
-            return lst[np.floor(np.random.normal(np.mean(lst), np.std(lst))).astype(int) % len(lst)]
         raise ValueError("no choice in list: " + str(lst))

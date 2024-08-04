@@ -4,14 +4,14 @@ from pkg.consts import Constants
 
 
 def check_domination(non_dominated, parent_population):
-    for nd in non_dominated:
-        for p in parent_population:
-            if nd['objectives'] == p['objectives']:
+    for nd in range(len(non_dominated)):
+        for p in range(len(parent_population)):
+            if non_dominated[nd]['objectives'] == parent_population[p]['objectives']:
                 continue
-            if all([nd['objectives'][i] >= p['objectives'][i] for i in range(len(nd['objectives']))]) \
-                    and any([nd['objectives'][i] > p['objectives'][i] for i in range(len(nd['objectives']))]):
+            if all([non_dominated[nd]['objectives'][i] >= parent_population[p]['objectives'][i] for i in range(len(non_dominated[nd]['objectives']))]) \
+                    and any([non_dominated[nd]['objectives'][i] > parent_population[p]['objectives'][i] for i in range(len(non_dominated[nd]['objectives']))]):
                 continue
-            # raise ValueError('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))
+            print('DOMINATION FAILED FOR ' + str(nd) + ' vs ' + str(p))
 
 
 def check_budget(solutions, data, print_all=False):
@@ -20,16 +20,17 @@ def check_budget(solutions, data, print_all=False):
         for key, value in solutions[s]['variables'].items():
             total_spent += value * data[key]['price']
         if print_all:
-            print('solution ' + str(s) + ' spent $' + str(total_spent))
+            print('solution ' + str(s) + ' spent $' + str(total_spent) + ' which is ' + ('UNDER' if Constants.BUDGET >= total_spent else 'OVER') + ' budget')
         # if Constants.BUDGET < total_spent:
         #     raise ValueError('SOLUTION ' + str(s) + ' IS OVER BUDGET: ' + str(total_spent))
 
 
 def main():
-    for t in range(Constants.NUM_GENERATIONS):
-        with (open('run-2024-08-03 13:32:31.092658/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
-              open('run-2024-08-03 13:32:31.092658/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file,
-              open('data.json', 'r') as data_file):
+    # for t in range(Constants.NUM_GENERATIONS):
+    for t in range(1):
+        with (open('run-2024-08-03 16:24:29.124061/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
+          open('run-2024-08-03 16:24:29.124061/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file,
+          open('data.json', 'r') as data_file):
             parent_pop = json.load(parent_pop_file)
             non_dominated = json.load(non_dominated_file)
             data = json.load(data_file)

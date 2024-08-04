@@ -45,9 +45,3 @@ class RandomTest(unittest.TestCase):
         self.assertEqual(Random.random_int_between_a_and_b(1, 5), 1)
         Random.end_test()
 
-    def test_random_normal(self):
-        Random.begin_test()
-        true_rando = Random.random_normal([1, 2, 3, 4, 5, 6])
-        self.assertLessEqual(true_rando, 6)
-        self.assertLessEqual(1, true_rando)
-        Random.end_test()

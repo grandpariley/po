@@ -15,7 +15,7 @@ def main():
     for i in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(i), "run")
         timer = Timer()
-        options = parse_from_importer()
+        options = parse_from_importer('data.json')
         problems = [
             # default_portfolio_optimization_problem_arch_1('Alice'),
             default_portfolio_optimization_problem_arch_2()
@@ -50,7 +50,7 @@ def get_generated_solutions_arch1(problem, options, timer):
                       "generate")
 
 
-@file_cache(filename='arch2-generated-solutions.pkl')
+# @file_cache(filename='arch2-generated-solutions.pkl')
 def get_generated_solutions_arch2(problem, options, timer):
     return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, options, problem),
                       "generate")

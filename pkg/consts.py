@@ -1,3 +1,4 @@
+import datetime
 import json
 import os.path
 from os import getenv
@@ -35,13 +36,14 @@ def investors():
 def data():
     global _data
     if not os.path.exists('data.json'):
-        _data = {}
+        return {}
     if len(_data) == 0:
         _data = parse_from_importer('data.json')
     return _data
 
 
 class Constants:
+    RUN_FOLDER = 'most-recent-run'
     NUM_RUNS = 1
     BUDGET = 22779.57
     NUM_INDIVIDUALS = 200

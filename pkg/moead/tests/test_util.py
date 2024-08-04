@@ -13,7 +13,7 @@ def default_b():
 
 def default_individuals():
     individuals = []
-    for i in range(4):
+    for i in range(1, 5):
         individual = default_individual()
         individual.problem.set_value("0", i)
         individual.problem.set_value("1", i + 1)
@@ -43,7 +43,7 @@ def default_dominating_individual():
 def default_dominated_individual():
     problem = default_consistent_problem()
     problem.set_value("0", 1)
-    problem.set_value("1", 0)
+    problem.set_value("1", 1)
     problem.set_value("2", 1)
     individual = Individual(problem=problem)
     return individual

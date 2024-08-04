@@ -257,6 +257,6 @@ class BuilderTest(unittest.TestCase):
         )
         Random.end_test()
         self.assertEqual(
-            "[{'variables': {'BMO': 200, 'CARS': 100, 'BNGO': 500, 'BKI.TO': 300, 'BLCO': 180, 'BLDP': 40, 'BLN.TO': 19, 'BLX': 1, 'CIF': 50, 'CLF': 1}, 'constraints': [{'variables': []}], 'objectives': [0.5280956914145623, 0.7746589822144606, 299.65321474967277, 16.54135338345865, 78.641276376737, 62.289744981009235]}]",
+            "[{'variables': {'BMO': 200, 'CARS': 100, 'BNGO': 500, 'BKI.TO': 300, 'BLCO': 180, 'BLDP': 40, 'BLN.TO': 19, 'BLX': 1, 'CIF': 50, 'CLF': 1}, 'constraints': [{'variables': []}], 'objectives': [-0.5280956914145623, -0.7746589822144606, 299.65321474967277, 16.54135338345865, 78.641276376737, 62.289744981009235]}]",
             str(solutions)
         )

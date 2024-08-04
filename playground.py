@@ -3,9 +3,6 @@ from math import ceil
 
 from pkg.consts import Constants
 
-FOLDER = 'run-2024-08-04 12:16:58.297320'
-
-
 def check_domination(non_dominated, parent_population):
     for nd in range(len(non_dominated)):
         for p in range(len(parent_population)):
@@ -30,8 +27,8 @@ def check_budget(solutions):
 
 def main():
     for t in range(Constants.NUM_GENERATIONS):
-        with (open(FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
-              open(FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file):
+        with (open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
+              open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file):
             parent_pop = json.load(parent_pop_file)
             non_dominated = json.load(non_dominated_file)
             print('checking population budget constraint')

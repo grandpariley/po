@@ -1,7 +1,5 @@
-import datetime
 import json
 import os
-from copy import deepcopy
 
 from pkg.consts import Constants
 from pkg.log import Log
@@ -10,21 +8,19 @@ from pkg.moead.individual import Individual, individual_encoder_fn
 from pkg.moead.sort import euclidean_distance_mapping
 from pkg.problem.solver import Solver
 
-FOLDER = 'run-' + str(datetime.datetime.now())
 
-
-def is_non_dominated(y, neighbourhood):
-    for n in neighbourhood:
-        if n.does_dominate(y):
+def is_non_dominated(x, population):
+    for individual in population:
+        if individual.does_dominate(x):
             return False
     return True
 
 
-def get_non_dominated(x):
+def get_non_dominated(population):
     nd = set()
-    for i in range(len(x)):
-        if is_non_dominated(x[i], x):
-            nd.add(x[i])
+    for individual in population:
+        if is_non_dominated(individual, population):
+            nd.add(individual)
     return list(nd)
 
 
@@ -38,9 +34,9 @@ def solve_helper(parent_population):
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
         Log.log("length of non dominated: " + str(len(get_non_dominated(parent_population))))
-        with open(FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'w') as json_file:
+        with open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'w') as json_file:
             json.dump(parent_population, json_file, default=individual_encoder_fn)
-        with open(FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'w') as json_file:
+        with open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'w') as json_file:
             json.dump(get_non_dominated(parent_population), json_file, default=individual_encoder_fn)
     return get_non_dominated(parent_population)
 
@@ -48,7 +44,8 @@ def solve_helper(parent_population):
 class Moead(Solver):
 
     def solve(self):
-        os.mkdir(FOLDER)
+        if not os.path.exists(Constants.RUN_FOLDER):
+            os.mkdir(Constants.RUN_FOLDER)
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
         solutions = solve_helper(parent_population)

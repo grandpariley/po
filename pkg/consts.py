@@ -1,4 +1,3 @@
-import datetime
 import json
 import os.path
 from os import getenv
@@ -45,11 +44,11 @@ def data():
 class Constants:
     RUN_FOLDER = 'most-recent-run'
     NUM_RUNS = 1
-    BUDGET = 22779.57
-    NUM_INDIVIDUALS = 200
-    NUM_GENERATIONS = 10
+    BUDGET = 100000
+    NUM_INDIVIDUALS = 1000
+    NUM_GENERATIONS = 20
     GENES_MUTATING = 0.10
-    MOEAD_NUM_WEIGHT_VECTORS_T = 20
+    MOEAD_NUM_WEIGHT_VECTORS_T = 50
     INVESTORS = investors()
     DATA = data()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

@@ -1,6 +1,7 @@
 from copy import deepcopy
 from math import ceil
 
+from progress import ProgressBar
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.problem.constraint import Constraint
@@ -67,11 +68,13 @@ def objective_value(variables, criteria, minimize):
     return total if not minimize else -total
 
 
-def generate_solutions_discrete_domain(population_size, problem):
+def generate_solutions_discrete_domain(problem):
     solutions = []
-    while len(solutions) < population_size:
+    ProgressBar.begin(Constants.NUM_INDIVIDUALS)
+    while len(solutions) < Constants.NUM_INDIVIDUALS:
         solutions.append(get_new_solution(deepcopy(problem)))
-        Log.log(str(len(solutions)) + " / " + str(population_size))
+        ProgressBar.update(len(solutions))
+    ProgressBar.end()
     return solutions
 
 

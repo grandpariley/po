@@ -13,6 +13,7 @@ python-dotenv = "*"
 matplotlib = "*"
 numpy = "*"
 dill = "*"
+progressbar = "*"
 
 [requires]
 python_version = "3.12"

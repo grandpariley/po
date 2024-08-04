@@ -43,12 +43,12 @@ def get_arch2_solutions(solutions, timer):
 
 
 def get_generated_solutions_arch1(problem, timer):
-    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, problem),
+    return timer.time(lambda: generate_solutions_discrete_domain(problem),
                       "generate")
 
 
 def get_generated_solutions_arch2(problem, timer):
-    return timer.time(lambda: generate_solutions_discrete_domain(Constants.NUM_INDIVIDUALS, problem),
+    return timer.time(lambda: generate_solutions_discrete_domain(problem),
                       "generate")
 
 

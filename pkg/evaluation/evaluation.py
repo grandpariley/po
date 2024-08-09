@@ -88,16 +88,9 @@ class Evaluation:
             else:
                 plt.bar([objective_indexes_key, 'benchmark'],
                         [self.solutions['arch1'][0].objective_values()[0], get_index_expected_return(investor)])
-            plt.savefig(objective_indexes_key + '/' + self.prefix + '-figure.png')
+            plt.savefig(objective_indexes_key + '/' + self.prefix + '/figure.png')
             plt.clf()
         # plt.show()
-
-    def dump_solutions(self):
-        for key in self.solutions:
-            if not os.path.exists(key):
-                os.mkdir(key)
-            with open(key + '/' + self.prefix + '-solutions.json', 'w') as json_file:
-                json.dump(self.solutions[key], json_file, default=problem_encoder_fn)
 
     def dump_time(self):
         if len(self.timer.times) != 0:

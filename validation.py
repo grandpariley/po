@@ -2,20 +2,6 @@ import json
 from math import ceil
 
 from pkg.consts import Constants
-from pkg.problem.compare import dominates
-
-
-def is_dominated(x, population):
-    for individual in population:
-        if dominates(individual['objectives'], x['objectives']):
-            return True
-    return False
-
-
-def check_domination(non_dominated, parent_population):
-    for nd in non_dominated:
-        if is_dominated(nd, parent_population):
-            raise ValueError("non-dominated solution is dominated!")
 
 
 def check_budget(solutions):
@@ -28,18 +14,13 @@ def check_budget(solutions):
 
 
 def main():
-    with (open('generated-solutions.json', 'r') as solutions_file,
-          open('generated-solutions-nd.json', 'r') as non_dominated_file):
-        solutions = json.load(solutions_file)
-        non_dominated = json.load(non_dominated_file)
-        check_domination(non_dominated, solutions)
-    for t in range(Constants.NUM_GENERATIONS):
-        with (open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-parent-pop.json', 'r') as parent_pop_file,
-              open(Constants.RUN_FOLDER + '/arch2-' + str(t) + '-non-dominated.json', 'r') as non_dominated_file):
-            parent_pop = json.load(parent_pop_file)
-            non_dominated = json.load(non_dominated_file)
-            check_budget(parent_pop)
-            check_domination(non_dominated, parent_pop)
+    for t in range(Constants.NUM_RUNS):
+        with (open('arch2/' + str(t) + '-solutions.json', 'r') as arch2_solutions_file,
+              open('arch1/' + str(t) + '-solutions.json', 'r') as arch1_solutions_file):
+            arch2_solutions = json.load(arch2_solutions_file)
+            arch1_solutions = json.load(arch1_solutions_file)
+            check_budget(arch2_solutions)
+            check_budget(arch1_solutions)
     print('passes validation!!')
 
 

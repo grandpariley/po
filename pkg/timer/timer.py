@@ -1,5 +1,5 @@
+import json
 import time
-from pkg.log import Log
 
 
 class Timer:
@@ -10,11 +10,12 @@ class Timer:
         start = time.process_time_ns()
         rt = func()
         end = time.process_time_ns()
-        self.times[label] = (end - start)
+        if label not in self.times:
+            self.times[label] = []
+        self.times[label].append((end - start))
         return rt
 
-    def get_times_as_formatted_str(self):
-        builder = "Times: "
-        for label, thyme in self.times.items():
-            builder += "\n\t" + str(label) + " : " + str(thyme / 1000.000) + "ms"
-        return builder
+    def save(self):
+        for t in self.times.keys():
+            with open(t + '/times.json', 'w') as json_file:
+                json.dump(self.times[t], json_file)

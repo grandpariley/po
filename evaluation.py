@@ -10,7 +10,6 @@ from pkg.consts import Constants
 from pkg.parse.portfolio_option import PortfolioOption
 from pkg.problem.builder import default_portfolio_optimization_problem_arch_1
 from pkg.problem.compare import dominates
-from pkg.problem.problem import problem_encoder_fn
 
 ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
@@ -69,30 +68,25 @@ def plot(solutions, axis, cols, rows, objective_indexes):
             axis_count_cols = (axis_count_cols + 1) % cols
 
 
-class Evaluation:
-    def __init__(self, prefix, solutions, timer):
-        self.prefix = str(prefix)
-        self.solutions = solutions
-        self.timer = timer
-
-    def dump_graph(self, objective_indexes_dict, rows=None, cols=None, investor=None):
+def dump_graph(solutions, objective_indexes_dict, rows=None, cols=None, investor=None):
+    for run in range(Constants.NUM_RUNS):
         for objective_indexes_key in objective_indexes_dict:
             if len(objective_indexes_dict[objective_indexes_key]) > 1:
                 if rows is None or cols is None:
                     rows = 2
                     cols = int(math.comb(len(objective_indexes_dict[objective_indexes_key]), 2) / 2)
                 figure, axis = plt.subplots(rows, cols, figsize=(28, 12))
-                plot(self.solutions['arch2'], axis, cols, rows, objective_indexes_dict[objective_indexes_key])
+                plot(solutions['arch2'], axis, cols, rows, objective_indexes_dict[objective_indexes_key])
                 if not os.path.exists(objective_indexes_key):
                     os.mkdir(objective_indexes_key)
             else:
                 plt.bar([objective_indexes_key, 'benchmark'],
-                        [self.solutions['arch1'][0].objective_values()[0], get_index_expected_return(investor)])
-            plt.savefig(objective_indexes_key + '/' + self.prefix + '/figure.png')
+                        [solutions['arch1'][0].objective_values()[0], get_index_expected_return(investor)])
+            plt.savefig(objective_indexes_key + '/' + str(run) + '/figure.png')
             plt.clf()
-        # plt.show()
+    # plt.show()
 
-    def dump_time(self):
-        if len(self.timer.times) != 0:
-            with open(self.prefix + '-times.json', 'w') as file:
-                json.dump(self.timer.times, file)
+
+if __name__ == '__main__':
+    # main()
+    pass

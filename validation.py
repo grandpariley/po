@@ -15,8 +15,8 @@ def check_budget(solutions):
 
 def main():
     for t in range(Constants.NUM_RUNS):
-        with (open('arch2/' + str(t) + '-solutions.json', 'r') as arch2_solutions_file,
-              open('arch1/' + str(t) + '-solutions.json', 'r') as arch1_solutions_file):
+        with (open('arch2/' + str(t) + '/solutions.json', 'r') as arch2_solutions_file,
+              open('arch1/' + str(t) + '/solutions.json', 'r') as arch1_solutions_file):
             arch2_solutions = json.load(arch2_solutions_file)
             arch1_solutions = json.load(arch1_solutions_file)
             check_budget(arch2_solutions)

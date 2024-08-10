@@ -32,7 +32,7 @@ def get_neighbourhood(parent_population, neighbourhood_indexes):
 def save_generation(folder, generation, non_dominated_solutions):
     if not os.path.exists(folder):
         os.mkdir(folder)
-    with open(folder + '/' + generation + '-solutions.json', 'w') as json_file:
+    with open(folder + '/gen-' + generation + '.json', 'w') as json_file:
         json.dump(non_dominated_solutions, json_file, default=individual_encoder_fn)
 
 

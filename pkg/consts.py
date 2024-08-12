@@ -43,7 +43,7 @@ def data():
 
 class Constants:
     RUN_FOLDER = 'most-recent-run'
-    NUM_RUNS = 30
+    NUM_RUNS = 10
     BUDGET = 30000
     NUM_INDIVIDUALS = 500
     NUM_GENERATIONS = 10

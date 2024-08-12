@@ -6,13 +6,38 @@ import os.path
 import matplotlib.pyplot as plt
 from numpy import floor
 
+from main import PROBLEMS
 from pkg.consts import Constants
 from pkg.parse.portfolio_option import PortfolioOption
 from pkg.problem.builder import default_portfolio_optimization_problem_arch_1
 from pkg.problem.compare import dominates
 
+INVESTOR = 'Alice'
 ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
+
+
+def arch1_flatten(generation):
+    max_objective = -math.inf
+    for solution in generation:
+        if solution['objectives'][0] > max_objective:
+            max_objective = solution['objectives'][0]
+    return max_objective
+
+
+def arch2_flatten(generation):
+    max_objective = -math.inf
+    for solution in generation:
+        this_objective = get_weight_sensitive_objective_value(solution)
+        if this_objective > max_objective:
+            max_objective = this_objective
+    return max_objective
+
+
+FLATTENERS = {
+    'arch1': arch1_flatten,
+    'arch2': arch2_flatten
+}
 
 
 def get_index_expected_return(investor):
@@ -87,6 +112,40 @@ def dump_graph(solutions, objective_indexes_dict, rows=None, cols=None, investor
     # plt.show()
 
 
+def get_weights():
+    for investor in Constants.INVESTORS:
+        if investor['person'] != INVESTOR:
+            continue
+        return investor['weights']
+    return None
+
+
+def get_weight_sensitive_objective_value(solution):
+    weights = list(get_weights().values())
+    total = 0
+    assert len(weights) == len(solution['objectives'])
+    for i in range(len(weights)):
+        total += weights[i] * solution['objectives'][i]
+    return total
+
+
+def graph_generations(name, run, generations, flatten):
+    plt.scatter(
+        x=range(Constants.NUM_GENERATIONS),
+        y=[flatten(generation) for generation in generations]
+    )
+    plt.savefig(name + '/' + run + '/figure.png')
+
+
+def main():
+    for run in range(Constants.NUM_RUNS):
+        for name in PROBLEMS.keys():
+            generations = []
+            for generation in range(Constants.NUM_GENERATIONS):
+                with open(name + '/' + str(run) + '/gen-' + str(generation) + '.json', 'r') as json_file:
+                    generations.append(json.load(json_file))
+            graph_generations(name, str(run), generations, FLATTENERS[name])
+
+
 if __name__ == '__main__':
-    # main()
-    pass
+    main()

@@ -39,7 +39,7 @@ def save_generation(folder, generation, non_dominated_solutions):
 def solve_helper(folder, parent_population):
     Log.log('Euclidean distance mapping...')
     b = euclidean_distance_mapping(parent_population)
-    Log.log('Euclidean distance mapping complete!')
+    Log.log('Euclidean distance mapping complete! Starting solving...')
     ProgressBar.begin(Constants.NUM_GENERATIONS)
     for t in range(Constants.NUM_GENERATIONS):
         for i in range(len(parent_population)):
@@ -50,6 +50,7 @@ def solve_helper(folder, parent_population):
         save_generation(folder, str(t), get_non_dominated(parent_population))
         ProgressBar.update(t)
     ProgressBar.end()
+    Log.log('Solving complete!')
     return get_non_dominated(parent_population)
 
 

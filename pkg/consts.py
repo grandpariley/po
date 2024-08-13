@@ -43,9 +43,9 @@ def data():
 
 class Constants:
     RUN_FOLDER = 'most-recent-run'
-    NUM_RUNS = 10
+    NUM_RUNS = 1
     BUDGET = 30000
-    NUM_INDIVIDUALS = 500
+    NUM_INDIVIDUALS = 100
     NUM_GENERATIONS = 10
     GENES_MUTATING = 0.10
     MOEAD_NUM_WEIGHT_VECTORS_T = 50

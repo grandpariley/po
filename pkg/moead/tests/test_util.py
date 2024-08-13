@@ -1,5 +1,6 @@
 from pkg.moead.individual import Individual
 from pkg.moead.sort import euclidean_distance_mapping
+from pkg.problem.problem import Problem
 from pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem
 
 
@@ -56,6 +57,7 @@ def default_individual_with_values():
     problem.set_value("2", 1)
     individual = Individual(problem=problem)
     return individual
+
 
 def get_test_data():
     return {

@@ -1,8 +1,12 @@
 import unittest
 
 from pkg.consts import Constants
+from pkg.moead.tests.test_util import default_dominated_individual
 from pkg.parse.parse import get_portfolio_option_from_data
-from pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_2
+from pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_2, \
+    portfolio_optimization_combination_strategy
+from pkg.problem.tests.default_problems import default_consistent_problem_set_values, \
+    default_other_consistent_problem_set_values
 from pkg.random.random import Random
 
 
@@ -260,3 +264,11 @@ class BuilderTest(unittest.TestCase):
             "[{'variables': {'BMO': 200, 'CARS': 100, 'BNGO': 500, 'BKI.TO': 300, 'BLCO': 180, 'BLDP': 40, 'BLN.TO': 19, 'BLX': 1, 'CIF': 50, 'CLF': 1}, 'constraints': [{'variables': []}], 'objectives': [-0.5280956914145623, -0.7746589822144606, 299.65321474967277, 16.54135338345865, 78.641276376737, 62.289744981009235]}]",
             str(solutions)
         )
+
+    def test_portfolio_optimization_combination_strategy(self):
+        child = default_consistent_problem_set_values()
+        portfolio_optimization_combination_strategy(
+            child,
+            default_other_consistent_problem_set_values()
+        )
+        self.assertEqual([2, 1, 1], [v.get_value() for v in child.variables.values()])

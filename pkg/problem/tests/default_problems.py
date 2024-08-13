@@ -31,6 +31,14 @@ def default_consistent_problem_set_values():
     return problem
 
 
+def default_other_consistent_problem_set_values():
+    problem = default_consistent_problem()
+    problem.set_value("0", 2)
+    problem.set_value("1", 1)
+    problem.set_value("2", 1)
+    return problem
+
+
 def default_inconsistent_problem():
     return Problem(
         default_variables(),

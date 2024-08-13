@@ -135,6 +135,7 @@ def graph_generations(name, run, generations, flatten):
         y=[flatten(generation) for generation in generations]
     )
     plt.savefig(name + '/' + run + '/figure.png')
+    plt.clf()
 
 
 def main():

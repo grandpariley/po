@@ -19,10 +19,11 @@ def problem_encoder_fn(obj):
 
 
 class Problem:
-    def __init__(self, variables, constraints, objective_funcs):
+    def __init__(self, variables, constraints, objective_funcs, combination_strategy = None):
         self.variables = variables
         self.constraints = constraints
         self.objective_funcs = objective_funcs
+        self.combination_strategy = combination_strategy
 
     def __str__(self):
         return str(problem_encoder_fn(self))

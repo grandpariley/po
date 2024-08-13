@@ -1,9 +1,8 @@
 from copy import deepcopy
-from math import ceil
+from math import ceil, floor
 
 from progress import ProgressBar
 from pkg.consts import Constants
-from pkg.log import Log
 from pkg.problem.constraint import Constraint
 from pkg.problem.problem import Problem
 from pkg.random.random import Random
@@ -20,7 +19,8 @@ def default_portfolio_optimization_problem_arch_2():
             get_objective_by_criteria('environment'),
             get_objective_by_criteria('governance'),
             get_objective_by_criteria('social')
-        ]
+        ],
+        combination_strategy=portfolio_optimization_combination_strategy
     )
 
 
@@ -28,7 +28,8 @@ def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},
         [Constraint(under_budget)],
-        [get_weight_sensitive_objective(investor)]
+        [get_weight_sensitive_objective(investor)],
+        combination_strategy=portfolio_optimization_combination_strategy
     )
 
 
@@ -66,6 +67,21 @@ def objective_value(variables, criteria, minimize):
     for key, value in variables.items():
         total += value.get_value() * value.objective_info[criteria]
     return total if not minimize else -total
+
+
+def portfolio_optimization_combination_strategy(child, parent):
+    for name, variable in parent.variables.items():
+        new_value = variable.get_value()
+        if child.get_value(name) is not None:
+            new_value += child.get_value(name)
+        child.set_value(name, new_value, info=parent.variables[name].objective_info)
+    variables_keys = list(child.variables.keys())
+    for name in variables_keys:
+        consistent_value = floor(child.get_value(name) / 2)
+        if consistent_value:
+            child.set_value(name, consistent_value)
+        else:
+            child.reset_value(name)
 
 
 def generate_solutions_discrete_domain(problem):

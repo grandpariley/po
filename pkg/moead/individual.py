@@ -1,5 +1,6 @@
 import json
 
+from pkg.log import Log
 from pkg.problem.discrete_domain import DiscreteDomain
 from pkg.problem.problem import problem_encoder_fn
 from pkg.random.random import Random
@@ -49,12 +50,14 @@ class Individual:
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
     def swap_half_genes(self, other):
+        if self.problem.combination_strategy:
+            self.problem.combination_strategy(self.problem, other.problem)
+            return
         variables = set()
         while len(variables) < len(self.problem.keys()) / 2:
-            variables.add(Random.random_int_between_a_and_b(0, len(self.problem.keys()) - 1))
+            variables.add(Random.random_choice(other.problem.keys()))
         for v in variables:
-            if self.problem.get_value(v) == other.problem.get_value(v):
-                continue
+            print(str(v) + ' | ' + str(other.problem))
             self.safe_set_value(v, other.problem.get_value(v))
 
     def safe_set_value(self, v, new_value):

@@ -13,8 +13,10 @@ class FamilyTest(unittest.TestCase):
         Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 2
         Constants.DATA = get_test_data()
         individuals = default_individuals()
-        Random.set_test_value_for("random_choice", 1)
-        Random.set_test_value_for("random_choice", 1)
+        Random.set_test_value_for("random_choice", '1')
+        Random.set_test_value_for("random_choice", '1')
+        Random.set_test_value_for("random_choice", '0')
+        Random.set_test_value_for("random_choice", '2')
         Random.set_test_value_for("random_int_between_a_and_b", 0)
         Random.set_test_value_for("random_int_between_a_and_b", 1)
         Random.set_test_value_for("random_int_between_a_and_b", 2)
@@ -24,9 +26,9 @@ class FamilyTest(unittest.TestCase):
         expected = default_individual()
         expected.problem.set_value('0', 1)
         expected.problem.set_value('1', 2)
-        expected.problem.set_value('2', 2)
+        expected.problem.set_value('2', 3)
         Random.end_test()
-        self.assertEqual(child, expected)
+        self.assertEqual(expected, child)
 
     def test_get_parents(self):
         Random.begin_test()

@@ -226,9 +226,23 @@ def get_default_data():
 
 
 def set_random_test_values():
-    for no_domain in ['BN', 'BNRE', 'BNS', 'CASH', 'CIGI', 'CINF', 'CINT', 'CIX', 'CJT.TO', 'CKISF', 'CLG.F']:
-        Random.set_test_value_for("random_choice", no_domain)
+    Random.set_test_value_for("random_choice", 'CINF')
     Random.set_test_value_for("random_choice", 1)
+    Random.set_test_value_for("random_choice", 'CIX')
+    Random.set_test_value_for("random_choice", 'CASH')
+    Random.set_test_value_for("random_choice", 'BNS')
+    Random.set_test_value_for("random_choice", 'BNRE')
+    Random.set_test_value_for("random_choice", 'BN')
+    Random.set_test_value_for("random_choice", 'CIGI')
+    Random.set_test_value_for("random_choice", 2)
+    Random.set_test_value_for("random_choice", 'CINT')
+    Random.set_test_value_for("random_choice", 8)
+    Random.set_test_value_for("random_choice", 'CLG.F')
+    Random.set_test_value_for("random_choice", 45)
+    Random.set_test_value_for("random_choice", 'CJT.TO')
+    Random.set_test_value_for("random_choice", 89)
+    Random.set_test_value_for("random_choice", 'CKISF')
+    Random.set_test_value_for("random_choice", 2)
     Random.set_test_value_for("random_choice", 'CLF')
     Random.set_test_value_for("random_choice", 50)
     Random.set_test_value_for("random_choice", 'CIF')
@@ -253,6 +267,7 @@ def set_random_test_values():
 class BuilderTest(unittest.TestCase):
     def test_generate_solutions_discrete_domain(self):
         Constants.DATA = get_portfolio_option_from_data(get_default_data())
+        Constants.BUDGET=30000
         Constants.NUM_INDIVIDUALS = 1
         Random.begin_test()
         set_random_test_values()
@@ -261,7 +276,7 @@ class BuilderTest(unittest.TestCase):
         )
         Random.end_test()
         self.assertEqual(
-            "[{'variables': {'BMO': 200, 'CARS': 100, 'BNGO': 500, 'BKI.TO': 300, 'BLCO': 180, 'BLDP': 40, 'BLN.TO': 19, 'BLX': 1, 'CIF': 50, 'CLF': 1}, 'constraints': [{'variables': []}], 'objectives': [-0.5280956914145623, -0.7746589822144606, 299.65321474967277, 16.54135338345865, 78.641276376737, 62.289744981009235]}]",
+            "[{'variables': {'BMO': 200, 'CARS': 100, 'BNGO': 500, 'BKI.TO': 300, 'BLCO': 180, 'BLDP': 40, 'BLN.TO': 19, 'BLX': 1, 'CIF': 50, 'CLF': 2, 'CKISF': 89, 'CJT.TO': 45, 'CLG.F': 8, 'CINT': 2, 'CIX': 1}, 'constraints': ['budget'], 'objectives': [-0.5420839279529841, -0.8011769208810373, 319.7656504663144, 85.85979655019904, 111.8960370560988, 125.16440586001087]}]",
             str(solutions)
         )
 
@@ -271,4 +286,4 @@ class BuilderTest(unittest.TestCase):
             child,
             default_other_consistent_problem_set_values()
         )
-        self.assertEqual([2, 1, 1], [v.get_value() for v in child.variables.values()])
+        self.assertEqual([3, 2, 2], [v.get_value() for v in child.variables.values()])

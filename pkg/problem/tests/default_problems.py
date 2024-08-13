@@ -6,9 +6,9 @@ from pkg.problem.problem import Problem
 
 def default_variables():
     return {
-        "0": Variable(DiscreteDomain(5, 0), []),
-        "1": Variable(DiscreteDomain(5, 0), []),
-        "2": Variable(DiscreteDomain(5, 0), []),
+        "0": Variable(DiscreteDomain(5, 0), {'price': 1}),
+        "1": Variable(DiscreteDomain(5, 0), {'price': 1}),
+        "2": Variable(DiscreteDomain(5, 0), {'price': 1}),
     }
 
 
@@ -16,8 +16,8 @@ def default_consistent_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(lambda v: v["0"].get_value() != v["1"].get_value(), ("0", "1")),
-            Constraint(lambda v: v["2"].get_value() > 0, tuple(["2"])),
+            Constraint(lambda v: v["0"].get_value() != v["1"].get_value()),
+            Constraint(lambda v: v["2"].get_value() > 0),
         ],
         [lambda v: v["0"].get_value(), lambda v: v["1"].get_value(), lambda v: v["2"].get_value()]
     )
@@ -43,7 +43,7 @@ def default_inconsistent_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(lambda v: False, ("0", "2")),
+            Constraint(lambda v: False),
         ],
         [lambda v: v["0"].get_value(), lambda v: v["1"].get_value(), lambda v: v["2"].get_value()]
     )
@@ -61,9 +61,9 @@ def default_multi_objective_problem():
     return Problem(
         default_variables(),
         [
-            Constraint(lambda v: v["0"] == v["1"], ("0", "2")),
-            Constraint(lambda v: v["0"] == "1", tuple(["1"])),
-            Constraint(lambda v: v["0"] > 0, tuple(["2"]))
+            Constraint(lambda v: v["0"] == v["1"]),
+            Constraint(lambda v: v["0"] == "1"),
+            Constraint(lambda v: v["0"] > 0)
         ],
         [lambda v: sum([v[var].get_value() for var in v]), lambda v: -sum(v[var].get_value() for var in v)]
     )

@@ -15,14 +15,14 @@ def default_held_constraint():
     variables = default_variables()
     variables["0"].set_value(1)
     variables["1"].set_value(1)
-    return Constraint(lambda v: v["0"].get_value() == v["1"].get_value(), ("0", "1")), variables
+    return Constraint(lambda v: v["0"].get_value() == v["1"].get_value()), variables
 
 
 def default_broken_constraint():
     variables = default_variables()
     variables["0"].set_value(1)
     variables["1"].set_value(2)
-    return Constraint(lambda v: v["0"].get_value() == v["1"].get_value(), ("0", "1")), variables
+    return Constraint(lambda v: v["0"].get_value() == v["1"].get_value()), variables
 
 
 class ConstraintTest(unittest.TestCase):

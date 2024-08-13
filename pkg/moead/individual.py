@@ -57,7 +57,6 @@ class Individual:
         while len(variables) < len(self.problem.keys()) / 2:
             variables.add(Random.random_choice(other.problem.keys()))
         for v in variables:
-            print(str(v) + ' | ' + str(other.problem))
             self.safe_set_value(v, other.problem.get_value(v))
 
     def safe_set_value(self, v, new_value):

@@ -131,7 +131,7 @@ def get_weight_sensitive_objective_value(solution):
 
 def graph_generations(name, run, generations, flatten):
     plt.scatter(
-        x=range(Constants.NUM_GENERATIONS),
+        x=range(len(generations)),
         y=[flatten(generation) for generation in generations]
     )
     plt.savefig(name + '/' + run + '/figure.png')
@@ -143,6 +143,8 @@ def main():
         for name in PROBLEMS.keys():
             generations = []
             for generation in range(Constants.NUM_GENERATIONS):
+                if not os.path.exists(name + '/' + str(run) + '/gen-' + str(generation) + '.json'):
+                    continue
                 with open(name + '/' + str(run) + '/gen-' + str(generation) + '.json', 'r') as json_file:
                     generations.append(json.load(json_file))
             graph_generations(name, str(run), generations, FLATTENERS[name])

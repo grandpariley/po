@@ -11,7 +11,7 @@ from pkg.random.random import Random
 def default_portfolio_optimization_problem_arch_2():
     return Problem(
         {},
-        [Constraint(under_budget)],
+        [Constraint(under_budget, 'budget')],
         [
             get_objective_by_criteria('cvar', minimize=True),
             get_objective_by_criteria('var', minimize=True),
@@ -27,17 +27,21 @@ def default_portfolio_optimization_problem_arch_2():
 def default_portfolio_optimization_problem_arch_1(investor):
     return Problem(
         {},
-        [Constraint(under_budget)],
+        [Constraint(under_budget, 'budget')],
         [get_weight_sensitive_objective(investor)],
         combination_strategy=portfolio_optimization_combination_strategy
     )
 
 
 def under_budget(variables):
+    return budget_used(variables) <= Constants.BUDGET
+
+
+def budget_used(variables):
     total_spent = 0
     for key, variable in variables.items():
         total_spent += variable.get_value() * variable.objective_info['price']
-    return total_spent <= Constants.BUDGET
+    return total_spent
 
 
 def weight(investor, criteria):
@@ -75,13 +79,28 @@ def portfolio_optimization_combination_strategy(child, parent):
         if child.get_value(name) is not None:
             new_value += child.get_value(name)
         child.set_value(name, new_value, info=parent.variables[name].objective_info)
-    variables_keys = list(child.variables.keys())
+    halve_solution(child, list(child.variables.keys()))
+    refill(child)
+
+
+def halve_solution(child, variables_keys):
     for name in variables_keys:
         consistent_value = floor(child.get_value(name) / 2)
         if consistent_value:
             child.set_value(name, consistent_value)
         else:
             child.reset_value(name)
+
+
+def refill(child):
+    variables_keys = list(child.variables.keys())
+    current_budget = budget_used(child.variables)
+    while len(variables_keys) > 0:
+        name = Random.random_choice(variables_keys)
+        variables_keys.remove(name)
+        if child.variables[name].objective_info['price'] < current_budget:
+            child.set_value(name, child.get_value(name) + 1)
+            current_budget -= child.variables[name].objective_info['price']
 
 
 def generate_solutions_discrete_domain(problem):

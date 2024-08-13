@@ -12,7 +12,7 @@ class Random:
 
     @classmethod
     def end_test(cls):
-        cls.non_random_values = {}
+        delattr(cls, 'non_random_values')
 
     @classmethod
     def set_test_value_for(cls, key, value):

@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 
 class Solver:
-    def __init__(self, problems, output_folder):
+    def __init__(self, problems, output_folder=None):
         self.problems = problems
         self.output_folder = output_folder
 

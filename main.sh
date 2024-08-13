@@ -4,7 +4,7 @@ for i
 do
 case $i in 
     test)
-        LOG_LEVEL='none' pipenv run python3 -m unittest discover
+        PIPENV_VERBOSITY=-1 LOG_LEVEL='none' pipenv run python3 -m unittest discover
     ;;
     run)
         PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' pipenv run python3 main.py

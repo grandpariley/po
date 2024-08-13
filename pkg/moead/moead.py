@@ -1,6 +1,8 @@
 import json
 import os
 
+from autopep8 import continued_indentation
+
 from pkg.consts import Constants
 from pkg.log import Log
 from pkg.moead.family import generate_child
@@ -30,6 +32,8 @@ def get_neighbourhood(parent_population, neighbourhood_indexes):
 
 
 def save_generation(folder, generation, non_dominated_solutions):
+    if not folder:
+        return
     if not os.path.exists(folder):
         os.mkdir(folder)
     with open(folder + '/gen-' + generation + '.json', 'w') as json_file:

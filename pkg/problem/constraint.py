@@ -1,28 +1,16 @@
 def constraint_encoder_fn(obj):
     if not isinstance(obj, Constraint):
         return obj
-    if obj.variables is None:
-        return {
-            "variables": []
-        }
-    return {
-        "variables": obj.variables
-    }
+    return obj.name
 
 
 class Constraint:
-    def __init__(self, func, variables=None):
-        self.variables = variables
+    def __init__(self, func, name='constraint'):
         self.func = func
+        self.name = name
 
     def __str__(self):
-        return str(self.variables)
+        return self.name
 
     def holds(self, curr_variables):
-        param = {}
-        if self.variables is not None:
-            for v in self.variables:
-                if v in curr_variables.keys():
-                    param[v] = curr_variables[v]
-            return bool(self.func(param))
         return bool(self.func(curr_variables))

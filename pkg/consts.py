@@ -42,7 +42,7 @@ def data():
 
 
 class Constants:
-    NUM_RUNS = 1
+    NUM_RUNS = 10
     BUDGET = 30000
     NUM_INDIVIDUALS = 500
     NUM_GENERATIONS = 10

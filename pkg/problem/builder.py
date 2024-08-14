@@ -94,13 +94,13 @@ def halve_solution(child, variables_keys):
 
 def refill(child):
     variables_keys = list(child.variables.keys())
-    current_budget = budget_used(child.variables)
+    spent = budget_used(child.variables)
     while len(variables_keys) > 0:
         name = Random.random_choice(variables_keys)
         variables_keys.remove(name)
-        if child.variables[name].objective_info['price'] < current_budget:
+        if child.variables[name].objective_info['price'] < (Constants.BUDGET - spent):
             child.set_value(name, child.get_value(name) + 1)
-            current_budget -= child.variables[name].objective_info['price']
+            spent = budget_used(child.variables)
 
 
 def generate_solutions_discrete_domain(problem):

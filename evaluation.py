@@ -73,6 +73,8 @@ def get_solutions(name, run):
 def calculate_one(solution, objective):
     return sum([
         value * Constants.DATA[name][objective] for name, value in solution['variables'].items()
+    ]) / sum([
+        value for value in solution['variables'].values()
     ])
 
 

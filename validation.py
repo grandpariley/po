@@ -1,6 +1,7 @@
 import json
 from math import ceil
 
+from main import PROBLEMS
 from pkg.consts import Constants
 
 
@@ -15,12 +16,10 @@ def check_budget(solutions):
 
 def main():
     for t in range(Constants.NUM_RUNS):
-        with (open('arch2/' + str(t) + '/solutions.json', 'r') as arch2_solutions_file,
-              open('arch1/' + str(t) + '/solutions.json', 'r') as arch1_solutions_file):
-            arch2_solutions = json.load(arch2_solutions_file)
-            arch1_solutions = json.load(arch1_solutions_file)
-            check_budget(arch2_solutions)
-            check_budget(arch1_solutions)
+        for name in PROBLEMS.keys():
+            with open(name + '/' + str(t) + '/solutions.json', 'r') as solutions_file:
+                solutions = json.load(solutions_file)
+                check_budget(solutions)
     print('passes validation!!')
 
 

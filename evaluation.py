@@ -8,55 +8,20 @@ import matplotlib.pyplot as plt
 from main import PROBLEMS
 from pkg.consts import Constants
 
-INVESTOR = 'Alice'
-ORDER_OF_COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k']
+ORDER_OF_COLOURS = itertools.cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k'])
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
-def arch1_flatten(generation):
+def flatten(generation, i=0):
     max_objective = -math.inf
     for solution in generation:
-        if solution['objectives'][0] > max_objective:
-            max_objective = solution['objectives'][0]
+        if solution['objectives'][i] > max_objective:
+            max_objective = solution['objectives'][i]
     return max_objective
 
 
-def arch2_flatten(generation):
-    max_objective = -math.inf
-    for solution in generation:
-        this_objective = get_weight_sensitive_objective_value(solution)
-        if this_objective > max_objective:
-            max_objective = this_objective
-    return max_objective
-
-
-FLATTENERS = {
-    # 'arch1-alice': arch1_flatten,
-    # 'arch1-jars': arch1_flatten,
-    # 'arch1-sam': arch1_flatten,
-    'arch2': arch2_flatten
-}
-
-
-def graph_solution_bigraph(name, run, solutions):
-    for (objective_index1, objective_index2) in itertools.combinations(range(len(INDEX_TO_LABEL)), 2):
-        plt.scatter(
-            x=[solution['objectives'][objective_index1] for solution in solutions],
-            y=[solution['objectives'][objective_index2] for solution in solutions]
-        )
-        plt.savefig(name + '/' + run + '/' + INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
-        plt.clf()
-
-def get_weights():
-    for investor in Constants.INVESTORS:
-        if investor['person'] != INVESTOR:
-            continue
-        return investor['weights']
-    return None
-
-
-def get_weight_sensitive_objective_value(solution):
-    weights = list(get_weights().values())
+def get_weight_sensitive_objective_value(solution, investor):
+    weights = list(investor['weights'])
     total = 0
     assert len(weights) == len(solution['objectives'])
     for i in range(len(weights)):
@@ -64,11 +29,26 @@ def get_weight_sensitive_objective_value(solution):
     return total
 
 
+def graph_solution_bigraph(name, run, solutions):
+    for (objective_index1, objective_index2) in itertools.combinations(range(len(INDEX_TO_LABEL)), 2):
+        if objective_index1 == objective_index2:
+            continue
+        plt.scatter(
+            x=[solution['objectives'][objective_index1] for solution in solutions],
+            y=[solution['objectives'][objective_index2] for solution in solutions]
+        )
+        plt.savefig(
+            name + '/' + run + '/' + INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
+        plt.clf()
+
+
 def graph_generations(name, run, generations):
-    plt.scatter(
-        x=range(len(generations)),
-        y=[FLATTENERS[name](generation) for generation in generations]
-    )
+    for objective_index in range(len(generations[0][0]['objectives'])):
+        plt.scatter(
+            x=range(len(generations)),
+            y=[flatten(generation, objective_index) for generation in generations],
+            color=next(ORDER_OF_COLOURS)
+        )
     plt.savefig(name + '/' + run + '/generation.png')
     plt.clf()
 
@@ -91,8 +71,11 @@ def get_solutions(name, run):
 def main():
     for run in range(Constants.NUM_RUNS):
         for name in PROBLEMS.keys():
-            # graph_generations(name, str(run), get_generations(name, run))
-            graph_solution_bigraph(name, str(run), get_solutions(name, run))
+            graph_generations(name, str(run), get_generations(name, run))
+            solutions = get_solutions(name, run)
+            if len(solutions[0]['objectives']) > 1:
+                graph_solution_bigraph(name, str(run), solutions)
+
 
 
 if __name__ == '__main__':

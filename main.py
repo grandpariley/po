@@ -12,9 +12,9 @@ from pkg.problem.problem import problem_encoder_fn
 from pkg.timer.timer import Timer
 
 PROBLEMS = {
-    # 'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
-    # 'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
-    # 'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
+    'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
+    'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
+    'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
     'arch2': default_portfolio_optimization_problem_arch_2(),
 }
 

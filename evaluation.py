@@ -11,6 +11,7 @@ from main import PROBLEMS
 from pkg.consts import Constants
 
 ORDER_OF_COLOURS = itertools.cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k'])
+ORDER_OF_MARKERS = itertools.cycle(['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_'])
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
@@ -31,27 +32,36 @@ def get_weight_sensitive_objective_value(solution, investor):
     return total
 
 
-def graph_solution_bigraph(name, run, solutions):
-    for (objective_index1, objective_index2) in itertools.combinations(range(len(INDEX_TO_LABEL)), 2):
-        if objective_index1 == objective_index2:
-            continue
-        plt.scatter(
-            x=[solution['objectives'][objective_index1] for solution in solutions],
-            y=[solution['objectives'][objective_index2] for solution in solutions]
-        )
-        plt.savefig(
-            name + '/' + run + '/' + INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
-        plt.clf()
+def graph_solution_bigraph(name, solutions):
+    if len(solutions[0][0]['objectives']) <= 1:
+        return
+    for run in range(Constants.NUM_RUNS):
+        marker = next(ORDER_OF_MARKERS)
+        for (objective_index1, objective_index2) in itertools.combinations(range(len(INDEX_TO_LABEL)), 2):
+            if objective_index1 == objective_index2:
+                continue
+            plt.scatter(
+                x=[solution['objectives'][objective_index1] for solution in solutions[run]],
+                y=[solution['objectives'][objective_index2] for solution in solutions[run]],
+                marker=marker
+            )
+            plt.savefig(name + '/' +
+                        str(run) + '/' +
+                        INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
+            plt.clf()
 
 
-def graph_generations(name, run, generations):
-    for objective_index in range(len(generations[0][0]['objectives'])):
-        plt.scatter(
-            x=range(len(generations)),
-            y=[flatten(generation, objective_index) for generation in generations],
-            color=next(ORDER_OF_COLOURS)
-        )
-    plt.savefig(name + '/' + run + '/generation.png')
+def graph_generations(name, generations):
+    for run in range(Constants.NUM_RUNS):
+        marker = next(ORDER_OF_MARKERS)
+        for objective_index in range(len(generations[0][0][0]['objectives'])):
+            plt.scatter(
+                x=range(len(generations)),
+                y=[flatten(generation, objective_index) for generation in generations[run]],
+                color=next(ORDER_OF_COLOURS),
+                marker=marker
+            )
+    plt.savefig(name + '/generations.png')
     plt.clf()
 
 
@@ -114,12 +124,10 @@ def table_vs_benchmark(name, solutions_by_run):
 
 def main():
     for name in PROBLEMS.keys():
-        # for run in range(Constants.NUM_RUNS):
-        #     graph_generations(name, str(run), get_generations(name, run))
-        #     solutions = get_solutions(name, run)
-        #     if len(solutions[0]['objectives']) > 1:
-        #         graph_solution_bigraph(name, str(run), solutions)
-        table_vs_benchmark(name, [get_solutions(name, run) for run in range(Constants.NUM_RUNS)])
+        graph_generations(name, [get_generations(name, run) for run in range(Constants.NUM_RUNS)])
+        solutions_by_run = [get_solutions(name, run) for run in range(Constants.NUM_RUNS)]
+        graph_solution_bigraph(name, solutions_by_run)
+        table_vs_benchmark(name, solutions_by_run)
 
 
 if __name__ == '__main__':

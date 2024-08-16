@@ -1,17 +1,17 @@
 import csv
-import itertools
 import json
 import math
 import os.path
 
 import matplotlib.pyplot as plt
 from numpy.ma.extras import average
+from itertools import cycle, combinations
 
 from main import PROBLEMS
 from pkg.consts import Constants
 
-ORDER_OF_COLOURS = itertools.cycle(['b', 'g', 'r', 'c', 'm', 'y', 'k'])
-ORDER_OF_MARKERS = itertools.cycle(['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_'])
+COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
+MARKERS = ['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
 
 
@@ -35,15 +35,17 @@ def get_weight_sensitive_objective_value(solution, investor):
 def graph_solution_bigraph(name, solutions):
     if len(solutions[0][0]['objectives']) <= 1:
         return
+    markers = cycle(MARKERS)
+    colours = cycle(COLOURS)
     for run in range(Constants.NUM_RUNS):
-        marker = next(ORDER_OF_MARKERS)
-        for (objective_index1, objective_index2) in itertools.combinations(range(len(INDEX_TO_LABEL)), 2):
+        for (objective_index1, objective_index2) in combinations(range(len(INDEX_TO_LABEL)), 2):
             if objective_index1 == objective_index2:
                 continue
             plt.scatter(
                 x=[solution['objectives'][objective_index1] for solution in solutions[run]],
                 y=[solution['objectives'][objective_index2] for solution in solutions[run]],
-                marker=marker
+                marker=next(markers),
+                color=next(colours)
             )
             plt.savefig(name + '/' +
                         str(run) + '/' +
@@ -52,14 +54,15 @@ def graph_solution_bigraph(name, solutions):
 
 
 def graph_generations(name, generations):
+    markers = cycle(MARKERS)
+    colours = cycle(COLOURS)
     for run in range(Constants.NUM_RUNS):
-        marker = next(ORDER_OF_MARKERS)
         for objective_index in range(len(generations[0][0][0]['objectives'])):
             plt.scatter(
                 x=range(len(generations)),
                 y=[flatten(generation, objective_index) for generation in generations[run]],
-                color=next(ORDER_OF_COLOURS),
-                marker=marker
+                color=next(colours),
+                marker=next(markers)
             )
     plt.savefig(name + '/generations.png')
     plt.clf()

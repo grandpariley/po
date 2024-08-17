@@ -150,5 +150,6 @@ dmypy.json
 *.pkl
 *.png
 *.csv
+*.txt
 
 playground.py

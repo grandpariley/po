@@ -13,6 +13,12 @@ from pkg.consts import Constants
 COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
 MARKERS = ['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_']
 INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
+LABELS = {
+    'arch2': 'Architecture 2',
+    'arch1-sam': 'Sam',
+    'arch1-jars': 'Jars',
+    'arch1-alice': 'Alice'
+}
 
 
 def flatten(solutions, i=0):
@@ -125,12 +131,56 @@ def table_vs_benchmark(name, solutions_by_run):
         csv.writer(csv_file).writerows(get_table_vs_benchmark(solutions_by_run))
 
 
+def get_csv_portfolios(solution_index, solution):
+    portfolios = []
+    for variable, amount in solution['variables'].items():
+        portfolios.append([solution_index, variable, amount])
+    return portfolios
+
+
+def get_table_portfolio(solutions):
+    portfolios = []
+    for solution_index in range(len(solutions)):
+        portfolios.extend(get_csv_portfolios(solution_index, solutions[solution_index]))
+    return portfolios
+
+
+def table_portfolio(name, solutions_by_run):
+    for run in range(len(solutions_by_run)):
+        with open(name + '/' + str(run) + '/portfolio.csv', 'w') as csv_file:
+            csv.writer(csv_file).writerows(get_table_portfolio(solutions_by_run[run]))
+
+
+def csv_to_latex(row):
+    s = '\\hline\n'
+    for datum in row:
+        s += str(datum) + ' & '
+    return (s[:-3]) + ' \\\\\n'
+
+
+def csv_to_latex_table(csv_filename, output_filename, caption, label, latex_rows):
+    with open(csv_filename, 'r') as csv_file, open(output_filename, 'w') as output_file:
+        output_file.write('\\begin{table}[ht]\n\\centering\\begin{tabular}{ ' + latex_rows + ' }\n')
+        for row in csv.reader(csv_file):
+            output_file.write(csv_to_latex(row))
+        output_file.write('\\hline\n\\end{tabular}\\caption{' + caption + '}\n\\label{tab:' + label + '}\n\\end{table}')
+
+
 def main():
     for name in PROBLEMS.keys():
         graph_generations(name, [get_generations(name, run) for run in range(Constants.NUM_RUNS)])
         solutions_by_run = [get_solutions(name, run) for run in range(Constants.NUM_RUNS)]
         graph_solution_bigraph(name, solutions_by_run)
         table_vs_benchmark(name, solutions_by_run)
+        table_portfolio(name, solutions_by_run)
+        # uses too much mem in overleaf lol
+        # for run in range(Constants.NUM_RUNS):
+        #     csv_to_latex_table(name + '/' + str(run) + '/portfolio.csv',
+        #                        name + '/' + str(run) + '/portfolio.txt',
+        #                        'Portfolio for run ' + str(run) + ' of ' + LABELS[name],
+        #                        name + '-' + str(run) + '-portfolio',
+        #                        '|l|c|c|')
+        # csv_to_latex_table(name + '/benchmark-comparison.csv', name + '/benchmark-comparison.txt', 'Benchmark comparison for ' + name, name + '-benchmark')
 
 
 if __name__ == '__main__':

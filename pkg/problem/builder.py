@@ -13,8 +13,8 @@ def default_portfolio_optimization_problem_arch_2():
         {},
         [Constraint(under_budget, 'budget')],
         [
-            get_objective_by_criteria('cvar', minimize=True),
-            get_objective_by_criteria('var', minimize=True),
+            get_objective_by_criteria('cvar'),
+            get_objective_by_criteria('var'),
             get_objective_by_criteria('return'),
             get_objective_by_criteria('environment'),
             get_objective_by_criteria('governance'),
@@ -53,8 +53,8 @@ def weight(investor, criteria):
 
 def get_weight_sensitive_objective(investor):
     return lambda options: sum([
-        get_objective_by_criteria('cvar', minimize=True)(options) * weight(investor, 'cvar'),
-        get_objective_by_criteria('var', minimize=True)(options) * weight(investor, 'var'),
+        get_objective_by_criteria('cvar')(options) * weight(investor, 'cvar'),
+        get_objective_by_criteria('var')(options) * weight(investor, 'var'),
         get_objective_by_criteria('return')(options) * weight(investor, 'return'),
         get_objective_by_criteria('environment')(options) * weight(investor, 'environment'),
         get_objective_by_criteria('governance')(options) * weight(investor, 'governance'),
@@ -62,15 +62,15 @@ def get_weight_sensitive_objective(investor):
     ])
 
 
-def get_objective_by_criteria(criteria, minimize=False):
-    return lambda variables: objective_value(variables, criteria, minimize)
+def get_objective_by_criteria(criteria):
+    return lambda variables: objective_value(variables, criteria)
 
 
-def objective_value(variables, criteria, minimize):
+def objective_value(variables, criteria):
     total = 0
     for key, value in variables.items():
         total += value.get_value() * value.objective_info[criteria]
-    return total if not minimize else -total
+    return total
 
 
 def portfolio_optimization_combination_strategy(child, parent):

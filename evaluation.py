@@ -12,7 +12,7 @@ from pkg.consts import Constants
 
 COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
 MARKERS = ['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_']
-INDEX_TO_LABEL = ['risk', 'return', 'environment', 'governance', 'social']
+INDEX_TO_LABEL = ['cvar', 'var', 'return', 'environment', 'governance', 'social']
 LABELS = {
     'arch2': 'Architecture 2',
     'arch1-sam': 'Sam',
@@ -41,18 +41,21 @@ def get_weight_sensitive_objective_value(solution, investor):
 def graph_solution_bigraph(name, solutions):
     if len(solutions[0][0]['objectives']) <= 1:
         return
-    markers = cycle(MARKERS)
     colours = cycle(COLOURS)
     for run in range(Constants.NUM_RUNS):
         for (objective_index1, objective_index2) in combinations(range(len(INDEX_TO_LABEL)), 2):
             if objective_index1 == objective_index2:
                 continue
-            plt.scatter(
-                x=[solution['objectives'][objective_index1] for solution in solutions[run]],
-                y=[solution['objectives'][objective_index2] for solution in solutions[run]],
-                marker=next(markers),
-                color=next(colours)
-            )
+            colour = next(colours)
+            for s in range(len(solutions[run])):
+                plt.scatter(
+                    x=[solutions[run][s]['objectives'][objective_index2]],
+                    y=[solutions[run][s]['objectives'][objective_index1]],
+                    marker='$' + str(s) + '$',
+                    color=colour,
+                )
+            plt.xlabel(INDEX_TO_LABEL[objective_index2])
+            plt.ylabel(INDEX_TO_LABEL[objective_index1])
             plt.savefig(name + '/' +
                         str(run) + '/' +
                         INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')

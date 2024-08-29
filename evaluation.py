@@ -41,11 +41,11 @@ def get_weight_sensitive_objective_value(solution, investor):
 def graph_solution_bigraph(name, solutions):
     if len(solutions[0][0]['objectives']) <= 1:
         return
-    colours = cycle(COLOURS)
-    for run in range(Constants.NUM_RUNS):
-        for (objective_index1, objective_index2) in combinations(range(len(INDEX_TO_LABEL)), 2):
-            if objective_index1 == objective_index2:
-                continue
+    for (objective_index1, objective_index2) in combinations(range(len(INDEX_TO_LABEL)), 2):
+        if objective_index1 == objective_index2:
+            continue
+        colours = cycle(COLOURS)
+        for run in range(Constants.NUM_RUNS):
             colour = next(colours)
             for s in range(len(solutions[run])):
                 plt.scatter(
@@ -54,12 +54,11 @@ def graph_solution_bigraph(name, solutions):
                     marker='$' + str(s) + '$',
                     color=colour,
                 )
-            plt.xlabel(INDEX_TO_LABEL[objective_index2])
-            plt.ylabel(INDEX_TO_LABEL[objective_index1])
-            plt.savefig(name + '/' +
-                        str(run) + '/' +
-                        INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
-            plt.clf()
+        plt.xlabel(INDEX_TO_LABEL[objective_index2])
+        plt.ylabel(INDEX_TO_LABEL[objective_index1])
+        plt.savefig(name + '/' +
+                    INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
+        plt.clf()
 
 
 def graph_generations(name, generations):

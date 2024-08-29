@@ -8,6 +8,7 @@ from numpy.ma.extras import average
 from itertools import cycle, combinations
 
 from main import PROBLEMS
+from match import MOO_PROBLEMS
 from pkg.consts import Constants
 
 COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
@@ -127,6 +128,16 @@ def get_table_vs_benchmark(solutions_by_run):
         ['governance', calculate_average(solutions_by_run, 'governance'), 'N/A']
     ]
 
+def get_table_vs_benchmark_one_solution(solution):
+    benchmark = get_benchmark()
+    return [
+        ['return', calculate_one(solution, 'return'), benchmark['return']],
+        ['var', calculate_one(solution, 'var'), benchmark['var']],
+        ['cvar', calculate_one(solution, 'cvar'), benchmark['cvar']],
+        ['environment', calculate_one(solution, 'environment'), 'N/A'],
+        ['social', calculate_one(solution, 'social'), 'N/A'],
+        ['governance', calculate_one(solution, 'governance'), 'N/A']
+    ]
 
 def table_vs_benchmark(name, solutions_by_run):
     with open(name + '/benchmark-comparison.csv', 'w') as csv_file:
@@ -168,6 +179,17 @@ def csv_to_latex_table(csv_filename, output_filename, caption, label, latex_rows
         output_file.write('\\hline\n\\end{tabular}\\caption{' + caption + '}\n\\label{tab:' + label + '}\n\\end{table}')
 
 
+def get_solution_for_investor(investor, name):
+    with open(name + '/' + investor['person'].lower() + '.json', 'r') as investor_file:
+        return json.load(investor_file)
+
+
+def table_vs_benchmark_one_solution(name, investor):
+    solution = get_solution_for_investor(investor, name)
+    with open(name + '/' + investor['person'].lower() + '-comparison.csv', 'w') as csv_file:
+        csv.writer(csv_file).writerows(get_table_vs_benchmark_one_solution(solution))
+
+
 def main():
     for name in PROBLEMS.keys():
         graph_generations(name, [get_generations(name, run) for run in range(Constants.NUM_RUNS)])
@@ -175,6 +197,9 @@ def main():
         graph_solution_bigraph(name, solutions_by_run)
         table_vs_benchmark(name, solutions_by_run)
         table_portfolio(name, solutions_by_run)
+    for moo_problem in MOO_PROBLEMS:
+        for investor in Constants.INVESTORS:
+            table_vs_benchmark_one_solution(moo_problem, investor)
         # uses too much mem in overleaf lol
         # for run in range(Constants.NUM_RUNS):
         #     csv_to_latex_table(name + '/' + str(run) + '/portfolio.csv',

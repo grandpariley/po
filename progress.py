@@ -1,7 +1,6 @@
 import progressbar
 
 from pkg.consts import Constants
-from pkg.log import Log
 from pkg.log_level import LogLevel
 
 

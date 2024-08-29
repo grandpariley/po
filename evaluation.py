@@ -106,8 +106,8 @@ def calculate_all(solutions, objective):
     ])
 
 
-def calculate_average(solutions_by_run, objective):
-    return average([
+def calculate_max(solutions_by_run, objective):
+    return max([
         calculate_all(solutions, objective) for solutions in solutions_by_run
     ])
 
@@ -120,12 +120,12 @@ def get_benchmark():
 def get_table_vs_benchmark(solutions_by_run):
     benchmark = get_benchmark()
     return [
-        ['return', calculate_average(solutions_by_run, 'return'), benchmark['return']],
-        ['var', calculate_average(solutions_by_run, 'var'), benchmark['var']],
-        ['cvar', calculate_average(solutions_by_run, 'cvar'), benchmark['cvar']],
-        ['environment', calculate_average(solutions_by_run, 'environment'), 'N/A'],
-        ['social', calculate_average(solutions_by_run, 'social'), 'N/A'],
-        ['governance', calculate_average(solutions_by_run, 'governance'), 'N/A']
+        ['return', calculate_max(solutions_by_run, 'return'), benchmark['return']],
+        ['var', calculate_max(solutions_by_run, 'var'), benchmark['var']],
+        ['cvar', calculate_max(solutions_by_run, 'cvar'), benchmark['cvar']],
+        ['environment', calculate_max(solutions_by_run, 'environment'), 'N/A'],
+        ['social', calculate_max(solutions_by_run, 'social'), 'N/A'],
+        ['governance', calculate_max(solutions_by_run, 'governance'), 'N/A']
     ]
 
 def get_table_vs_benchmark_one_solution(solution):

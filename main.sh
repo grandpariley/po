@@ -9,6 +9,7 @@ case $i in
     run)
         PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' pipenv run python3 main.py
         PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' pipenv run python3 validation.py
+        PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' pipenv run python3 match.py
         PIPENV_VERBOSITY=-1 LOG_LEVEL='debug' pipenv run python3 evaluation.py
     ;;
 esac

@@ -1,8 +1,8 @@
 import unittest
 
-from pkg.consts import Constants
-from pkg.moead.sort import euclidean_distance_mapping
-from pkg.moead.tests.test_util import default_individuals
+from po.pkg.consts import Constants
+from po.pkg.moead.sort import euclidean_distance_mapping
+from po.pkg.moead.tests.test_util import default_individuals
 
 
 class SortTest(unittest.TestCase):

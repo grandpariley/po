@@ -1,5 +1,5 @@
 import unittest
-from pkg.random.random import Random
+from po.pkg.random.random import Random
 
 
 class RandomTest(unittest.TestCase):

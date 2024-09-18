@@ -1,10 +1,10 @@
 import json.encoder
 from math import floor
 
-from pkg.consts import Constants
-from pkg.problem.constraint import constraint_encoder_fn
-from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.problem.variable import Variable, variable_encoder_fn
+from po.pkg.consts import Constants
+from po.pkg.problem.constraint import constraint_encoder_fn
+from po.pkg.problem.discrete_domain import DiscreteDomain
+from po.pkg.problem.variable import Variable, variable_encoder_fn
 
 
 def problem_encoder_fn(obj):

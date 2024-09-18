@@ -1,10 +1,10 @@
 import unittest
 
-from pkg.consts import Constants
-from pkg.moead.tests.test_util import default_dominating_individual, default_individual, \
+from po.pkg.consts import Constants
+from po.pkg.moead.tests.test_util import default_dominating_individual, default_individual, \
     default_other_dominating_individual, default_individual_with_values, default_dominated_individual
-from pkg.problem.tests.default_problems import get_test_data
-from pkg.random.random import Random
+from po.pkg.problem.tests.default_problems import get_test_data
+from po.pkg.random.random import Random
 
 
 def default_combination_strategy(child, parent):

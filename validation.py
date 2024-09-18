@@ -2,7 +2,7 @@ import json
 from math import ceil
 
 from main import PROBLEMS
-from pkg.consts import Constants
+from po.pkg.consts import Constants
 
 
 def check_budget(solutions):

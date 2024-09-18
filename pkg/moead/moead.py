@@ -1,15 +1,13 @@
 import json
 import os
 
-from autopep8 import continued_indentation
-
-from pkg.consts import Constants
-from pkg.log import Log
-from pkg.moead.family import generate_child
-from pkg.moead.individual import Individual, individual_encoder_fn
-from pkg.moead.sort import euclidean_distance_mapping
-from pkg.problem.solver import Solver
-from progress import ProgressBar
+from po.pkg.consts import Constants
+from po.pkg.log import Log
+from po.pkg.moead.family import generate_child
+from po.pkg.moead.individual import Individual, individual_encoder_fn
+from po.pkg.moead.sort import euclidean_distance_mapping
+from po.pkg.problem.solver import Solver
+from po.progress import ProgressBar
 
 
 def is_non_dominated(x, population):

@@ -1,7 +1,7 @@
 import json
 import math
 
-from pkg.consts import Constants
+from po.pkg.consts import Constants
 
 MOO_PROBLEMS = ['arch2']
 

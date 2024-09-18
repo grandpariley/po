@@ -1,5 +1,5 @@
-from pkg.problem.domain import Domain
-from pkg.random.random import Random
+from po.pkg.problem.domain import Domain
+from po.pkg.random.random import Random
 
 
 class DiscreteDomain(Domain):

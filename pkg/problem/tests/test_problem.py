@@ -1,6 +1,6 @@
 import unittest
 
-from pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem, \
+from po.pkg.problem.tests.default_problems import default_consistent_problem_set_values, default_consistent_problem, \
     default_inconsistent_problem_set_values, default_multi_objective_problem_set_values
 
 

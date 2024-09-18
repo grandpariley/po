@@ -1,7 +1,7 @@
 import unittest
 
-from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.random.random import Random
+from po.pkg.problem.discrete_domain import DiscreteDomain
+from po.pkg.random.random import Random
 
 
 def default_domain():

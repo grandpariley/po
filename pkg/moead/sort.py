@@ -1,6 +1,6 @@
-from pkg.consts import Constants
-from pkg.problem.compare import euclidean_distance
-from progress import ProgressBar
+from po.pkg.consts import Constants
+from po.pkg.problem.compare import euclidean_distance
+from po.progress import ProgressBar
 
 
 def euclidean_distance_mapping(individuals):

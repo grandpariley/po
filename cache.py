@@ -1,5 +1,5 @@
 import os, dill
-from pkg.log import Log
+from po.pkg.log import Log
 
 
 def file_cache(filename='cache.pkl'):

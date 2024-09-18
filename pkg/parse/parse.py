@@ -1,6 +1,6 @@
 import json
 
-from pkg.parse.portfolio_option import PortfolioOption
+from po.pkg.parse.portfolio_option import PortfolioOption
 
 
 def parse_from_importer(filename):

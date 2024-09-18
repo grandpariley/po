@@ -1,64 +1,43 @@
-import json
-import os.path
-import shutil
-
-from memory import limit_memory
-from pkg.consts import Constants
-from pkg.log import Log
-from pkg.moead.moead import Moead
-from pkg.problem.builder import default_portfolio_optimization_problem_arch_2, generate_solutions_discrete_domain, \
-    default_portfolio_optimization_problem_arch_1
-from pkg.problem.problem import problem_encoder_fn
-from pkg.timer.timer import Timer
-
-PROBLEMS = {
-    'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
-    'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
-    'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
-    'arch2': default_portfolio_optimization_problem_arch_2(),
-}
+import db
+from po.pkg.consts import Constants
+from po.pkg.log import Log
+from po.pkg.moead.moead import Moead
+from po.pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_1, \
+    default_portfolio_optimization_problem_arch_2
+from po.memory import limit_memory
 
 
-def create_output_folders():
-    for folder in PROBLEMS.keys():
-        if os.path.exists(folder):
-            shutil.rmtree(folder)
-        os.mkdir(folder)
+def save_solutions(solutions, portfolio_id=None):
+    if portfolio_id is not None:
+        db.insert_portfolio(portfolio_id, solutions)
 
 
-def save_solutions(folder, filename, solutions):
-    if not os.path.exists(folder):
-        os.mkdir(folder)
-    with open(folder + '/' + filename + '.json', 'w') as json_file:
-        json.dump(solutions, json_file, default=problem_encoder_fn)
-
-
-def get_solutions(run, timer):
+def get_solutions(problems):
     input_solutions = {}
-    for name, problem in PROBLEMS.items():
+    for name, problem in problems.items():
         Log.log("Generating solutions for " + name, "generate")
-        input_solutions[name] = timer.time(lambda: generate_solutions_discrete_domain(problem), name + '/' + run)
+        input_solutions[name] = generate_solutions_discrete_domain(problem)
     Log.log("Generating complete!")
-    for name in PROBLEMS.keys():
-        save_solutions(name + '/' + run, 'initial', input_solutions[name])
     output_solutions = {}
-    for name in PROBLEMS.keys():
+    for name in problems.keys():
         Log.log("Starting to solve using MOEA/D for " + name, name)
-        output_solutions[name] = timer.time(Moead(input_solutions[name], name + '/' + run).solve, name + '/' + run)
+        output_solutions[name] = Moead(input_solutions[name]).solve()
     return output_solutions
 
 
 @limit_memory(percentage=0.9)
-def main():
-    create_output_folders()
+def main(problems, portfolio_id=None):
     for run in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(run), "run")
-        timer = Timer()
-        solutions = get_solutions(str(run), timer)
-        timer.save()
-        for name in PROBLEMS.keys():
-            save_solutions(name + '/' + str(run), 'solutions', solutions[name])
+        solutions = get_solutions(problems)
+        for name in problems.keys():
+            save_solutions(solutions[name], portfolio_id)
 
 
 if __name__ == '__main__':
-    main()
+    main({
+    'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
+    'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
+    'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
+    'arch2': default_portfolio_optimization_problem_arch_2(),
+})

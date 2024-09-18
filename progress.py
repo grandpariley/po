@@ -1,7 +1,7 @@
-import progressbar
+# import progressbar
 
-from pkg.consts import Constants
-from pkg.log_level import LogLevel
+from po.pkg.consts import Constants
+from po.pkg.log_level import LogLevel
 
 
 class ProgressBar:
@@ -10,7 +10,7 @@ class ProgressBar:
         if Constants.LOG_LEVEL == LogLevel.NONE:
             return
         cls.max_value = max_value
-        cls.bar = progressbar.ProgressBar(maxval=max_value).start()
+        # cls.bar = progressbar.ProgressBar(maxval=max_value).start()
 
     @classmethod
     def update(cls, value):
@@ -18,10 +18,10 @@ class ProgressBar:
             return
         if value > cls.max_value:
             raise ValueError(str(value) + ' is greater than max value ' + str(cls.max_value))
-        cls.bar.update(value)
+        # cls.bar.update(value)
 
     @classmethod
     def end(cls):
         if Constants.LOG_LEVEL == LogLevel.NONE:
             return
-        cls.bar.finish()
+        # cls.bar.finish()

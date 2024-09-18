@@ -1,11 +1,11 @@
 import json
 
-from pkg.log import Log
-from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.problem.problem import problem_encoder_fn
-from pkg.random.random import Random
-from pkg.problem.compare import dominates
-from pkg.consts import Constants
+from po.pkg.log import Log
+from po.pkg.problem.discrete_domain import DiscreteDomain
+from po.pkg.problem.problem import problem_encoder_fn
+from po.pkg.random.random import Random
+from po.pkg.problem.compare import dominates
+from po.pkg.consts import Constants
 from math import floor
 
 

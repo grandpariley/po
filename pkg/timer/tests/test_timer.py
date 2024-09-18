@@ -1,5 +1,5 @@
 import unittest
-from pkg.timer.timer import Timer
+from po.pkg.timer.timer import Timer
 
 
 class TimerTest(unittest.TestCase):

@@ -1,10 +1,10 @@
 import unittest
 
-from pkg.consts import Constants
-from pkg.moead.family import generate_child, get_parents
-from pkg.moead.tests.test_util import default_b, default_individuals, default_individual
-from pkg.problem.tests.default_problems import get_test_data
-from pkg.random.random import Random
+from po.pkg.consts import Constants
+from po.pkg.moead.family import generate_child, get_parents
+from po.pkg.moead.tests.test_util import default_b, default_individuals, default_individual
+from po.pkg.problem.tests.default_problems import get_test_data
+from po.pkg.random.random import Random
 
 
 class FamilyTest(unittest.TestCase):

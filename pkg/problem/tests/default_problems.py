@@ -1,7 +1,7 @@
-from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.problem.variable import Variable
-from pkg.problem.constraint import Constraint
-from pkg.problem.problem import Problem
+from po.pkg.problem.discrete_domain import DiscreteDomain
+from po.pkg.problem.variable import Variable
+from po.pkg.problem.constraint import Constraint
+from po.pkg.problem.problem import Problem
 
 
 def default_variables():

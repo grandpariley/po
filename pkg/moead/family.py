@@ -1,5 +1,5 @@
-from pkg.moead.individual import Individual
-from pkg.random.random import Random
+from po.pkg.moead.individual import Individual
+from po.pkg.random.random import Random
 
 
 def generate_child(dating_pool):

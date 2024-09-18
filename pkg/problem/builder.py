@@ -1,11 +1,11 @@
 from copy import deepcopy
 from math import ceil, floor
 
-from progress import ProgressBar
-from pkg.consts import Constants
-from pkg.problem.constraint import Constraint
-from pkg.problem.problem import Problem
-from pkg.random.random import Random
+from po.progress import ProgressBar
+from po.pkg.consts import Constants
+from po.pkg.problem.constraint import Constraint
+from po.pkg.problem.problem import Problem
+from po.pkg.random.random import Random
 
 
 def default_portfolio_optimization_problem_arch_2():
@@ -25,10 +25,14 @@ def default_portfolio_optimization_problem_arch_2():
 
 
 def default_portfolio_optimization_problem_arch_1(investor):
+    return default_portfolio_optimization_problem_arch_1(get_weights(investor))
+
+
+def default_portfolio_optimization_problem_by_weights(weights):
     return Problem(
         {},
         [Constraint(under_budget, 'budget')],
-        [get_weight_sensitive_objective(investor)],
+        [get_weight_sensitive_objective(weights)],
         combination_strategy=portfolio_optimization_combination_strategy
     )
 
@@ -44,21 +48,21 @@ def budget_used(variables):
     return total_spent
 
 
-def weight(investor, criteria):
+def get_weights(investor):
     for i in Constants.INVESTORS:
         if i['person'] == investor:
-            return i['weights'][criteria]
+            return i['weights']
     return 0
 
 
-def get_weight_sensitive_objective(investor):
+def get_weight_sensitive_objective(weights):
     return lambda options: sum([
-        get_objective_by_criteria('cvar')(options) * weight(investor, 'cvar'),
-        get_objective_by_criteria('var')(options) * weight(investor, 'var'),
-        get_objective_by_criteria('return')(options) * weight(investor, 'return'),
-        get_objective_by_criteria('environment')(options) * weight(investor, 'environment'),
-        get_objective_by_criteria('governance')(options) * weight(investor, 'governance'),
-        get_objective_by_criteria('social')(options) * weight(investor, 'social')
+        get_objective_by_criteria('cvar')(options) * weights['cvar'],
+        get_objective_by_criteria('var')(options) * weights['var'],
+        get_objective_by_criteria('return')(options) * weights['return'],
+        get_objective_by_criteria('environment')(options) * weights['environment'],
+        get_objective_by_criteria('governance')(options) * weights['governance'],
+        get_objective_by_criteria('social')(options) * weights['social']
     ])
 
 

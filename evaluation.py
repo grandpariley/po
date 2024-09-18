@@ -9,7 +9,7 @@ from itertools import cycle, combinations
 
 from main import PROBLEMS
 from match import MOO_PROBLEMS
-from pkg.consts import Constants
+from po.pkg.consts import Constants
 
 COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
 MARKERS = ['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_']

@@ -2,8 +2,8 @@ import json
 import os.path
 from os import getenv
 
-from pkg.log_level import LogLevel
-from pkg.parse.parse import parse_from_importer
+from po.pkg.log_level import LogLevel
+from po.pkg.parse.parse import parse_from_importer
 
 _investors = []
 _data = {}
@@ -42,7 +42,7 @@ def data():
 
 
 class Constants:
-    NUM_RUNS = 10
+    NUM_RUNS = 1
     BUDGET = 30000
     NUM_INDIVIDUALS = 500
     NUM_GENERATIONS = 10

@@ -2,8 +2,8 @@ import datetime
 import gc
 import os
 
-from pkg.consts import Constants
-from pkg.log_level import LogLevel
+from po.pkg.consts import Constants
+from po.pkg.log_level import LogLevel
 
 
 class Log:

@@ -1,7 +1,7 @@
 import unittest
 
-from pkg.problem.discrete_domain import DiscreteDomain
-from pkg.problem.variable import Variable
+from po.pkg.problem.discrete_domain import DiscreteDomain
+from po.pkg.problem.variable import Variable
 
 
 def default_variable():

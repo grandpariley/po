@@ -1,5 +1,5 @@
 import unittest
-from pkg.problem.compare import dominates
+from po.pkg.problem.compare import dominates
 
 
 class CompareTest(unittest.TestCase):

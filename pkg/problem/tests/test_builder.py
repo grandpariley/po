@@ -1,13 +1,13 @@
 import unittest
 
-from pkg.consts import Constants
-from pkg.moead.tests.test_util import default_dominated_individual
-from pkg.parse.parse import get_portfolio_option_from_data
-from pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_2, \
+from po.pkg.consts import Constants
+from po.pkg.moead.tests.test_util import default_dominated_individual
+from po.pkg.parse.parse import get_portfolio_option_from_data
+from po.pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_2, \
     portfolio_optimization_combination_strategy
-from pkg.problem.tests.default_problems import default_consistent_problem_set_values, \
+from po.pkg.problem.tests.default_problems import default_consistent_problem_set_values, \
     default_other_consistent_problem_set_values
-from pkg.random.random import Random
+from po.pkg.random.random import Random
 
 
 def get_default_data():

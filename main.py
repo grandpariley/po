@@ -7,9 +7,9 @@ from po.pkg.problem.builder import generate_solutions_discrete_domain, default_p
 from po.memory import limit_memory
 
 
-def save_solutions(solutions, portfolio_id=None):
+async def save_solutions(solutions, portfolio_id=None):
     if portfolio_id is not None:
-        db.insert_portfolio(portfolio_id, solutions)
+        await db.insert_portfolio(portfolio_id, solutions)
 
 
 def get_solutions(problems):
@@ -26,12 +26,12 @@ def get_solutions(problems):
 
 
 @limit_memory(percentage=0.9)
-def main(problems, portfolio_id=None):
+async def main(problems, portfolio_id=None):
     for run in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(run), "run")
         solutions = get_solutions(problems)
         for name in problems.keys():
-            save_solutions(solutions[name], portfolio_id)
+            await save_solutions(solutions[name], portfolio_id)
 
 
 if __name__ == '__main__':

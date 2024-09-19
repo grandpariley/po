@@ -34,10 +34,10 @@ def investors():
 
 def data():
     global _data
-    if not os.path.exists('data.json'):
+    if not os.path.exists('po/data.json'):
         return {}
     if len(_data) == 0:
-        _data = parse_from_importer('data.json')
+        _data = parse_from_importer('po/data.json')
     return _data
 
 

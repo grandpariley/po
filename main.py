@@ -20,7 +20,7 @@ def get_solutions(problems):
 
 
 @limit_memory(percentage=0.9)
-async def main(problems, portfolio_id=None):
+def main(problems):
     for run in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(run), "run")
         return get_solutions(problems)

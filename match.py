@@ -26,13 +26,19 @@ def main():
     for problem in MOO_PROBLEMS:
         solutions = get_final_solutions_combined(problem)
         for investor in Constants.INVESTORS:
-            max_solution = None
-            max_value = -math.inf
-            for solution in solutions:
-                if max_solution is None or get_value(solution, investor['weights']) > max_value:
-                    max_solution = solution
+            max_solution = match_portfolio(investor['weights'], solutions)
             with open(problem + '/' + investor['person'].lower() + '.json', 'w') as solution_file:
                 json.dump(max_solution, solution_file)
+
+
+def match_portfolio(weights, solutions):
+    max_solution = None
+    max_value = -math.inf
+    for solution in solutions:
+        if max_solution is None or get_value(solution, weights) > max_value:
+            max_solution = solution
+    return max_solution
+
 
 
 if __name__ == '__main__':

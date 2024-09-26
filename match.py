@@ -17,8 +17,7 @@ def get_final_solutions_combined(problem):
 
 
 def get_value(solution, weights):
-    print("solution['objectives'] " + str(solution['objectives']))
-    print("weights" + str(weights))
+    weights.pop('portfolio_id')
     if len(solution['objectives']) != len(weights.values()):
         raise ValueError('Illegal shape! ' + str(len(solution['objectives'])) + ' != ' + str(len(weights)))
     return sum([solution['objectives'][i] * list(weights.values())[i] for i in range(len(weights))])

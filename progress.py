@@ -16,8 +16,8 @@ class ProgressBar:
     def update(cls, value):
         if Constants.LOG_LEVEL == LogLevel.NONE:
             return
-        if value > cls.max_value:
-            raise ValueError(str(value) + ' is greater than max value ' + str(cls.max_value))
+        # if value > cls.max_value:
+        #     raise ValueError(str(value) + ' is greater than max value ' + str(cls.max_value))
         # cls.bar.update(value)
 
     @classmethod

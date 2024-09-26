@@ -17,11 +17,10 @@ def get_final_solutions_combined(problem):
 
 
 def get_value(solution, weights):
-    print(weights)
-    print(weights.values())
-    if len(solution['objectives']) != len(weights.values()):
-        raise ValueError('Illegal shape! ' + str(len(solution['objectives'])) + ' != ' + str(len(weights)))
-    return sum([solution['objectives'][i] * list(weights.values())[i] for i in range(len(weights))])
+    weight_values = list(weights.values())[1:]
+    if len(solution['objectives']) != len(weight_values):
+        raise ValueError('Illegal shape! ' + str(len(solution['objectives'])) + ' != ' + str(len(weight_values)))
+    return sum([solution['objectives'][i] * weight_values[i] for i in range(len(weight_values))])
 
 
 def main():

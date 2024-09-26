@@ -1,15 +1,9 @@
-import db
 from po.pkg.consts import Constants
 from po.pkg.log import Log
 from po.pkg.moead.moead import Moead
 from po.pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_1, \
     default_portfolio_optimization_problem_arch_2
 from po.memory import limit_memory
-
-
-async def save_solutions(solutions, portfolio_id=None):
-    if portfolio_id is not None:
-        await db.insert_portfolio(portfolio_id, solutions)
 
 
 def get_solutions(problems):
@@ -29,15 +23,13 @@ def get_solutions(problems):
 async def main(problems, portfolio_id=None):
     for run in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(run), "run")
-        solutions = get_solutions(problems)
-        for name in problems.keys():
-            await save_solutions(solutions[name], portfolio_id)
+        return get_solutions(problems)
 
 
 if __name__ == '__main__':
     main({
-    'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
-    'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
-    'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
-    'arch2': default_portfolio_optimization_problem_arch_2(),
-})
+        'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
+        'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
+        'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
+        'arch2': default_portfolio_optimization_problem_arch_2(),
+    })

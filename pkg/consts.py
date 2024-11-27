@@ -3,6 +3,7 @@ import json
 import os.path
 from os import getenv
 
+from po.memory import memory_limit, get_memory
 from po.pkg.log_level import LogLevel
 from po.pkg.parse.parse import parse_from_importer
 from poimport import db
@@ -45,7 +46,10 @@ def populate_data():
     if os.path.exists('po/data.json'):
         return parse_from_importer('po/data.json')
     else:
-        return asyncio.run(db.fetch_data())
+        print("populating data from db ...")
+        d = asyncio.run(db.fetch_data())
+        print("remaining memory: " + str(get_memory()) + " kB")
+        return d
 
 
 class Constants:

@@ -1,5 +1,6 @@
 import json
 
+from po.pkg.data import keys, count, fetch
 from po.pkg.log import Log
 from po.pkg.problem.discrete_domain import DiscreteDomain
 from po.pkg.problem.problem import problem_encoder_fn
@@ -63,7 +64,7 @@ class Individual:
         if not new_value:
             return
         original = self.problem.get_value(v)
-        self.problem.set_value(v, new_value, Constants.DATA[v])
+        self.problem.set_value(v, new_value, fetch(v))
         if not self.problem.consistent():
             if original:
                 self.problem.set_value(v, original)
@@ -75,15 +76,15 @@ class Individual:
             new_value = self.problem.variables[random_variable].domain.get_random()
         else:
             new_value = DiscreteDomain(
-                floor(Constants.BUDGET / Constants.DATA[random_variable]['price']),
+                floor(Constants.BUDGET / fetch(random_variable)['price']),
                 1
             ).get_random()
         return new_value
 
     def emo_phase(self):
         for _ in range(
-                Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * len(Constants.DATA.keys())))):
-            random_variable = Random.random_choice(list(Constants.DATA.keys()))
+                Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * count()))):
+            random_variable = Random.random_choice(list(keys()))
             self.safe_set_value(random_variable, self.get_new_value(random_variable))
 
     def get_objective_values(self):

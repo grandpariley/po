@@ -11,7 +11,6 @@ class FamilyTest(unittest.TestCase):
     def test_generate_child(self):
         Random.begin_test()
         Constants.MOEAD_NUM_WEIGHT_VECTORS_T = 2
-        Constants.DATA = get_test_data()
         individuals = default_individuals()
         Random.set_test_value_for("random_choice", '1')
         Random.set_test_value_for("random_choice", '1')

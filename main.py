@@ -11,7 +11,7 @@ def get_solutions(problems):
     for name, problem in problems.items():
         Log.log("Generating solutions for " + name, "generate")
         input_solutions[name] = generate_solutions_discrete_domain(problem)
-    Log.log("Generating complete!")
+        Log.log("Generating complete! Generated " + str(len(input_solutions[name])) + " solutions")
     output_solutions = {}
     for name in problems.keys():
         Log.log("Starting to solve using MOEA/D for " + name, name)

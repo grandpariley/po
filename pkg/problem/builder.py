@@ -108,26 +108,27 @@ def refill(child):
             spent = budget_used(child.variables)
 
 
-def generate_solutions_discrete_domain(problem):
+async def generate_solutions_discrete_domain(problem):
     solutions = []
     ProgressBar.begin(Constants.NUM_INDIVIDUALS)
     while len(solutions) < Constants.NUM_INDIVIDUALS:
-        solutions.append(get_new_solution(deepcopy(problem)))
+        solutions.append(await get_new_solution(deepcopy(problem)))
         ProgressBar.update(len(solutions))
     ProgressBar.end()
     return solutions
 
 
-def get_new_solution(solution):
+async def get_new_solution(solution):
     current_budget = Constants.BUDGET
-    possible_variables = keys()
+    possible_variables = await keys()
     while len(possible_variables) > 0:
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
-        domain = [i for i in range(1, ceil(current_budget / fetch(rand_variable_index)['price']))]
+        info = await fetch(rand_variable_index)
+        domain = [i for i in range(1, ceil(current_budget / info['price']))]
         if len(domain) == 0:
             continue
         new_value = Random.random_choice(domain)
-        current_budget -= new_value * fetch(rand_variable_index)['price']
-        solution.set_value(rand_variable_index, new_value, info=fetch(rand_variable_index))
+        current_budget -= new_value * info['price']
+        solution.set_value(rand_variable_index, new_value, info=info)
     return solution

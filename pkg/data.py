@@ -1,42 +1,41 @@
 import asyncio
-import os
 
-from po.memory import get_memory
-from po.pkg.parse.parse import parse_from_importer
+import ioloop
+
+from po.pkg.log import Log
 from po.pkg.random.random import Random
 from poimport import db
 
-_data = []
+_data = dict()
+_keys = []
+_count = -1
 
 def keys():
-    return data().keys()
+    global _keys
+    if len(_keys) == 0:
+        _keys = ioloop.IOLoop.current().run_sync(db.symbols())
+        Log.log("HEY IT'S KEYS" + str(_keys))
+    return _keys
 
 
 def count():
-    return len(data().keys())
+    global _count
+    if _count <= 0:
+        _count = ioloop.IOLoop.current().run_sync(db.count())
+        Log.log("HEY IT'S COUNT" + str(_count))
+    return _count
 
 
 def fetch(ticker):
-    return data()[ticker]
-
-
-def data():
-    global _data
-    if len(_data) == 0:
-        _data = populate_data()
-    return _data
-
-
-def populate_data():
     if Random.is_test():
-        return get_test_data()
-    if os.path.exists('po/data.json'):
-        return parse_from_importer('po/data.json')
-    else:
-        print("populating data from db ...")
-        d = asyncio.run(db.fetch_data())
-        print("remaining memory: " + str(get_memory()) + " kB")
-        return d
+        return get_test_data()[ticker]
+    global _data
+    if ticker in _data.keys():
+        return _data[ticker]
+    new_data = asyncio.run(db.fetch_data(ticker))
+    _data[ticker] = new_data
+    Log.log("HEY IT'S DATA" + str(new_data))
+    return new_data
 
 
 def get_test_data():

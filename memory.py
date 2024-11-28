@@ -11,7 +11,6 @@ def get_memory():
             sline = i.split()
             if str(sline[0]) in ('MemFree:', 'Buffers:', 'Cached:'):
                 free_memory += int(sline[1])
-    print("how much memory do we have to play with? " + str(free_memory) + " kB")
     return free_memory
 
 

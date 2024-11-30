@@ -49,11 +49,12 @@ def solve_helper(folder, parent_population):
             y = generate_child(neighbourhood)
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
-        save_generation(folder, str(t), get_non_dominated(parent_population))
+        # save_generation(folder, str(t), get_non_dominated(parent_population))
         ProgressBar.update(t)
     ProgressBar.end()
-    Log.log('Solving complete!')
-    return get_non_dominated(parent_population)
+    solution = get_non_dominated(parent_population)
+    Log.log('Solving complete! Solution has length ' + str(len(solution)))
+    return solution
 
 
 class Moead(Solver):

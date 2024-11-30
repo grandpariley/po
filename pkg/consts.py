@@ -1,11 +1,9 @@
-import asyncio
 import json
 import os.path
 from os import getenv
 
 from po.pkg.log_level import LogLevel
 from po.pkg.parse.parse import parse_from_importer
-from poimport import db
 
 _investors = []
 _data = {}
@@ -36,16 +34,11 @@ def investors():
 
 def data():
     global _data
+    if not os.path.exists('po/data.json'):
+        return {}
     if len(_data) == 0:
-        _data = populate_data()
+        _data = parse_from_importer('po/data.json')
     return _data
-
-
-def populate_data():
-    if os.path.exists('po/data.json'):
-        return parse_from_importer('po/data.json')
-    else:
-        return asyncio.run(db.fetch_data())
 
 
 class Constants:

@@ -1,6 +1,7 @@
 import json
 
 from po.pkg.data import keys, count, fetch
+from po.pkg.log import Log
 from po.pkg.problem.discrete_domain import DiscreteDomain
 from po.pkg.problem.problem import problem_encoder_fn
 from po.pkg.random.random import Random
@@ -49,7 +50,7 @@ class Individual:
     def does_dominate(self, q):
         return dominates(self.problem.objective_values(), q.problem.objective_values())
 
-    async def swap_half_genes(self, other):
+    def swap_half_genes(self, other):
         if self.problem.combination_strategy:
             self.problem.combination_strategy(self.problem, other.problem)
             return
@@ -57,34 +58,34 @@ class Individual:
         while len(variables) < len(self.problem.keys()) / 2:
             variables.add(Random.random_choice(other.problem.keys()))
         for v in variables:
-            await self.safe_set_value(v, other.problem.get_value(v))
+            self.safe_set_value(v, other.problem.get_value(v))
 
-    async def safe_set_value(self, v, new_value):
+    def safe_set_value(self, v, new_value):
         if not new_value:
             return
         original = self.problem.get_value(v)
-        self.problem.set_value(v, new_value, await fetch(v))
+        self.problem.set_value(v, new_value, fetch(v))
         if not self.problem.consistent():
             if original:
                 self.problem.set_value(v, original)
             else:
                 self.problem.reset_value(v)
 
-    async def get_new_value(self, random_variable):
+    def get_new_value(self, random_variable):
         if random_variable in self.problem.variables.keys():
             new_value = self.problem.variables[random_variable].domain.get_random()
         else:
             new_value = DiscreteDomain(
-                floor(Constants.BUDGET / (await fetch(random_variable))['price']),
+                floor(Constants.BUDGET / fetch(random_variable)['price']),
                 1
             ).get_random()
         return new_value
 
-    async def emo_phase(self):
+    def emo_phase(self):
         for _ in range(
-                Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * await count()))):
-            random_variable = Random.random_choice(await keys())
-            await self.safe_set_value(random_variable, await self.get_new_value(random_variable))
+                Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * count()))):
+            random_variable = Random.random_choice(keys())
+            self.safe_set_value(random_variable, self.get_new_value(random_variable))
 
     def get_objective_values(self):
         return self.problem.objective_values()

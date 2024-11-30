@@ -266,8 +266,7 @@ def set_random_test_values():
 
 class BuilderTest(unittest.TestCase):
     def test_generate_solutions_discrete_domain(self):
-        Constants.DATA = get_portfolio_option_from_data(get_default_data())
-        Constants.BUDGET=30000
+        Constants.BUDGET = 30000
         Constants.NUM_INDIVIDUALS = 1
         Random.begin_test()
         set_random_test_values()

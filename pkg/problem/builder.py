@@ -1,6 +1,7 @@
 from copy import deepcopy
 from math import ceil, floor
 
+from po.pkg.data import fetch, keys
 from po.progress import ProgressBar
 from po.pkg.consts import Constants
 from po.pkg.problem.constraint import Constraint
@@ -119,14 +120,14 @@ def generate_solutions_discrete_domain(problem):
 
 def get_new_solution(solution):
     current_budget = Constants.BUDGET
-    possible_variables = list(Constants.DATA.keys())
+    possible_variables = list(keys())
     while len(possible_variables) > 0:
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
-        domain = [i for i in range(1, ceil(current_budget / Constants.DATA[rand_variable_index]['price']))]
+        domain = [i for i in range(1, ceil(current_budget / fetch(rand_variable_index)['price']))]
         if len(domain) == 0:
             continue
         new_value = Random.random_choice(domain)
-        current_budget -= new_value * Constants.DATA[rand_variable_index]['price']
-        solution.set_value(rand_variable_index, new_value, info=Constants.DATA[rand_variable_index])
+        current_budget -= new_value * fetch(rand_variable_index)['price']
+        solution.set_value(rand_variable_index, new_value, info=fetch(rand_variable_index))
     return solution

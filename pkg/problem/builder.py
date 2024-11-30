@@ -120,7 +120,7 @@ def generate_solutions_discrete_domain(problem):
 
 def get_new_solution(solution):
     current_budget = Constants.BUDGET
-    possible_variables = keys()
+    possible_variables = list(keys())
     while len(possible_variables) > 0:
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)

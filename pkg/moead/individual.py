@@ -84,7 +84,7 @@ class Individual:
     def emo_phase(self):
         for _ in range(
                 Random.random_int_between_a_and_b(0, floor(Constants.GENES_MUTATING * count()))):
-            random_variable = Random.random_choice(keys())
+            random_variable = Random.random_choice(list(keys()))
             self.safe_set_value(random_variable, self.get_new_value(random_variable))
 
     def get_objective_values(self):

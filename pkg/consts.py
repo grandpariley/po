@@ -37,6 +37,5 @@ class Constants:
     NUM_GENERATIONS = 10
     GENES_MUTATING = 0.20
     MOEAD_NUM_WEIGHT_VECTORS_T = 50
-    MEM_UTILIZATION = 0.8
     INVESTORS = investors()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

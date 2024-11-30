@@ -15,13 +15,6 @@ def get_memory():
     return free_memory
 
 
-def get_limit():
-    if platform.system() != "Linux":
-        return
-    soft, _ = resource.getrlimit(resource.RLIMIT_AS)
-    return soft
-
-
 def memory_limit(percentage: float):
     if platform.system() != "Linux":
         return

@@ -13,7 +13,7 @@ _count = -1
 def keys():
     global _keys
     if len(_keys) == 0:
-        _keys = db.symbols()
+        _keys = ioloop.IOLoop.current().run_sync(db.symbols())
         Log.log("HEY IT'S KEYS" + str(_keys))
     return _keys
 
@@ -21,7 +21,7 @@ def keys():
 def count():
     global _count
     if _count <= 0:
-        _count = db.count()
+        _count = ioloop.IOLoop.current().run_sync(db.count())
         Log.log("HEY IT'S COUNT" + str(_count))
     return _count
 
@@ -32,7 +32,7 @@ def fetch(ticker):
     global _data
     if ticker in _data.keys():
         return _data[ticker]
-    new_data = db.fetch_data(ticker)
+    new_data = asyncio.run(db.fetch_data(ticker))
     _data[ticker] = new_data
     Log.log("HEY IT'S DATA" + str(new_data))
     return new_data

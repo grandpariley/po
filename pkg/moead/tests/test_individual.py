@@ -17,6 +17,7 @@ class IndividualTest(unittest.TestCase):
         self.assertTrue(default_dominating_individual().does_dominate(default_individual_with_values()))
 
     def test_swap_half_genes_reset(self):
+        Constants.DATA = get_test_data()
         Random.begin_test()
         Random.set_test_value_for("random_choice", '1')
         Random.set_test_value_for("random_choice", '2')
@@ -28,6 +29,7 @@ class IndividualTest(unittest.TestCase):
         self.assertEqual([1, 3, 1], values)
 
     def test_swap_half_genes(self):
+        Constants.DATA = get_test_data()
         Random.begin_test()
         Random.set_test_value_for("random_choice", '1')
         Random.set_test_value_for("random_choice", '0')
@@ -39,6 +41,7 @@ class IndividualTest(unittest.TestCase):
         self.assertEqual([1, 2, 1], values)
 
     def test_swap_half_genes_combination_strategy(self):
+        Constants.DATA = get_test_data()
         parent = default_dominating_individual()
         parent.problem.combination_strategy = default_combination_strategy
         child = default_other_dominating_individual()

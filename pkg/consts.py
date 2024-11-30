@@ -1,10 +1,15 @@
+import asyncio
 import json
 import os.path
 from os import getenv
 
+from po.memory import memory_limit, get_memory
 from po.pkg.log_level import LogLevel
+from po.pkg.parse.parse import parse_from_importer
+from poimport import db
 
 _investors = []
+_data = {}
 
 
 def investors():
@@ -30,6 +35,23 @@ def investors():
     return _investors
 
 
+def data():
+    global _data
+    if len(_data) == 0:
+        _data = populate_data()
+    return _data
+
+
+def populate_data():
+    if os.path.exists('po/data.json'):
+        return parse_from_importer('po/data.json')
+    else:
+        print("populating data from db ...")
+        d = asyncio.run(db.fetch_data())
+        print("remaining memory: " + str(get_memory()) + " kB")
+        return d
+
+
 class Constants:
     NUM_RUNS = 1
     BUDGET = 30000
@@ -38,4 +60,5 @@ class Constants:
     GENES_MUTATING = 0.20
     MOEAD_NUM_WEIGHT_VECTORS_T = 50
     INVESTORS = investors()
+    DATA = data()
     LOG_LEVEL = LogLevel(getenv('LOG_LEVEL', 'debug'))

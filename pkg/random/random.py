@@ -14,11 +14,6 @@ class Random:
         delattr(cls, 'non_random_values')
 
     @classmethod
-    def is_test(cls):
-        return hasattr(cls, 'non_random_values')
-
-
-    @classmethod
     def set_test_value_for(cls, key, value):
         cls.non_random_values.update({key: cls.non_random_values[key] + [value]})
 

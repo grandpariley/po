@@ -4,12 +4,12 @@ import math
 import os.path
 
 import matplotlib.pyplot as plt
+from numpy.ma.extras import average
 from itertools import cycle, combinations
 
 from main import PROBLEMS
 from match import MOO_PROBLEMS
 from po.pkg.consts import Constants
-from po.pkg.data import fetch
 
 COLOURS = ['b', 'g', 'r', 'c', 'm', 'y', 'k', 'aquamarine', 'mediumseagreen', 'burlywood', 'coral']
 MARKERS = ['.', 'o', 'v', '^', '<', '>', 's', 'x', 'd', '|', '_']
@@ -94,7 +94,7 @@ def get_solutions(name, run):
 
 def calculate_one(solution, objective):
     return sum([
-        value * fetch(name)[objective] for name, value in solution['variables'].items()
+        value * Constants.DATA[name][objective] for name, value in solution['variables'].items()
     ]) / sum([
         value for value in solution['variables'].values()
     ])

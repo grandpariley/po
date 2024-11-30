@@ -57,3 +57,11 @@ def default_individual_with_values():
     problem.set_value("2", 1)
     individual = Individual(problem=problem)
     return individual
+
+
+def get_test_data():
+    return {
+        "0": {},
+        "1": {},
+        "2": {}
+    }

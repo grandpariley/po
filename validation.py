@@ -3,14 +3,13 @@ from math import ceil
 
 from main import PROBLEMS
 from po.pkg.consts import Constants
-from po.pkg.data import fetch
 
 
 def check_budget(solutions):
     for s in range(len(solutions)):
         total_spent = 0
         for key, value in solutions[s]['variables'].items():
-            total_spent += value * fetch(key)['price']
+            total_spent += value * Constants.DATA[key]['price']
         if ceil(Constants.BUDGET) < total_spent:
             raise ValueError('SOLUTION ' + str(s) + ' IS OVER BUDGET: ' + str(total_spent))
 

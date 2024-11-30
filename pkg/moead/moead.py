@@ -44,7 +44,6 @@ def solve_helper(folder, parent_population):
     Log.log('Euclidean distance mapping complete! Starting solving...')
     ProgressBar.begin(Constants.NUM_GENERATIONS)
     for t in range(Constants.NUM_GENERATIONS):
-        Log.log("Generation: " + str(t) + "/" + str(Constants.NUM_GENERATIONS) + " started with length " + str(len(parent_population)))
         for i in range(len(parent_population)):
             neighbourhood = get_neighbourhood(parent_population, b[i])
             y = generate_child(neighbourhood)

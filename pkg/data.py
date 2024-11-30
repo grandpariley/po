@@ -1,3 +1,7 @@
+import gc
+
+from po.memory import get_memory, get_limit
+from po.pkg.consts import Constants
 from po.pkg.random.random import Random
 from poimport import db
 
@@ -25,6 +29,10 @@ async def fetch(ticker):
     global _data
     if ticker in _data.keys():
         return _data[ticker]
+    if get_memory() > (Constants.MEM_UTILIZATION * get_limit()):
+        del _data
+        gc.collect()
+        _data = dict()
     new_data = await db.fetch_data(ticker)
     _data[ticker] = new_data
     return new_data

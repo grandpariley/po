@@ -14,7 +14,6 @@ async def get_solutions(problems):
         Log.log("Generating solutions for " + name, "generate")
         input_solutions[name] = await generate_solutions_discrete_domain(problem)
         Log.log("Generating complete! Generated " + str(len(input_solutions[name])) + " solutions")
-        Log.log("For example, " + str(input_solutions[name][0]))
     output_solutions = {}
     for name in problems.keys():
         Log.log("Starting to solve using MOEA/D for " + name, name)

@@ -45,7 +45,6 @@ async def solve_helper(folder, parent_population):
     ProgressBar.begin(Constants.NUM_GENERATIONS)
     for t in range(Constants.NUM_GENERATIONS):
         Log.log("Generation: " + str(t) + "/" + str(Constants.NUM_GENERATIONS) + " started with length " + str(len(parent_population)))
-        Log.log("For example: " + str(parent_population[0]))
         for i in range(len(parent_population)):
             neighbourhood = get_neighbourhood(parent_population, b[i])
             y = await generate_child(neighbourhood)
@@ -56,7 +55,6 @@ async def solve_helper(folder, parent_population):
     ProgressBar.end()
     solution = get_non_dominated(parent_population)
     Log.log('Solving complete! Solution has length ' + str(len(solution)))
-    Log.log('For example, ' + str(solution[0]))
     return solution
 
 

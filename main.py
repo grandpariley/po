@@ -31,7 +31,5 @@ async def main(problems):
 if __name__ == '__main__':
     asyncio.run(main({
         'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
-        'arch1-jars': default_portfolio_optimization_problem_arch_1('Jars'),
-        'arch1-sam': default_portfolio_optimization_problem_arch_1('Sam'),
         'arch2': default_portfolio_optimization_problem_arch_2(),
     }))

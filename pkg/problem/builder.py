@@ -75,7 +75,7 @@ def get_objective_by_criteria(criteria):
 def objective_value(variables, criteria):
     total = 0
     for key, value in variables.items():
-        Log.log("key: " + str(key) + " value: " + str(value) + " criteria: " + str(criteria))
+        Log.log("key: " + str(key) + " value: " + str(value) + " criteria: " + str(criteria) + " info: " + str(value.objective_info))
         total += value.get_value() * value.objective_info[criteria]
     return total
 

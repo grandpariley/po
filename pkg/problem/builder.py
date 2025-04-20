@@ -124,7 +124,6 @@ async def get_new_solution(solution):
     current_budget = Constants.BUDGET
     possible_variables = await keys()
     while len(possible_variables) > 0 and current_budget > Constants.BUDGET * (1 - Constants.BUDGET_UTILIZATION):
-        Log.log("add one variable to one solution - start")
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
         info = await fetch(rand_variable_index)
@@ -137,5 +136,5 @@ async def get_new_solution(solution):
             current_budget += new_value * info['price']
             continue
         solution.set_value(rand_variable_index, new_value, info=info)
-        Log.log("add one variable to one solution - end")
+        Log.log("add one variable to one solution - end - $" + str(current_budget) + " left in cash")
     return solution

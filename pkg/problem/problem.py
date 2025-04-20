@@ -2,6 +2,7 @@ import json.encoder
 from math import floor
 
 from po.pkg.consts import Constants
+from po.pkg.log import Log
 from po.pkg.problem.constraint import constraint_encoder_fn
 from po.pkg.problem.discrete_domain import DiscreteDomain
 from po.pkg.problem.variable import Variable, variable_encoder_fn
@@ -38,7 +39,9 @@ class Problem:
         return True
 
     def set_value(self, variable_index, value, info=None):
-        if variable_index not in self.variables.keys() and info is not None:
+        if variable_index not in self.variables.keys():
+            if info is None:
+                Log.log("WARNING: " + str(variable_index) + " HAS NO INFO")
             self.variables[variable_index] = Variable(
                 DiscreteDomain(floor(Constants.BUDGET / info['price']), 0.00),
                 info

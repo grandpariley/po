@@ -75,6 +75,7 @@ def get_objective_by_criteria(criteria):
 def objective_value(variables, criteria):
     total = 0
     for key, value in variables.items():
+        Log.log("key: " + str(key) + " value: " + str(value))
         total += value.get_value() * value.objective_info[criteria]
     return total
 
@@ -136,5 +137,4 @@ async def get_new_solution(solution):
             current_budget += new_value * info['price']
             continue
         solution.set_value(rand_variable_index, new_value, info=info)
-        Log.log("add one variable to one solution - end - $" + str(current_budget) + " left in cash")
     return solution

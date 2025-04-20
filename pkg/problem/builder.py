@@ -2,6 +2,7 @@ from copy import deepcopy
 from math import ceil, floor
 
 from po.pkg.data import fetch, keys
+from po.pkg.log import Log
 from po.progress import ProgressBar
 from po.pkg.consts import Constants
 from po.pkg.problem.constraint import Constraint
@@ -113,6 +114,7 @@ async def generate_solutions_discrete_domain(problem):
     ProgressBar.begin(Constants.NUM_INDIVIDUALS)
     while len(solutions) < Constants.NUM_INDIVIDUALS:
         solutions.append(await get_new_solution(deepcopy(problem)))
+        Log.log("created solution: " + str(len(solutions)) + " / " + str(Constants.NUM_INDIVIDUALS))
         ProgressBar.update(len(solutions))
     ProgressBar.end()
     return solutions
@@ -121,14 +123,19 @@ async def generate_solutions_discrete_domain(problem):
 async def get_new_solution(solution):
     current_budget = Constants.BUDGET
     possible_variables = await keys()
-    while len(possible_variables) > 0:
+    while len(possible_variables) > 0 and current_budget > Constants.BUDGET * (1 - Constants.BUDGET_UTILIZATION):
+        Log.log("add one variable to one solution - start")
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
         info = await fetch(rand_variable_index)
-        domain = [i for i in range(1, ceil(current_budget / info['price']))]
+        domain = [i for i in range(1, floor(current_budget / info['price']))]
         if len(domain) == 0:
             continue
         new_value = Random.random_choice(domain)
         current_budget -= new_value * info['price']
+        if current_budget > Constants.BUDGET:
+            current_budget += new_value * info['price']
+            continue
         solution.set_value(rand_variable_index, new_value, info=info)
+        Log.log("add one variable to one solution - end")
     return solution

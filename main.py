@@ -1,11 +1,8 @@
-import asyncio
-
+from po.memory import limit_memory
 from po.pkg.consts import Constants
 from po.pkg.log import Log
 from po.pkg.moead.moead import Moead
-from po.pkg.problem.builder import generate_solutions_discrete_domain, default_portfolio_optimization_problem_arch_1, \
-    default_portfolio_optimization_problem_arch_2
-from po.memory import limit_memory
+from po.pkg.problem.builder import generate_solutions_discrete_domain
 
 
 async def get_solutions(problems):
@@ -26,10 +23,4 @@ async def main(problems):
     for run in range(Constants.NUM_RUNS):
         Log.log("Run: " + str(run), "run")
         return await get_solutions(problems)
-
-
-if __name__ == '__main__':
-    asyncio.run(main({
-        'arch1-alice': default_portfolio_optimization_problem_arch_1('Alice'),
-        'arch2': default_portfolio_optimization_problem_arch_2(),
-    }))
+    return None

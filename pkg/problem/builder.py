@@ -1,3 +1,4 @@
+import asyncio
 from copy import deepcopy
 from math import ceil, floor
 
@@ -76,7 +77,10 @@ def objective_value(variables, criteria):
     total = 0
     for key, value in variables.items():
         Log.log("key: " + str(key) + " value: " + str(value) + " criteria: " + str(criteria) + " info: " + str(value.objective_info))
-        total += value.get_value() * value.objective_info[criteria]
+        criteria_info = value.objective_info
+        if criteria_info is None:
+            criteria_info = asyncio.run(fetch(key))
+        total += value.get_value() * criteria_info[criteria]
     return total
 
 

@@ -63,7 +63,7 @@ class Individual:
         if not new_value:
             return
         original = self.problem.get_value(v)
-        self.problem.set_value(v, new_value, await fetch(v))
+        self.problem.set_value(v, new_value)
         if not self.problem.consistent():
             if original:
                 self.problem.set_value(v, original)

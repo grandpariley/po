@@ -1,7 +1,9 @@
+import asyncio
 import json.encoder
 from math import floor
 
 from po.pkg.consts import Constants
+from po.pkg.data import fetch
 from po.pkg.log import Log
 from po.pkg.problem.constraint import constraint_encoder_fn
 from po.pkg.problem.discrete_domain import DiscreteDomain
@@ -46,6 +48,8 @@ class Problem:
                 DiscreteDomain(floor(Constants.BUDGET / info['price']), 0.00),
                 info
             )
+        if self.variables[variable_index].objective_info is None:
+            self.variables[variable_index].objective_info = asyncio.run(fetch(variable_index))
         self.variables[variable_index].set_value(value)
 
     def reset_value(self, variable_index):

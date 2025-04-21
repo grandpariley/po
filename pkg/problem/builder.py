@@ -80,6 +80,8 @@ def objective_value(variables, criteria):
         criteria_info = value.objective_info
         if criteria_info is None:
             criteria_info = asyncio.run(fetch(key))
+        if criteria_info[criteria] is None:
+            continue
         total += value.get_value() * criteria_info[criteria]
     return total
 

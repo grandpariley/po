@@ -76,7 +76,6 @@ def get_objective_by_criteria(criteria):
 def objective_value(variables, criteria):
     total = 0
     for key, value in variables.items():
-        Log.log("key: " + str(key) + " value: " + str(value) + " criteria: " + str(criteria) + " info: " + str(value.objective_info))
         criteria_info = value.objective_info
         if criteria_info is None:
             criteria_info = asyncio.run(fetch(key))
@@ -121,7 +120,6 @@ async def generate_solutions_discrete_domain(problem):
     ProgressBar.begin(Constants.NUM_INDIVIDUALS)
     while len(solutions) < Constants.NUM_INDIVIDUALS:
         solutions.append(await get_new_solution(deepcopy(problem)))
-        Log.log("created solution: " + str(len(solutions)) + " / " + str(Constants.NUM_INDIVIDUALS))
         ProgressBar.update(len(solutions))
     ProgressBar.end()
     return solutions

@@ -28,7 +28,7 @@ def default_portfolio_optimization_problem_arch_2():
 
 
 def default_portfolio_optimization_problem_arch_1(investor):
-    return default_portfolio_optimization_problem_arch_1(get_weights(investor))
+    return default_portfolio_optimization_problem_by_weights(get_weights(investor))
 
 
 def default_portfolio_optimization_problem_by_weights(weights):

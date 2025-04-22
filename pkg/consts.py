@@ -13,14 +13,38 @@ def investors():
         _investors = [
             {
                 "person": "Alice",
-                "description": "Risk tolerant; long time horizon; strong ESG preferences",
+                "description": "the Balanced Corporate Governance Nerd",
+                "weights": {
+                    "var": 0.15,
+                    "cvar": 0.15,
+                    "return": 0.1,
+                    "environment": 0.0,
+                    "governance": 0.0,
+                    "social": 0.6
+                }
+            },
+            {
+                "person": "Jars",
+                "description": "the Long-Time-Horizon ESG? ES-shmee Investor",
+                "weights": {
+                    "var": 0.45,
+                    "cvar": 0.45,
+                    "return": 0.1,
+                    "environment": 0.0,
+                    "governance": 0.0,
+                    "social": 0.0
+                }
+            },
+            {
+                "person": "Sam",
+                "description": "the Conservative Socially Conscious",
                 "weights": {
                     "var": 0.05,
                     "cvar": 0.05,
-                    "return": 0.05,
+                    "return": 0.1,
                     "environment": 0.3,
-                    "governance": 0.25,
-                    "social": 0.3
+                    "governance": 0.3,
+                    "social": 0.2
                 }
             }
         ]

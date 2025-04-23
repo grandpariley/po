@@ -1,3 +1,4 @@
+import asyncio
 import csv
 import json
 import math
@@ -6,6 +7,7 @@ import os.path
 import matplotlib.pyplot as plt
 from itertools import cycle, combinations
 
+import db
 from main import PROBLEMS
 from match import MOO_PROBLEMS
 from po.pkg.consts import Constants
@@ -88,8 +90,9 @@ def get_generations(name, run):
 
 
 def get_solutions(name, run):
-    with open(name + '/' + str(run) + '/solutions.json', 'r') as json_file:
-        return json.load(json_file)
+    if name == 'arch2':
+        return asyncio.run(db.get_arch2_portfolios(run))
+    return asyncio.run(db.get_portfolio(str(name) + '-' + str(run)))
 
 
 def calculate_one(solution, objective):

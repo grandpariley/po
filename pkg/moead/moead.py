@@ -1,6 +1,8 @@
+import asyncio
 import json
 import os
 
+import db
 from po.pkg.consts import Constants
 from po.pkg.log import Log
 from po.pkg.moead.family import generate_child
@@ -29,16 +31,11 @@ def get_neighbourhood(parent_population, neighbourhood_indexes):
     return [parent_population[index] for index in neighbourhood_indexes]
 
 
-def save_generation(folder, generation, non_dominated_solutions):
-    if not folder:
-        return
-    if not os.path.exists(folder):
-        os.mkdir(folder)
-    with open(folder + '/gen-' + generation + '.json', 'w') as json_file:
-        json.dump(non_dominated_solutions, json_file, default=individual_encoder_fn)
+def save_generation(tag, generation, non_dominated_solutions):
+    asyncio.run(db.save_generation(tag, generation, list(map(individual_encoder_fn, non_dominated_solutions))))
 
 
-async def solve_helper(folder, parent_population):
+async def solve_helper(tag, parent_population):
     Log.log('Euclidean distance mapping...')
     b = euclidean_distance_mapping(parent_population)
     Log.log('Euclidean distance mapping complete! Starting solving...')
@@ -50,7 +47,7 @@ async def solve_helper(folder, parent_population):
             y = await generate_child(neighbourhood)
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
-        # save_generation(folder, str(t), get_non_dominated(parent_population))
+        save_generation(tag, str(t), get_non_dominated(parent_population))
         ProgressBar.update(t)
     ProgressBar.end()
     solution = get_non_dominated(parent_population)
@@ -63,6 +60,6 @@ class Moead(Solver):
     async def solve(self):
         Log.begin_debug("moead")
         parent_population = [Individual(problem=p) for p in self.problems]
-        solutions = await solve_helper(self.output_folder, parent_population)
+        solutions = await solve_helper(self.tag, parent_population)
         Log.end_debug()
         return [s.problem for s in solutions]

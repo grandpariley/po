@@ -1,15 +1,12 @@
 import asyncio
 import csv
-import json
 import math
-import os.path
-
-import matplotlib.pyplot as plt
 from itertools import cycle, combinations
 
+import matplotlib.pyplot as plt
+
 import db
-from main import PROBLEMS
-from match import MOO_PROBLEMS
+from match import match_portfolio
 from po.pkg.consts import Constants
 from po.pkg.data import fetch
 
@@ -82,10 +79,7 @@ def graph_generations(name, generations):
 def get_generations(name, run):
     generations = []
     for generation in range(Constants.NUM_GENERATIONS):
-        if not os.path.exists(name + '/' + str(run) + '/gen-' + str(generation) + '.json'):
-            continue
-        with open(name + '/' + str(run) + '/gen-' + str(generation) + '.json', 'r') as json_file:
-            generations.append(json.load(json_file))
+        generations.append(asyncio.run(db.get_generation(name + "-" + str(run), generation)))
     return generations
 
 
@@ -103,68 +97,20 @@ def calculate_one(solution, objective):
     ])
 
 
-def calculate_all(solutions, objective):
-    return max([
-        calculate_one(solution, objective) for solution in solutions
-    ])
-
-
-def calculate_max(solutions_by_run, objective):
-    return max([
-        calculate_all(solutions, objective) for solutions in solutions_by_run
-    ])
-
-
 def get_benchmark():
-    with open('index-data.json', 'r') as json_file:
-        return json.load(json_file)['^GSPTSE']
+    return asyncio.run(fetch(''))
 
-
-def get_table_vs_benchmark(solutions_by_run):
-    benchmark = get_benchmark()
-    return [
-        ['return', calculate_max(solutions_by_run, 'return'), benchmark['return']],
-        ['var', calculate_max(solutions_by_run, 'var'), benchmark['var']],
-        ['cvar', calculate_max(solutions_by_run, 'cvar'), benchmark['cvar']],
-        ['environment', calculate_max(solutions_by_run, 'environment'), 'N/A'],
-        ['social', calculate_max(solutions_by_run, 'social'), 'N/A'],
-        ['governance', calculate_max(solutions_by_run, 'governance'), 'N/A']
-    ]
 
 def get_table_vs_benchmark_one_solution(solution):
     benchmark = get_benchmark()
-    return [
-        ['return', calculate_one(solution, 'return'), benchmark['return']],
-        ['var', calculate_one(solution, 'var'), benchmark['var']],
-        ['cvar', calculate_one(solution, 'cvar'), benchmark['cvar']],
-        ['environment', calculate_one(solution, 'environment'), 'N/A'],
-        ['social', calculate_one(solution, 'social'), 'N/A'],
-        ['governance', calculate_one(solution, 'governance'), 'N/A']
-    ]
-
-def table_vs_benchmark(name, solutions_by_run):
-    with open(name + '/benchmark-comparison.csv', 'w') as csv_file:
-        csv.writer(csv_file).writerows(get_table_vs_benchmark(solutions_by_run))
-
-
-def get_csv_portfolios(solution_index, solution):
-    portfolios = []
-    for variable, amount in solution['variables'].items():
-        portfolios.append([solution_index, variable, amount])
-    return portfolios
-
-
-def get_table_portfolio(solutions):
-    portfolios = []
-    for solution_index in range(len(solutions)):
-        portfolios.extend(get_csv_portfolios(solution_index, solutions[solution_index]))
-    return portfolios
-
-
-def table_portfolio(name, solutions_by_run):
-    for run in range(len(solutions_by_run)):
-        with open(name + '/' + str(run) + '/portfolio.csv', 'w') as csv_file:
-            csv.writer(csv_file).writerows(get_table_portfolio(solutions_by_run[run]))
+    return {
+        'return': {'solution': calculate_one(solution, 'return'), 'benchmark': benchmark['return']},
+        'var': {'solution': calculate_one(solution, 'var'), 'benchmark': benchmark['var']},
+        'cvar': {'solution': calculate_one(solution, 'cvar'), 'benchmark': benchmark['cvar']},
+        'environment': {'solution': calculate_one(solution, 'environment'), 'benchmark': 'N/A'},
+        'social': {'solution': calculate_one(solution, 'social'), 'benchmark': 'N/A'},
+        'governance': {'solution': calculate_one(solution, 'governance'), 'benchmark': 'N/A'}
+    }
 
 
 def csv_to_latex(row):
@@ -179,30 +125,35 @@ def csv_to_latex_table(csv_filename, output_filename, caption, label, latex_rows
         output_file.write('\\begin{table}[ht]\n\\centering\\begin{tabular}{ ' + latex_rows + ' }\n')
         for row in csv.reader(csv_file):
             output_file.write(csv_to_latex(row))
-        output_file.write('\\hline\n\\end{tabular}\\caption{' + caption + '}\n\\label{tab:' + label + '}\n\\end{table}')
+        output_file.write(
+            '\\hline\n\\end{tabular}\\caption{' + caption + '}\n\\label{tab:' + label + '}\n\\end{table}')
 
 
-def get_solution_for_investor(investor, name):
-    with open(name + '/' + investor['person'].lower() + '.json', 'r') as investor_file:
-        return json.load(investor_file)
+def get_solution_for_investor(investor, run):
+    weights = get_weight_from_investor(investor)
+    solutions = asyncio.run(db.get_arch2_portfolios(run=run))
+    return match_portfolio(weights, solutions)
 
 
-def table_vs_benchmark_one_solution(name, investor):
-    solution = get_solution_for_investor(investor, name)
-    with open(name + '/' + investor['person'].lower() + '-comparison.csv', 'w') as csv_file:
-        csv.writer(csv_file).writerows(get_table_vs_benchmark_one_solution(solution))
+def get_weight_from_investor(investor):
+    for i in Constants.INVESTORS:
+        if i['person'] == investor:
+            return i['weights']
+    return None
 
 
-def main():
-    for name in PROBLEMS.keys():
+def table_vs_benchmark_one_solution(investor, run):
+    solution = get_solution_for_investor(investor, run)
+    asyncio.run(db.save_table_vs_benchmark('arch2-' + str(run), get_table_vs_benchmark_one_solution(solution)))
+
+
+def main(arch1_names):
+    for name in arch1_names:
         graph_generations(name, [get_generations(name, run) for run in range(Constants.NUM_RUNS)])
-        solutions_by_run = [get_solutions(name, run) for run in range(Constants.NUM_RUNS)]
-        graph_solution_bigraph(name, solutions_by_run)
-        table_vs_benchmark(name, solutions_by_run)
-        table_portfolio(name, solutions_by_run)
-    for moo_problem in MOO_PROBLEMS:
+        graph_solution_bigraph(name, [get_solutions(name, run) for run in range(Constants.NUM_RUNS)])
+    for run in range(Constants.NUM_RUNS):
         for investor in Constants.INVESTORS:
-            table_vs_benchmark_one_solution(moo_problem, investor)
+            table_vs_benchmark_one_solution(investor, run)
         # uses too much mem in overleaf lol
         # for run in range(Constants.NUM_RUNS):
         #     csv_to_latex_table(name + '/' + str(run) + '/portfolio.csv',
@@ -214,4 +165,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(['Alice', 'Sam', 'Jars'])

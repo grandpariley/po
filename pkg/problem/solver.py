@@ -2,9 +2,9 @@ from abc import abstractmethod
 
 
 class Solver:
-    def __init__(self, problems, output_folder=None):
+    def __init__(self, problems, tag=None):
         self.problems = problems
-        self.output_folder = output_folder
+        self.tag = tag
 
     def __str__(self):
         return str(self.problems)

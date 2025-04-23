@@ -1,11 +1,10 @@
 from po.memory import limit_memory
-from po.pkg.consts import Constants
 from po.pkg.log import Log
 from po.pkg.moead.moead import Moead
 from po.pkg.problem.builder import generate_solutions_discrete_domain
 
 
-async def get_solutions(problems):
+async def get_solutions(run, problems):
     input_solutions = {}
     for name, problem in problems.items():
         Log.log("Generating solutions for " + name, "generate")
@@ -14,13 +13,11 @@ async def get_solutions(problems):
     output_solutions = {}
     for name in problems.keys():
         Log.log("Starting to solve using MOEA/D for " + name, name)
-        output_solutions[name] = await Moead(input_solutions[name]).solve()
+        output_solutions[name] = await Moead(input_solutions[name], tag=name + "-" + str(run)).solve()
     return output_solutions
 
 
 @limit_memory(percentage=0.9)
-async def main(problems):
-    for run in range(Constants.NUM_RUNS):
-        Log.log("Run: " + str(run), "run")
-        return await get_solutions(problems)
-    return None
+async def main(problems, run = 0):
+    Log.log("Tag: " + str(0))
+    return await get_solutions(0, problems)

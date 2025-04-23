@@ -56,9 +56,10 @@ def graph_solution_bigraph(name, solutions):
                 )
         plt.xlabel(INDEX_TO_LABEL[objective_index2])
         plt.ylabel(INDEX_TO_LABEL[objective_index1])
-        plt.savefig(name + '/' +
-                    INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png')
+        filename = name + '/' + INDEX_TO_LABEL[objective_index1] + '-' + INDEX_TO_LABEL[objective_index2] + '.png'
+        plt.savefig(filename)
         plt.clf()
+        db.insert_image(filename)
 
 
 def graph_generations(name, generations):
@@ -72,8 +73,10 @@ def graph_generations(name, generations):
                 color=next(colours),
                 marker=next(markers)
             )
+    filename = name + '/generations.png'
     plt.savefig(name + '/generations.png')
     plt.clf()
+    db.insert_image(filename)
 
 
 def get_generations(name, run):

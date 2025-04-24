@@ -31,8 +31,8 @@ def get_neighbourhood(parent_population, neighbourhood_indexes):
     return [parent_population[index] for index in neighbourhood_indexes]
 
 
-def save_generation(tag, generation, non_dominated_solutions):
-    asyncio.run(db.save_generation(tag, generation, list(map(individual_encoder_fn, non_dominated_solutions))))
+async def save_generation(tag, generation, non_dominated_solutions):
+    await db.save_generation(tag, generation, list(map(individual_encoder_fn, non_dominated_solutions)))
 
 
 async def solve_helper(tag, parent_population):
@@ -47,7 +47,7 @@ async def solve_helper(tag, parent_population):
             y = await generate_child(neighbourhood)
             if is_non_dominated(y, neighbourhood):
                 parent_population[i] = y
-        save_generation(tag, str(t), get_non_dominated(parent_population))
+        await save_generation(tag, str(t), get_non_dominated(parent_population))
         ProgressBar.update(t)
     ProgressBar.end()
     solution = get_non_dominated(parent_population)

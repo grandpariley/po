@@ -19,5 +19,5 @@ async def get_solutions(run, problems):
 
 @limit_memory(percentage=0.9)
 async def main(problems, run = 0):
-    Log.log("Tag: " + str(0))
-    return await get_solutions(0, problems)
+    Log.log("Tag: " + str(run))
+    return await get_solutions(run, problems)

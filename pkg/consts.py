@@ -56,7 +56,7 @@ def investors():
 
 class Constants:
     BUDGET_UTILIZATION = 0.7
-    NUM_RUNS = 1
+    NUM_RUNS = 10
     BUDGET = 60000
     NUM_INDIVIDUALS = 500
     NUM_GENERATIONS = 10

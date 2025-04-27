@@ -31,7 +31,6 @@ async def fetch(ticker):
     if ticker in _data.keys():
         return _data[ticker]
     if get_memory() > (Constants.MEM_UTILIZATION * get_limit()):
-        Log.log("remove cache - memory too high")
         del _data
         gc.collect()
         _data = dict()

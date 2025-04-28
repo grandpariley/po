@@ -81,7 +81,8 @@ def objective_value(variables, criteria):
             criteria_info = asyncio.run(fetch(key))
         if criteria_info[criteria] is None:
             continue
-        total += value.get_value() * criteria_info[criteria]
+        how_much_of_budget = criteria_info['price'] * value / Constants.BUDGET
+        total += criteria_info[criteria] * how_much_of_budget
     return total
 
 

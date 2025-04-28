@@ -128,7 +128,9 @@ async def generate_solutions_discrete_domain(problem):
 async def get_new_solution(solution):
     current_budget = Constants.BUDGET
     possible_variables = await keys()
-    while len(possible_variables) > 0 and current_budget > Constants.BUDGET * (1 - Constants.BUDGET_UTILIZATION):
+    while (len(possible_variables) > 0 and
+           len(solution.variables) < Constants.DIVERSITY and
+           current_budget > Constants.BUDGET * (1 - Constants.BUDGET_UTILIZATION)):
         rand_variable_index = Random.random_choice(possible_variables)
         possible_variables.remove(rand_variable_index)
         info = await fetch(rand_variable_index)

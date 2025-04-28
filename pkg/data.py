@@ -2,7 +2,6 @@ import gc
 
 from po.memory import get_memory, get_limit
 from po.pkg.consts import Constants
-from po.pkg.log import Log
 from po.pkg.random.random import Random
 from poimport import db
 
